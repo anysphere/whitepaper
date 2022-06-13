@@ -1,0 +1,25 @@
+\section{Client-side security in practice}
+
+Our theoretical threat model assumes that the user's local computer is completely trusted, and that it is running a correct implementation of our protocol. If your computer is compromised, or you are running a buggy or intentionally incorrect version of our code, none of our previously outlined theoretical guarantees will apply. This is inherent and unavoidable — no matter the fancy encryption schemes you come up with, nothing will help you if your computer comes with a preinstalled backdoor. While \textbf{we fundamentally cannot eliminate the client-side risk}, we can \textit{reduce} it, which we will do in this section.
+
+\subsection{Reducing the attack surface}
+
+The first step in mitigating security is to reduce the attack surface. To do so, we architected our client to consist of two parts: a UI frontend and a daemon backend, where the daemon backend contains all security-critical code. We sandbox the UI frontend in such a way that it is not allowed to talk to the internet, and let all message sending go through the daemon, which handles the cryptography. That way, even if there are bugs in the UI frontend, or potentially malicious code, there is not much it can do.
+
+\todo{Figure of client architecture with UI and daemon, showing how we cut off internet access.}
+
+\subsection{Code distribution}
+
+
+
+\subsection{Updates}
+
+\todo{Write how we verify the signature every time here.}
+
+\subsection{Protecting against non-privileged local malware}
+
+If you've granted administrator access to a malicious program on your computer, there is, unfortunately, nothing to be done. We can, nevertheless, reduce the risk of non-privileged malware. 
+
+\todo{Actually implement: allow to encrypt the database, in which case the both the GUI and the CLI need to require passwords (and the GUI may cache the password for some amount of time).}
+
+Again, we do not aim to eliminate the risk here. Non-privileged malware may still gather information from side-channel attacks, and potentially other avenues. Once an attacker has access to your computer, it is very, very hard to shield yourself from them.
