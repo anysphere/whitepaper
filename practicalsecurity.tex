@@ -24,11 +24,15 @@ Do we store a backup key in cold storage that we can use to revoke a version? An
 
 \subsection{Updates}
 
-\todo{Write how we verify the signature every time here.}
+Every update needs to be signed. In fact, it needs to be signed twice: Arvid holds one key, and Sualeh holds one key. Both signatures must be present for the local client to accept the update.
+
+We implement our own signature check. Many popular frameworks have built-in signature checks, such as AutoUpdater for Electron and Updater for Tauri, but to ensure that we are really certain that updates work the way we want them to, we do it ourselves.
+
+This means that if either of us loses our private key, you would not get any updates. This is by design.
 
 \subsection{Protecting against non-privileged local malware}
 
-If you've granted administrator access to a malicious program on your computer, there is, unfortunately, nothing to be done. We can, nevertheless, reduce the risk of non-privileged malware. 
+If you've granted administrator access to a malicious program on your computer, there is, unfortunately, nothing to be done. We can, nevertheless, reduce the risk of non-privileged malware.
 
 \todo{Actually implement: allow to encrypt the database, in which case the both the GUI and the CLI need to require passwords (and the GUI may cache the password for some amount of time).}
 
