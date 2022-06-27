@@ -12,6 +12,9 @@ We implement face-to-face adding friend using a simple key exchange mechanism. T
 The advantage of this method is that key exchange can be completed instantly, cheaply, and securely. The disadvantage is that it requires our two users to be able to set up a meeting. While this assumption might seem too restrictive, we note that users must establish that their friends are not malicious before adding them, or else risk getting compromised. Thus, they are likely willing to set up a meeting to establish trustworthiness.
 
 \subsection{Adding Friends Asynchronously}
+
+\todo{mention key privacy}
+
 Our second method targets the opposite use-case, when user $B$ does not know user $A$'s intention to add friend beforehand.
 
 In this method, user $A$ must know user $B$'s public keys. User $A$ composes a friend request $m$ containing $A$'s name, public key $pk_A$, key exchange material, and index in the Addra database. User $A$ encrypts the request $m$ with $B$'s public key $pk_B$ using an AEAD cryptosystem, and deposits the request into a database for all asynchronous requests. User $B$ periodically downloads the entire database and tries to decrypt each message in the database using their secret key $sk_B$. If $B$'s decryption succeed, then $B$ can add $A$ as a friend by sending $A$ an ACK message over the usual PIR database containing $B$'s key material, encrypted using $A$'s public key. $A$ and $B$ can now compute a shared secret, add each other's index in the database, and send messages to each other at will.
