@@ -5,14 +5,14 @@ Most existing metadata private messaging systems, such as Pung or Addra, assumes
 This problem, known as Oblivious Message Detection(OMD) in \cite{liutromer2021}, is very hard in general. The state-of-the-art scheme proposed in \cite{liutromer2021} costs each user $\$ 1$ per million messages scanned, which is too expensive for our messaging application. Instead of solving OMD in general, we provide three alternative ways of adding friends, which trades some user convenience for better computation cost and security.
 
 \subsection{Adding Friends Face-to-face}
-Our first method assumes that users $A$ and $B$ are able to set up a face-to-face meeting with each other, either in person or over zoom. 
+Our first method assumes that users $A$ and $B$ are able to set up a face-to-face meeting with each other, either in person or over zoom.
 
 We implement face-to-face adding friend using a simple key exchange mechanism. To add friends, $A$'s anysphere client generates a QR code, which containing $A$'s name, public key $pk_A$, and index in the Addra database. $B$'s client generates a similar key. $A$ and $B$ can then scan each other's QR's code, \todo{Alternatives here? Passphrase? Link?} and derive a common secret by calling a standard key exchange algorithm such as crypto\_kx\_server\_session\_keys() \todo{Is this secure?} by libsodium. They also add each other's database index to the list of indices they scan each round. User $A$ and $B$ can now send messages to each other at will.
 
-The advantage of this method is that key exchange can be completed instantly, cheaply, and securely. The disadvantage is that it requires our two users to be able to set up a meeting. While this assumption might seem too restrictive, we note that users must establish that their friends are not malicious before adding them, or else risk getting compromised. Thus, they are likely willing to set up a meeting to establish trustworthiness. 
+The advantage of this method is that key exchange can be completed instantly, cheaply, and securely. The disadvantage is that it requires our two users to be able to set up a meeting. While this assumption might seem too restrictive, we note that users must establish that their friends are not malicious before adding them, or else risk getting compromised. Thus, they are likely willing to set up a meeting to establish trustworthiness.
 
 \subsection{Adding Friends Asynchronously}
-Our second method targets the opposite use-case, when user $B$ does not know user $A$'s intention to add friend beforehand. 
+Our second method targets the opposite use-case, when user $B$ does not know user $A$'s intention to add friend beforehand.
 
 In this method, user $A$ must know user $B$'s public keys. User $A$ composes a friend request $m$ containing $A$'s name, public key $pk_A$, key exchange material, and index in the Addra database. User $A$ encrypts the request $m$ with $B$'s public key $pk_B$ using an AEAD cryptosystem, and deposits the request into a database for all asynchronous requests. User $B$ periodically downloads the entire database and tries to decrypt each message in the database using their secret key $sk_B$. If $B$'s decryption succeed, then $B$ can add $A$ as a friend by sending $A$ an ACK message over the usual PIR database containing $B$'s key material, encrypted using $A$'s public key. $A$ and $B$ can now compute a shared secret, add each other's index in the database, and send messages to each other at will.
 
