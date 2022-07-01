@@ -5,7 +5,7 @@ Most existing metadata private messaging systems, such as Pung or Addra, assumes
 
 This problem is known as Oblivious Message Detection(OMD) in \cite{liutromer2021}. The scheme proposed in \cite{liutromer2021} aims to minimize user download size, but it costs each user $\$ 1$ per million messages scanned, which is prohibitive for our messaging application. We provide two alternate methods of trust establishment with better computational cost and security.
 
-In the following two methods, we assume that Alice and Bob's clients have generated a Curve25519 key exchange keypair $kx = (kx^P, kx^S)$.
+In the following two methods, we assume that Alice and Bob's daemons have generated a Curve25519 key exchange keypair $kx = (kx^P, kx^S)$. Their goal is to inform each other of their $kx^P$ to derive a shared secret $sk$.
 
 \subsection{Face-to-face Invitations}
 Our first method assumes that Alice and Bob are able to set up a face-to-face meeting with each other, either in person or over zoom. The trust establishment process is a simple key exchange implemented as follows.
