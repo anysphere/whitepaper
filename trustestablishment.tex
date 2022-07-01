@@ -1,28 +1,54 @@
-\section{Friend Discovery}
+\section{Trust establishment}
 
-Most existing metadata private messaging systems, such as Pung or Addra, assumes that a key exchange has taken place between the users before the conversation between them starts. In our messaging system, we also need a mechanism to conduct the key exchange itself. In other words, if a user $A$ knows the public key $pk_B$ of user $B$, then $A$ should be able to send a ``friend request" to user $B$ without leaking this request to anyone else. User $B$ must then be able to retrieve this request from the server, and complete a key exchange with user $A$. We call this process ``adding friends".
+Most existing metadata private messaging systems, such as Pung or Addra, assumes a prior key exchange between users. In our messaging system, we need a mechanism to conduct the key exchange itself while hiding the key exchange from everyone else. In other words, if Alice knows the public key $pk_B$ of Bob, then Alice should be able to send an ``invitation" to Bob. Bob must be able to retrieve this invitation from the server, and complete a key exchange with Alice. We call this process ``trust establishment".
 
-This problem, known as Oblivious Message Detection(OMD) in \cite{liutromer2021}, is very hard in general. The state-of-the-art scheme proposed in \cite{liutromer2021} costs each user $\$ 1$ per million messages scanned, which is too expensive for our messaging application. Instead of solving OMD in general, we provide three alternative ways of adding friends, which trades some user convenience for better computation cost and security.
+This problem is known as Oblivious Message Detection(OMD) in \cite{liutromer2021}. The scheme proposed in \cite{liutromer2021} aims to minimize user download size, but it costs each user $\$ 1$ per million messages scanned, which is prohibitive for our messaging application. We provide two alternate methods of trust establishment with better computational cost and security.
 
-\subsection{Adding Friends Face-to-face}
-Our first method assumes that users $A$ and $B$ are able to set up a face-to-face meeting with each other, either in person or over zoom.
+In the following two methods, we assume that Alice and Bob's clients have generated a Curve25519 key exchange keypair $kx = (kx^P, kx^S)$.
 
-We implement face-to-face adding friend using a simple key exchange mechanism. To add friends, $A$'s anysphere client generates a QR code, which containing $A$'s name, public key $pk_A$, and index in the Addra database. $B$'s client generates a similar key. $A$ and $B$ can then scan each other's QR's code, \todo{Alternatives here? Passphrase? Link?} and derive a common secret by calling a standard key exchange algorithm such as crypto\_kx\_server\_session\_keys() \todo{Is this secure?} by libsodium. They also add each other's database index to the list of indices they scan each round. User $A$ and $B$ can now send messages to each other at will.
+\subsection{Face-to-face Invitations}
+Our first method assumes that Alice and Bob are able to set up a face-to-face meeting with each other, either in person or over zoom. The trust establishment process is a simple key exchange implemented as follows.
 
-The advantage of this method is that key exchange can be completed instantly, cheaply, and securely. The disadvantage is that it requires our two users to be able to set up a meeting. While this assumption might seem too restrictive, we note that users must establish that their friends are not malicious before adding them, or else risk getting compromised. Thus, they are likely willing to set up a meeting to establish trustworthiness.
+1. Alice encodes her key exchange public key $kx_A^P$ and her allocation index $i_A$ into a human-readable story $s_A$. Bob similarly encodes his story $s_B$.
 
-\todo{step-by-step guide?}
+2. Alice and Bob meets and types the other's story into their own client. 
 
-\subsection{Adding Friends Asynchronously}
+3. Alice decodes Bob's story to obtain $kx^P_B$ and $i_B$. She computes the shared secret $sk = DH(kx^P_B, kx^S_A)$, and adds $i_B$ to her set of listening indices.\todo{Better name?} Bob does the same. They can now communicate to each other using PIR.
+
+Using this method, all interactions between the users do not require the internet. Thus, trust establishment can be completed instantly, cheaply, and securely. Our system do require Alice and Bob to be able to set up a meeting and type each other's story manually. To justify this approach, we believe a privacy-conscious Alice would be willing to set up a face-to-face meeting with Bob before sending him sensitive information.
+
+\subsection{Asynchronous Invitation}
 
 \todo{mention key privacy}
 
-Our second method targets the opposite use-case, when user $B$ does not know user $A$'s intention to add friend beforehand.
+Our second method targets the case when Bob does not know about Alice's invitation beforehand. For example, Alice can be a sensitive client who wishes to privately reach out to Bob's company. 
 
-In this method, user $A$ must know user $B$'s public keys. User $A$ composes a friend request $m$ containing $A$'s name, public key $pk_A$, key exchange material, and index in the Addra database. User $A$ encrypts the request $m$ with $B$'s public key $pk_B$ using an AEAD cryptosystem, and deposits the request into a database for all asynchronous requests. User $B$ periodically downloads the entire database and tries to decrypt each message in the database using their secret key $sk_B$. If $B$'s decryption succeed, then $B$ can add $A$ as a friend by sending $A$ an ACK message over the usual PIR database containing $B$'s key material, encrypted using $A$'s public key. $A$ and $B$ can now compute a shared secret, add each other's index in the database, and send messages to each other at will.
+This method proceeds in three steps: First, Alice sends an encrypted invitation to the server. Second, Bob retrieves this invitation via a full database download. Third, Bob informs Alice of his acceptance via an ACK message.
+
+\textbf{To send an invitation}
+
+1. Upon registration, each user's daemon generates an additional invitation keypair $ki = (ki^P, ki^S)$. Bob's daemon computes a ``public id" $id_B$, which contains his invitation public key $ki_B^P$, key exchange public key $kx_B^P$, and allocation $i_B$ encoded in plaintext. It then displays the id on Bob's GUI. Bob posts $id_B$ on his public profile, such as on twitter or on his company's website.
+
+3. When Alice wishes to send an invitation to Bob, she obtains $id_B$ from Bob's public profile, and decodes it to obtain $(i_B, kx_B^P, ki_B^P)$. She drafts an initial message $m_{AB}$ to accompany her invitation. 
+
+4. Alice's daemon periodically sends the key-value pair $(i_A, c_{AB} = \Enc(kx_B^P, id_A \vert m_{AB}))$ to the server\footnote{It is important to redo this encryption each round, otherwise adversaries will observe the same message repeatedly}, which stores it in a separate \textbf{AsyncInvitationDatabase}. When Alice has no invitations, her daemon sends $(i_A, \Enc(kx, id_A))$ for a random public key $kx$.
+
+4. As Alice's daemon sends the invitation, it also compute the shared secret $sk = DH(kx_B^P, kx^S_A)$. It sends Bob a ``control message" $ctm_{AB}$ via the PIR database using $sk$, and adds $i_B$ to the set of listening indices.
+
+\textbf{To retrieve an invitation}
+
+1. Bob's daemon periodically downloads the entire \textbf{AsyncInvitationDatabase}. It computes $\Dec(kx^S_B, c)$ over all key-value pairs $(i, c)$. If the decryption fails, Bob's daemon ignores this pair. Now suppose $(i, c) = (i_A, c_{AB})$, and the decryption succeeds. Bob's daemon decodes $i = i_A, id_A, m_{AB}$ from the decrypted data, and displays on Bob's GUI that he received an incoming invitation from $id_A$ with message $m_{AB}$.
+
+2. Bob verifies Alice's identity using $id_A$ and $m_{AB}$, for example by checking Alice's public profile. Bob then chooses to either accept or reject the invitation. If Bob rejects the invitation, no further action is performed. 
+
+\textbf{To accept an invitation}
+
+1. If Bob accepts Alice's invitation, Bob's daemon decodes $id_A$ to obtain $kx_A^P$, and computes the shared secret $sk = DH(kx_A^P, kx_B^S)$. It adds $i_A$ to the set of listening indices.
+
+2. Since Alice is sending the control message $ctm_{AB}$ to Bob using the same shared secret $sk$, Bob's daemon will read $ctm_{AB}$ from the PIR database. It sends an ACK to Alice's control message.
+
+3. When Alice's daemon reads Bob's ACK to $ctm_{AB}$ from the PIR ACK database, it displays on Alice's GUI that Bob has accepted Alice's friend request. Alice and Bob can now communicate to each other using PIR.
 
 This method offers convenience on par with most existing messaging platforms. Its main disadvantage is cost and delay: downloading the entire database is expensive and time-consuming for user $B$. Furthermore, it makes user $B$ more difficult to ascertain that user $A$ is trustworthy, thus compromising $B$'s security. We discourage the use of this method, and allow users to disable it completely. \todo{Decision to figure out later?}
 \todo{step-by-step guide?}
-
-\subsection{Adding Friends Transitively}
 \todo{Not sure if this is going to be a thing for now.}
