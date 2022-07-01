@@ -1,14 +1,31 @@
 \section{Threat Model}
 
-\todo{add table comparing our threat model with e.g. signal and email}
+\begin{table*}[t]
+\centering
+\begin{tabular}{||c c c c c||} 
+ \hline
+   & End-to-End Encryption & Hides Recipient & Hides Timing & Forward Secrecy \\ [0.5ex] 
+ \hline
+ Anysphere & \checkmark & \checkmark & \checkmark &  \\ 
+ \hline
+ Signal & \checkmark & & & \checkmark \\
+ \hline
+ Skiff & \checkmark &  &  & \\
+ \hline
+ Wickr & \checkmark & & & \checkmark \\
+ \hline
+ Onion & \checkmark & *\footnote{\label{onion}Only guaranteed for non-global adversary} & &\checkmark\\
+ \hline
+\end{tabular}
+\caption{Comparing Security Guarantees of Private Messaging Systems}
+\end{table*}
+
+
 \todo{add an illustration of a walled garden, with the walls containing only your computer and your friends' computers}
 
 %Touch on: server, friends, client-side computer, etc.
 
 \todo{Figure out a better format here. See e.g. Skiff's whitepaper.}
-
-
-
 Similar to most PIR schemes(for example \cite{ahmad2021addra}, \textsection 2.2), our threat model assumes a global adversary who can compromise the entire communication infrastructure except for the user's and their friends' client end. In particular, we assume the adversary has control over all the servers, and can observe and manipulate all network traffic.
 
 End-user trust is more subtle matter. In \cite{angel2018s}, Angle, Lazar and Tzialla describes the compromised friend(CF) attack on a general meta-data private messaging system, which shows that perfectly hiding metadata while not trusting the user's friends is computationally prohibitive. In our security model, a user trusts that the devices of themselves and all their friends are uncompromised and running an unmodified copy of anysphere's client-side code. The user assumes that any other end-user device might be compromised.
