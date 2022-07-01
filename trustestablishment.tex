@@ -1,6 +1,6 @@
 \section{Trust establishment}
 
-Most existing metadata private messaging systems, such as Pung or Addra, assumes a prior key exchange between users. In our messaging system, we need a mechanism to conduct the key exchange itself while hiding the key exchange from everyone else. In other words, if Alice knows the public key $pk_B$ of Bob, then Alice should be able to send an ``invitation" to Bob. Bob must be able to retrieve this invitation from the server, and complete a key exchange with Alice. We call this process ``trust establishment".
+Most existing metadata private messaging systems, such as Pung or Addra, assumes a prior key exchange between users. In our messaging application, we need a metadata-secure mechanism for the key exchange itself. In other words, if Alice knows the public key $pk_B$ of Bob, then Alice should be able to send an ``invitation" to Bob. Bob must be able to retrieve this invitation from the server, and complete a key exchange with Alice. We call this process ``trust establishment".
 
 This problem is known as Oblivious Message Detection(OMD) in \cite{liutromer2021}. The scheme proposed in \cite{liutromer2021} aims to minimize user download size, but it costs each user $\$ 1$ per million messages scanned, which is prohibitive for our messaging application. We provide two alternate methods of trust establishment with better computational cost and security.
 
@@ -13,7 +13,7 @@ Our first method assumes that Alice and Bob are able to set up a face-to-face me
 
 2. Alice and Bob meets and types the other's story into their own client. 
 
-3. Alice decodes Bob's story to obtain $kx^P_B$ and $i_B$. She computes the shared secret $sk = DH(kx^P_B, kx^S_A)$, and adds $i_B$ to her set of listening indices.\todo{Better name?} Bob does the same. They can now communicate to each other using PIR.
+3. Alice decodes Bob's story to obtain $kx^P_B$ and $i_B$. She computes the shared secret $sk = DH(kx^P_B, kx^S_A)$, and adds $i_B$ to her set of listening indices.\todo{Better name?} Bob does the same. They can now communicate to each other using our PIR transport layer.
 
 Using this method, all interactions between the users do not require the internet. Thus, trust establishment can be completed instantly, cheaply, and securely. Our system do require Alice and Bob to be able to set up a meeting and type each other's story manually. To justify this approach, we believe a privacy-conscious Alice would be willing to set up a face-to-face meeting with Bob before sending him sensitive information.
 
@@ -23,7 +23,7 @@ Using this method, all interactions between the users do not require the interne
 
 Our second method targets the case when Bob does not know about Alice's invitation beforehand. For example, Alice can be a sensitive client who wishes to privately reach out to Bob's company. 
 
-This method proceeds in three steps: First, Alice sends an encrypted invitation to the server. Second, Bob retrieves this invitation via a full database download. Third, Bob informs Alice of his acceptance via an ACK message.
+This method proceeds in three steps. First, Alice sends an encrypted invitation to the server. Second, Bob retrieves this invitation via a full database download. Third, Bob informs Alice of his acceptance via an ACK message.
 
 \textbf{To send an invitation}
 
@@ -31,9 +31,9 @@ This method proceeds in three steps: First, Alice sends an encrypted invitation 
 
 3. When Alice wishes to send an invitation to Bob, she obtains $id_B$ from Bob's public profile, and decodes it to obtain $(i_B, kx_B^P, ki_B^P)$. She drafts an initial message $m_{AB}$ to accompany her invitation. 
 
-4. Alice's daemon periodically sends the key-value pair $(i_A, c_{AB} = \Enc(kx_B^P, id_A \vert m_{AB}))$ to the server\footnote{It is important to redo this encryption each round, otherwise adversaries will observe the same message repeatedly}, which stores it in a separate \textbf{AsyncInvitationDatabase}. When Alice has no invitations, her daemon sends $(i_A, \Enc(kx, id_A))$ for a random public key $kx$.
+4. Alice's daemon periodically sends the key-value pair $(i_A, c_{AB} = \Enc(kx_B^P, id_A \vert m_{AB}))$ to the server\footnote{It is important to redo this encryption each round, otherwise adversaries will observe the same message repeatedly}, which stores it in a separate \textbf{AsyncInvitationDatabase}. When Alice has no invitations, her daemon sends $(i_A, \Enc(kx^P, id_A))$ for a random public key $kx^P$.
 
-4. As Alice's daemon sends the invitation, it also compute the shared secret $sk = DH(kx_B^P, kx^S_A)$. It sends Bob a ``control message" $ctm_{AB}$ via the PIR database using $sk$, and adds $i_B$ to the set of listening indices.
+4. As Alice's daemon sends the invitation, it also compute the shared secret with Bob $sk = DH(kx_B^P, kx^S_A)$. It sends Bob a ``control message" $ctm_{AB}$ via our PIR transport layer, and listens for Bob's ACK.
 
 \textbf{To retrieve an invitation}
 
@@ -47,8 +47,8 @@ This method proceeds in three steps: First, Alice sends an encrypted invitation 
 
 2. Since Alice is sending the control message $ctm_{AB}$ to Bob using the same shared secret $sk$, Bob's daemon will read $ctm_{AB}$ from the PIR database. It sends an ACK to Alice's control message.
 
-3. When Alice's daemon reads Bob's ACK to $ctm_{AB}$ from the PIR ACK database, it displays on Alice's GUI that Bob has accepted Alice's friend request. Alice and Bob can now communicate to each other using PIR.
+3. When Alice's daemon reads Bob's ACK to $ctm_{AB}$ from the PIR ACK database, it displays on Alice's GUI that Bob has accepted Alice's invitation. Alice and Bob can now communicate to each other using our PIR transport layer.
 
-This method offers convenience on par with most existing messaging platforms. Its main disadvantage is cost and delay: downloading the entire database is expensive and time-consuming for user $B$. Furthermore, it makes user $B$ more difficult to ascertain that user $A$ is trustworthy, thus compromising $B$'s security. We discourage the use of this method, and allow users to disable it completely. \todo{Decision to figure out later?}
-\todo{step-by-step guide?}
-\todo{Not sure if this is going to be a thing for now.}
+This method achieves metadata security. We hide the timing of the invitation by making the daemon send to and download \textbf{AsyncInvitationDatabase} on a fixed schedule. We hide the recipient of Alice's request since our encryption scheme is key private(\todo{Cite arvid's section}). 
+
+This method offers convenient trust establishment on par with most existing messaging platforms. Its disadvantage is that downloading the entire database is expensive and time-consuming for user $B$. We estimate that a key-value pair in the database take approximately $200\text{B}$. If we have 1 million users, then the whole database will have a size of approximately $200\text{MB}$. Thus, a private user might wish to only download the database once or twice each day, which saves bandwidth but delays the detection of invitations. On the other hand, a company might be able to afford downloading the database every few seconds, which costs download bandwidth but can ensure incoming asynchronous invitations get detected almost instantly.
