@@ -1,26 +1,33 @@
 \section{Client-side security in practice}
 
-Our theoretical threat model assumes that the user's local computer is completely trusted, and that it is running a correct implementation of our protocol. If your computer is compromised, or you are running a buggy or intentionally incorrect version of our code, none of our previously outlined theoretical guarantees will apply. This is inherent and unavoidable — no matter the fancy encryption schemes you come up with, nothing will help you if your computer comes with a preinstalled backdoor. While \textbf{we fundamentally cannot eliminate the client-side risk}, we can \textit{reduce} it, which we will do in this section.
+The anysphere client is only as strong and secure as the most vulnerable part of our software supply chain. Software supply chains are an increasingly complex (and brittle) part of the software ecosystem because of a large and growing number of direct and transitive dependencies written across the world. 
+The Anysphere client is designed to handle extreme private and critical communication securely, so our team has enforced a high bar of security for the core of our system. We focused on providing practical protection by significantly reducing the attack surface of our client, ensuring safe updates, and protecting against non-privileged software. 
 
-\subsection{Reducing the attack surface}
+A note on the client's security, in the context of our threat model: Anysphere trusts its client's devices. 
+In particular, we trust that the local device is running a correct implementation of our protocol, and the computer comes without pre-installed backdoors. 
+Our model is the bare minimum of trust we must assume, and we think this is reasonable given the intense focus of Apple and many other companies on device security. 
+(Put another way, no encryption schemes we can come up with can secure our client inside a compromised computer.)
+And with this context, we will present our measures to reduce the risk of a compromised Anysphere client.
 
-The first step in mitigating security is to reduce the attack surface. To do so, we architected our client to consist of two parts: a UI frontend and a daemon backend, where the daemon backend contains all security-critical code. We sandbox the UI frontend in such a way that it is not allowed to talk to the internet, and let all message sending go through the daemon, which handles the cryptography. That way, even if there are bugs in the UI frontend, or potentially malicious code, there is not much it can do.
+\subsection{Reducing the Software Supply Chain attack surface}
+
+We architected our client to consist of two parts: a UI frontend and a daemon backend, where the daemon backend contains all security-critical code. We sandbox the UI frontend in such a way that it is not allowed to talk to the internet, and let all message sending go through the daemon, which handles the cryptography. That way, even if there are bugs in the UI frontend, or potentially malicious code, there is not much it can do.
 
 \todo{Figure of client architecture with UI and daemon, showing how we cut off internet access.}
 
 We also reduce the attack surface of the daemon itself. In particular, we use C++ instead of other popular languages (Rust, Go, Python), because all other practical languages are significantly more susceptible to supply chain attacks. Our daemon has 4 direct dependencies (Abseil, gRPC, SQLite, Libsodium) and 0 transitive dependencies. A comparable implementation in a language with a package manager would easily use 100s of transitive dependencies. We elaborate more on our choice of C++ in this blog post \todo{Link.}.
 
-\subsection{Code distribution}
+% \subsection{Code distribution}
 
-We sign everything.
+% We sign everything.
 
-Maybe we sign everything twice?
+% Maybe we sign everything twice?
 
-Maybe we have a cold-storage and a hot-storage signing key?
+% Maybe we have a cold-storage and a hot-storage signing key?
 
-Do we store a backup key in cold storage that we can use to revoke a version? And people can disi
+% Do we store a backup key in cold storage that we can use to revoke a version? And people can disi
 
-\todo{Either understand whether standard OS signing is good enough, or whether we should sign things ourselves.}
+% \todo{Either understand whether standard OS signing is good enough, or whether we should sign things ourselves.}
 
 \subsection{Updates}
 
