@@ -17,9 +17,19 @@ End-user trust is more subtle matter. In \cite{angel2018s}, Angle, Lazar and Tzi
 
 Finally, we assume the security of the standard cryptography primitives we use, including microsoft SEAL's BFV cryptosystem and libsodium's AEAD cryptosystem. 
 
-Denial of Service(DoS) attacks are unavoidable if the adversary controls all our servers. In the case of such attacks, we do not guarantee liveliness of our service, but continue to guarantee of service. We also defend against DoS attacks launched by an end-user with no access to the servers.
+Denial of Service(DoS) attacks are unavoidable if the adversary controls all our servers. In the case of such attacks, we do not guarantee liveliness of our service, but continue to guarantee metadata security. We also defend against DoS attacks launched by an end-user with no access to the servers.
 
 \subsection{Desired Properties}
+
+1. \textbf{Perfect Metadata Protection}: All contents and metadatas associated with a conversation are only visible to the users involved with the conversation. Even with a compromised server, an adversary should not even be able to find out whether two users are engaging in any conversation.
+
+2. \textbf{Forward Secrecy}: \todo{do we provide this?}
+
+3. \textbf{Resistant to man-in-the-middle attacks}.
+
+4. \textbf{Resistant to social engineering attacks}.
+
+\todo{add more.}
 
 
 
