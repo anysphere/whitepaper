@@ -40,13 +40,11 @@ Finally, we assume the security of the standard cryptography primitives we use, 
 
 An especially challenging case is metadata protection during trust establishment. This happens when two users wish to add each other as friends for the first time. This feature is not supported even by Addra or Pung. We outline our solution in \cref{section: trust-establishment}, which offers users a variety of options to establishing trust.
 
-2. \textbf{Forward Secrecy}: Due to time constraint, our messaging application currently does not support forward secrecy. We plan to provide forward secrecy in the future by implementing Signal's X3DH algorithm.
+2. \textbf{Resistance to man-in-the-middle attacks}: Due to our use of PIR and end-to-end encryption, no man-in-the-middle without access to a user's private keys can access metadata associated with any conversation the user had.
 
-3. \textbf{Resistance to man-in-the-middle attacks}: Due to our use of PIR and end-to-end encryption, no man-in-the-middle without access to a user's private keys can access metadata associated with any conversation the user had.
+3. \textbf{Resistance to DoS attacks}: Denial of Service(DoS) attacks are unavoidable if the adversary controls all our servers. In the case of such attacks, we do not guarantee liveliness of our service, but continue to guarantee metadata security. We also defend against DoS attacks launched by an end-user with no access to the servers.
 
-4. \textbf{Resistance to DoS attacks}: Denial of Service(DoS) attacks are unavoidable if the adversary controls all our servers. In the case of such attacks, we do not guarantee liveliness of our service, but continue to guarantee metadata security. We also defend against DoS attacks launched by an end-user with no access to the servers.
-
-\subsection{Not D }
-
+\subsection{Non-goals??}
+1. 
 
 
