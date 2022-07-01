@@ -10,9 +10,9 @@ In the following two methods, we assume that Alice and Bob's daemons have genera
 \subsection{Face-to-face Invitations}
 Our first method assumes that Alice and Bob are able to set up a face-to-face meeting with each other, either in person or over zoom. The trust establishment process is a simple key exchange implemented as follows.
 
-1. Alice encodes her key exchange public key $kx_A^P$ and her allocation index $i_A$ into a human-readable story $s_A$. Bob similarly encodes his story $s_B$.
+1. Alice encodes the plaintext of her key exchange public key $kx_A^P$ and her allocation index $i_A$ into a human-readable story $s_A$. Bob similarly encodes his story $s_B$.
 
-2. Alice and Bob meets and types the other's story into their own client. 
+2. Alice and Bob meets. They share their stories, and type the other's story into their own client. 
 
 3. Alice decodes Bob's story to obtain $kx^P_B$ and $i_B$. She computes the shared secret $sk = DH(kx^P_B, kx^S_A)$, and adds $i_B$ to her set of listening indices.\todo{Better name?} Bob does the same. They can now communicate to each other using our PIR transport layer.
 
@@ -24,7 +24,7 @@ Using this method, all interactions between the users do not pass through any th
 
 Our second method targets the case when Bob does not know about Alice's invitation beforehand. For example, Alice can be a sensitive client who wishes to privately reach out to Bob's company. 
 
-This method proceeds in three steps. First, Alice sends an encrypted invitation to the server. Second, Bob retrieves this invitation via a full database download. Third, Bob informs Alice of his acceptance via an ACK message.
+This method consists of three steps. First, Alice sends an encrypted invitation to the server without indicating its recipient. Second, Bob retrieves this invitation via a full database download. Third, Bob informs Alice of his acceptance via an ACK message.
 
 \textbf{To send an invitation}
 
