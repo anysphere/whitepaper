@@ -2,6 +2,10 @@
 
 %Touch on: server, friends, client-side computer, etc.
 
+\todo{Figure out a better format here. See e.g. Skiff's whitepaper.}
+
+
+
 Similar to most PIR schemes(for example \cite{ahmad2021addra}, \textsection 2.2), our threat model assumes a global adversary who can compromise the entire communication infrastructure except for the user's and their friends' client end. In particular, we assume the adversary has control over all the servers, and can observe and manipulate all network traffic.
 
 End-user trust is more subtle matter. In \cite{angel2018s}, Angle, Lazar and Tzialla describes the compromised friend(CF) attack on a general meta-data private messaging system, which shows that perfectly hiding metadata while not trusting the user's friends is computationally prohibitive. In our security model, a user trusts that the devices of themselves and all their friends are uncompromised and running an unmodified copy of anysphere's client-side code. The user assumes that any other end-user device might be compromised.
@@ -11,6 +15,8 @@ End-user trust is more subtle matter. In \cite{angel2018s}, Angle, Lazar and Tzi
 Finally, we assume the security of the standard cryptography primitives we use, including microsoft SEAL's BFV cryptosystem and libsodium's AEAD cryptosystem. 
 
 Denial of Service(DoS) attacks are unavoidable if the adversary controls all our servers. In the case of such attacks, we do not guarantee liveliness of our service, but continue to guarantee of service. We also defend against DoS attacks launched by an end-user with no access to the servers.
+
+\subsection{Desired Properties}
 
 
 
