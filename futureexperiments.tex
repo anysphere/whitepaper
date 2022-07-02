@@ -1,25 +1,32 @@
 \section{What's Next?}
 
-Anysphere has just begun operations, and we are devoted to truly free communication. 
-We aim to supervise and help build technologies that allow internet communication without unfair security assumptions.
-There are several important milestones that we have set for ourselves to reach to make this genuinely possible; some that are essential in the short-term and others that we want to achieve over a longer time horizon with time and effort.
+As should be evident after reading this whitepaper, private commuication is a hard problem. We are actively doing research with the goal of increasing convenience while preserving complete privacy. We also urge the research community to join us: as the first practical deployment of metadata-private communication, we have found that while there are many papers focusing on the scalability of a core one-person messaging protocol, too few focus on problems that come up in practice, including private trust establishment, managing multiple friends, communicating in one-to-many and many-to-many configurations, and protecting against denial of service.
 
-\subsection{Short term milestones}
-\begin{itemize}
-  \item \textbf{Group-chats through broadcasting}: An essentially important problem to solve is to allow groups of people to broadcast messages to each other, without depending on the presense of any specific user. We understand that this brings risks in itself to users because it increases the overall risk surface that a user has to trust but we believe it is crucial for large-scale pragmatic adoption.
+% Anysphere has just begun operations, and we are devoted to truly free communication. 
+% We aim to supervise and help build technologies that allow internet communication without unfair security assumptions.
+% There are several important milestones that we have set for ourselves to reach to make this genuinely possible; some that are essential in the short-term and others that we want to achieve over a longer time horizon with time and effort.
 
-  \item \textbf{Files and Images}: We hope to allow the sending of small files and images, through our current protocol. Larger files and images are tricky because they expload in the number of chunks needed to deliver them, but we will tackle that problem in due-time.
+\subsection{Implementation milestones}
 
-  \item \textbf{Denial of Service Protection}:
 
-  \item \textbf{Forward Secrecy}
+\subsubsection{Files and images.} We hope to allow the sending of small files and images, through our current protocol. Larger files and images are tricky because they expload in the number of chunks needed to deliver them, but we will tackle that problem in due-time.
 
-  \item \textbf{Public Key Infrastructure for Anysphere}
-\end{itemize}
+\subsubsection{Forward secrecy.}
 
-\subsection{Long-term milestones}
-\begin{itemize}
-  \item \textbf{Calls}
+\subsubsection{Public-key infrastructure.}
 
-  \item \textbf{}
-\end{itemize}
+\subsubsection{Calls.}
+
+\subsubsection{Hardened daemon against local malware.}
+
+\subsection{Research problems}
+
+\subsubsection{Denial of service resistance.}
+
+\subsubsection{One-to-many and many-to-many conversations.} An essentially important problem to solve is to allow groups of people to broadcast messages to each other, without depending on the presense of any specific user. We understand that this brings risks in itself to users because it increases the overall risk surface that a user has to trust but we believe it is crucial for large-scale pragmatic adoption.
+
+\subsubsection{More efficient trust establishment.}
+
+\subsubsection{The ACK problem.}
+
+\subsubsection{The multiple friends problem.}
