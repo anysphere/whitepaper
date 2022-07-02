@@ -1,9 +1,9 @@
 \section{Core Protocol}
 \label{sec:coreprotocol}
 
-Alice wants to message Bob over an untrusted network, without leaking any data or metadata to anyone. To hide the message content they just use end-to-end encryption. To hide metadata they employ two key ideas: sending data at a constant rate, and retrieving homomorphically compressed data.
+\stzh{In this section, we consider two users of our service Alice and Bob. } Alice wants to message Bob over an untrusted network, without leaking any data or metadata to anyone. To hide the message content they just use end-to-end encryption. To hide metadata they employ two key ideas: sending data at a constant rate, and retrieving homomorphically compressed data.
 
-When signing up, each user gets their own \textit{outbox} on the server. This outbox is a dedicated storage space that the user sends messages to. Once every minute, Alice will send exactly 1 KB of data to her outbox on the server. If she has a message to send, she sends the encryption of that message, and if she has no message to send, she sends a random sequence of bytes. With this simple first idea, no one, including the server and any network observers, will know when Alice actually sends a message.
+When signing up, each user gets their own \textit{outbox} on the server. This outbox is a dedicated storage space that the user sends messages to. Once every minute, Alice will send exactly 1 KB of data to her outbox on the server. If she has a message to send, she sends the \stzh{padded} encryption of that message, and if she has no message to send, she sends a random sequence of bytes.\stzh{A random message encrypted with a random public key?} With this simple first idea, no one, including the server and any network observers, will know when Alice actually sends a message.
 
 The message needs to be routed to Bob. Now, a traditional messaging system would have Bob download data from Alice's outbox, and then try to decrypt it to see if it was meant for him. But this leaks metadata: the server would know that Alice wrote to outbox $x$ and that Bob read from outbox $x$, which links the two of them together!
 
