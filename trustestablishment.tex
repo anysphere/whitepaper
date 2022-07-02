@@ -12,7 +12,7 @@ Our first method assumes that Alice and Bob are able to set up a face-to-face me
 
 1. Alice encodes the plaintext of her key exchange public key $kx_A^P$ and her allocation index $i_A$ into a human-readable story $s_A$. Bob similarly encodes his story $s_B$.
 
-2. Alice and Bob meets. They share their stories, and type the other's story into their own client. 
+2. Alice and Bob meet. They share their stories, and type the other's story into their own client. 
 
 3. Alice decodes Bob's story to obtain $kx^P_B$ and $i_B$. She computes the shared secret $sk = DH(kx^P_B, kx^S_A)$, and adds $i_B$ to her set of listening indices.\todo{Better name?} Bob does the same. They can now communicate to each other using our PIR transport layer.
 
