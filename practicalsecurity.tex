@@ -17,15 +17,16 @@ Still, we cannot achieve perfect security here, so: \textbf{PLEASE DO NOT USE AN
 
 \subsection{Reducing the attack surface: modularity and supply chain risk}
 
-We architected our client to consist of two parts: a UI frontend and a daemon backend, where the daemon backend contains all security-critical code. We sandbox the UI frontend in such a way that it is not allowed to talk to the internet, and let all message sending go through the daemon, which handles the cryptography. That way, even if there are bugs in the UI frontend, or potentially malicious code, there is not much it can do.
+We architected our client to consist of two parts: a UI frontend and a daemon backend, where the daemon backend contains all security-critical code. This is illustrated in \cref{fig:systemdiagram}. We sandbox the UI frontend in such a way that it is not allowed to talk to the internet, and let all message sending go through the daemon. That way, even if there are bugs in the UI frontend, or potentially malicious code, there is not much it can do.
 
-\begin{figure*}[htb]
+\begin{figure*}
     \centering
     \includegraphics[width=0.8\textwidth]{systemdiagram.pdf}
 \caption{System architecture. The user interface and the daemon run on your local computer and require some trust assumptions. The user interface is cut off from the internet, and can only communicate via the daemon, meaning that it needs lower trust assumptions. The crypto module in the daemon requires the highest level of trust, and uses the widely trusted Libsodium library.}
+\label{fig:systemdiagram}
 \end{figure*}
 
-We also reduce the attack surface of the daemon itself. In particular, we use C++ instead of other popular languages (Rust, Go, Python), because all other practical languages are significantly more susceptible to supply chain attacks. Our daemon has 4 direct dependencies (Abseil, gRPC, SQLite, Libsodium) and 0 transitive dependencies. A comparable implementation in a language with a package manager would easily use 100s of transitive dependencies. We elaborate more on our choice of C++ in this blog post \todo{Link.}.
+We also reduce the attack surface of the daemon itself. In particular, we take a lot of care in making sure our dependency chain is small to protect against supply chain attacks. Many of the new and popular languages, including Rust, Go and Python, all have great package managers, which unfortunately has led to an ecosystem where packages generally depend on hundreds of other packages, often transitively. For this reason, we chose to use \Cpp for essentially all daemon code, depending only on a few well-known packages with long-term support and good security practices (Abseil, gRPC, SQLite, Libsodium). We chose to use Rust for our database code, being extremely careful with our dependency chain.
 
 \subsection{Minimizing bugs: open source and tests}
 
