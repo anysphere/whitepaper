@@ -30,11 +30,11 @@ This method consists of three steps. First, Alice sends an encrypted invitation 
 
 1. Upon registration, each user's daemon generates an additional invitation keypair $ki = (ki^P, ki^S)$. Bob's daemon computes a ``public id" $id_B$, which contains his invitation public key $ki_B^P$, key exchange public key $kx_B^P$, and allocation $i_B$ encoded in plaintext. It then displays the id on Bob's GUI. Bob posts $id_B$ on his public profile, such as on twitter or on his company's website.
 
-3. When Alice wishes to send an invitation to Bob, she obtains $id_B$ from Bob's public profile, and decodes it to obtain $(i_B, kx_B^P, ki_B^P)$. She drafts an initial message $m_{AB}$ to accompany her invitation. 
+2. When Alice wishes to send an invitation to Bob, she obtains $id_B$ from Bob's public profile, and decodes it to obtain $(i_B, kx_B^P, ki_B^P)$. She drafts an initial message $m_{AB}$ to accompany her invitation. 
 
-4. Alice's daemon periodically sends the key-value pair $(i_A, c_{AB} = \Enc(kx_B^P, id_A \vert m_{AB}))$ to the server\footnote{It is important to redo this encryption each round, otherwise adversaries will observe the same message repeatedly.}, which stores it in a separate \textbf{AsyncInvitationDatabase}. When Alice has no invitations, her daemon sends $(i_A, \Enc(kx^P, id_A))$ for a random public key $kx^P$.
+3. Alice's daemon periodically sends the key-value pair $(i_A, c_{AB} = \Enc(kx_B^P, id_A \vert m_{AB}))$ to the server\footnote{It is important to redo this encryption each round, otherwise adversaries will observe the same message repeatedly.}, which stores it in a separate \textbf{AsyncInvitationDatabase}. When Alice has no invitations, her daemon sends $(i_A, \Enc(kx^P, id_A))$ for a random public key $kx^P$.
 
-5. As Alice's daemon sends the invitation, it also compute the shared secret with Bob $sk = DH(kx_B^P, kx^S_A)$. It sends Bob a ``control message" $ctm_{AB}$ via our PIR transport layer, and listens for Bob's ACK.
+4. As Alice's daemon sends the invitation, it also compute the shared secret with Bob $sk = DH(kx_B^P, kx^S_A)$. It sends Bob a ``control message" $ctm_{AB}$ via our PIR transport layer, and listens for Bob's ACK.
 
 \textbf{To retrieve an invitation}
 
