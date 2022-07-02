@@ -10,7 +10,7 @@ Our model is the bare minimum of trust we must assume, and we think this is reas
 And with this context, we will present our measures to reduce the risk of a compromised Anysphere client.
 
 \subsection{Reducing the Software Supply Chain attack surface}
-
+\stzh{hello!}
 We architected our client to consist of two parts: a UI frontend and a daemon backend, where the daemon backend contains all security-critical code. We sandbox the UI frontend in such a way that it is not allowed to talk to the internet, and let all message sending go through the daemon, which handles the cryptography. That way, even if there are bugs in the UI frontend, or potentially malicious code, there is not much it can do.
 
 \todo{Figure of client architecture with UI and daemon, showing how we cut off internet access.}

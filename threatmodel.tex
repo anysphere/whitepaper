@@ -2,23 +2,22 @@
 
 \begin{table*}[t]
 \centering
-\begin{tabular}{||c c c c c||} 
+\begin{tabular}{||c c c c c c||} 
  \hline
-   & End-to-End & Hides Recipient & Hides Timing & Forward  \\ [0.5ex] 
-   & encryption &  &  & Secrecy \\ [0.5ex] 
+  Attacker compromises $\cdots$ & Anysphere & Signal & Skiff & Wickr & Onion  \\
  \hline
- Anysphere & \checkmark & \checkmark & \checkmark &  \\ 
+ Attacker listens on the internet & \checkmark & \checkmark & \checkmark & \checkmark \\ 
  \hline
- Signal & \checkmark & & & \checkmark \\
+ Attacker compromises & \checkmark & & & \checkmark & \checkmark \\
  \hline
- Skiff & \checkmark &  &  & \\
+ Skiff & \checkmark &  &  & & \checkmark\\
  \hline
- Wickr & \checkmark & & & \checkmark \\
+ Wickr & \checkmark & & & \checkmark & \checkmark\\
  \hline
- Onion & \checkmark & *\footnote{\label{onion}Only guaranteed for non-global adversary} & &\checkmark\\
+ Onion & \checkmark & *\footnote{\label{onion}Only guaranteed for non-global adversary} & &\checkmark&\checkmark\\
  \hline
 \end{tabular}
-\caption{Comparing Security Guarantees of Private Messaging Systems}
+\caption{Comparing when}
 \end{table*}
 
 
