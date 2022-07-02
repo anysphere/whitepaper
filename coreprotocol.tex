@@ -11,11 +11,12 @@ Our solution is for Bob to, once every minute, download \textit{all} outboxes fr
 
 This is how Anysphere works. Obviously, Bob cannot download all outboxes every minute — that would be way too much data! — so instead he uses \textit{private information retrieval}, a well-studied cryptographic primitive, as a way of compressing his download size. The following subsections will describe the system in detail.
 
-\begin{figure}
+% make this take up both columns at the top of the page
+\begin{figure*}[htb]
     \centering
     \includegraphics[width=0.7\textwidth]{pirfigure.pdf}
 \caption{Alice sends to her outbox once every minute. Bob retrieves Alice's outbox using private information retrieval (PIR), which looks the same to everyone else as if he downloaded the entire database. Alice and Bob can use standard symmetric encryption to communicate, and no one, not even the server, will learn anything at all.}
-\end{figure}
+\end{figure*}
 
 
 
