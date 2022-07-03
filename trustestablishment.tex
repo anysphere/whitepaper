@@ -62,8 +62,6 @@ Using this method, all interactions between the users do not pass through any th
 %%%%% Async Section %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Asynchronous Invitation}
-
 \begin{figure}[!th]
   \begin{framed}
   {\raggedright
@@ -117,26 +115,28 @@ Using this method, all interactions between the users do not pass through any th
 \end{figure}
 
 
-\todo{mention key privacy}
+\subsection{Asynchronous Invitation}
 
 Our second method targets the case when Bob does not know about Alice's invitation beforehand. For example, Alice can be a sensitive client who wishes to privately reach out to Bob's company. 
 
 This method consists of three steps. First, Alice sends an encrypted invitation to the server without indicating its recipient. Second, Bob retrieves this invitation via a full database download. Third, Bob informs Alice of his acceptance via an ACK message. This is described in detail in \cref{fig:trust-establishment-async}.
 
-To send an invitation, Alice learns Bob's information through a public platform like Twitter. If Bob is a security-conscious firm, he might have also posted his Anysphere ID on his website. Alice can quickly import Bob's keys, and needs to send two messages. One as an invitation through the Invitation Database for Bob to find her information and a second message through the PIR transport layer for Bob to acknowledge.
+To send an invitation, Alice learns Bob's information through a public platform like Twitter. If Bob is a security-conscious firm, he might have also posted his Anysphere ID on his website. Alice can quickly import Bob's keys and needs to send two messages. One is an invitation through the Invitation Database for Bob to find her information and a second message through the PIR transport layer for Bob to acknowledge.
 
 To retrieve an invitation, Bob periodically downloads the entire Async Invitation Database and notices if there are invitations for him. 
-We address the question of the size of the database and the frequency of the downloads later in the section. 
-The user(s) representing Bob's account can then choose whether to respond to the message as would be the case in traditional e-mail. If they choose to respond, they acknowledge Alice's message and can send a reply over the PIR transport layer.
+We address the question of the size of the database later in the section. 
+The user(s) representing Bob's account can then choose whether to respond to the message, as would be the case in a traditional e-mail. If they choose to respond, they acknowledge Alice's message and can send a reply over the PIR transport layer.
 
 This method achieves metadata security. We hide the timing of the invitation by making the daemon send to and download \textbf{AsyncInvitationDatabase} on a fixed schedule. 
-We hide the recipient of Alice's request since our encryption scheme is key private(\todo{Cite arvid's section}). 
+We hide the recipient of Alice's request since our encryption scheme is key private(\todo{Cite Arvid's section}). 
 
-This method offers convenient trust establishment on par with most existing messaging platforms. 
+This method offers a convenient trust establishment on par with most existing messaging platforms. 
 Its disadvantage is that downloading the entire database is expensive. 
 We estimate that a key-value pair in the \textbf{AsyncInvitationDatabase} take approximately $200\text{B}$. 
-If we have 1 million users, then the whole database will have a size of approximately $200\text{MB}$.
-Thus, an individual user might wish to only download the database once or twice each day, which saves bandwidth but delays the detection of invitations. 
-On the other hand, a company user could afford downloading the database every second, which takes $200\text{MB}/s$ download bandwidth but can ensure incoming asynchronous invitations get detected almost instantly.
+If we have 1 million users, the whole database will have a size of approximately $200\text{MB}$.
+Thus, an individual user might wish only to download the database once or twice daily, which saves bandwidth but delays the detection of invitations. 
+On the other hand, a company user could afford to download the database every second, which takes $200\text{MB}/s$ download bandwidth but can ensure incoming asynchronous invitations get detected almost instantly.
 
-Finally, we note that this method introduces more attack vectors. For example, an attacker might use social engineering to make Alice believe that a fake $id_B$ belongs to Bob, or simply monitor $A$'s traffic to $B$'s public profile. Therefore, we recommend privacy conscious users to use face-to-face invitations whenever possible.
+Finally, we note that this method introduces more attack vectors. For example, an attacker might use social engineering to make Alice believe that a fake $id_B$ belongs to Bob or simply monitor $A$'s traffic to $B$'s public profile. Therefore, we recommend that privacy-conscious users use face-to-face invitations whenever possible.
+
+\xxx[Arvid]{Handle the part where we have to deal with Key Privacy.}
