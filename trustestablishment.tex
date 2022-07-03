@@ -3,10 +3,9 @@
 
 Most existing metadata private messaging systems, such as Pung or Addra, assume that users know beforehand who they wish to talk to, and had a prior key exchange through another channel. 
 In our messaging application, we need a metadata-secure mechanism for the key exchange itself. 
-In other words, if Alice knows the public key $pk_B$ of Bob, then Alice should be able to send an ``invitation" to Bob. 
-Bob must be able to retrieve this invitation from the server, and complete a key exchange with Alice. We call this process ``trust establishment".
+In other words, if Alice knows Bob's public key, then Alice should be able to send an ``invitation" to Bob.  Bob must be able to retrieve this invitation from the server, and complete a key exchange with Alice. The server shouldn't learn any metadata of this exchange. We call this process ``trust establishment".
 
-This problem is known as Oblivious Message Detection(OMD) in \cite{liutromer2021}. The scheme proposed in \cite{liutromer2021} aims to minimize user download size, but it costs each user $\$ 1$ per million messages scanned, which is prohibitive for our messaging application. We provide two alternate methods of trust establishment with better computational cost and security.
+This problem is known as Oblivious Message Detection(OMD) in \cite{liutromer2021}. The scheme proposed in \cite{liutromer2021} aims to minimize user download size, but it costs each user $\$ 1$ per million messages scanned, which is prohibitive for our messaging application. We provide two alternate methods of trust establishment with better computational cost and security\footnote{We shouldn't appear to be strictly better than \cite{liutromer2021}; any ideas?}.
 
 In the following two methods, we assume that Alice and Bob's daemons have generated a Curve25519 key exchange keypair $kx = (kx^P, kx^S)$. Their goal is to inform each other of their $kx^P$ to derive a shared secret $sk$.
 
@@ -20,7 +19,7 @@ In the following two methods, we assume that Alice and Bob's daemons have genera
   \begin{hangparas}{1em}{1}
         \hrule
         \vspace{0.15cm}
-        \textsc{\textbf{Protocol $1$: In-Person Trust Establishment}}
+        \textsc{\textbf{Protocol $\protocolNumber$: In-Person Trust Establishment}}
         \vspace{0.1cm}
         \hrule
         \vspace{0.1cm}
@@ -67,24 +66,28 @@ Using this method, all interactions between the users do not pass through any th
   \begin{hangparas}{1em}{1}
         \hrule
         \vspace{0.15cm}
-        \textsc{\textbf{Protocol $2$: Remote Trust Establishment}}
+        \textsc{\textbf{Protocol $\protocolNumber$: Remote Trust Establishment}}
         \vspace{0.1cm}
         \hrule
         \vspace{0.1cm}
   \medskip
       
-      \textbf{Encode.}
+      \textbf{Send Invitation.}
           Alice encodes the plaintext of her key exchange public key $kx_A^P$ and her allocation index $i_A$ into a human-readable story $s_A$. Bob similarly encodes his story $s_B$.
 
   \medskip
 
-      \textbf{Share.}
+      \textbf{Retrieve Invitation.}
           Alice and Bob meet. They share their stories, and type the other's story into their own client. 
 
-          \medskip
+    \medskip
 
-      \textbf{Establish Contact.}
+      \textbf{Accept Invitation.}
           Alice decodes Bob's story to obtain $kx^P_B$ and $i_B$. She computes the shared secret $sk = DH(kx^P_B, kx^S_A)$, and adds $i_B$ to her set of listening indices.
+    
+    \medskip
+          
+      \textbf{Reject Invitation.}
 
 
   \end{hangparas}

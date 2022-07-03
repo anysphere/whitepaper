@@ -1,6 +1,6 @@
 \section{What's Next?}\label{sec:future}
 
-As should be evident after reading this whitepaper, private commuication is a hard problem. We are actively doing research with the goal of increasing convenience while preserving complete privacy. We also urge the research community to join us: as the first practical deployment of metadata-private communication, we have found that while there are many papers focusing on the scalability of a core one-person messaging protocol, too few focus on problems that come up in practice, including private trust establishment, managing multiple friends, communicating in one-to-many and many-to-many configurations, and protecting against denial of service.
+Private communication is a hard problem. We are actively doing research to increase convenience while preserving complete privacy. We also urge the research community to join us: during the first practical deployment of metadata-private communication, we have found that while many papers focus on the scalability of a core one-person messaging protocol, too few focus on problems that come up in practice, including private trust establishment, multiple-friend management, one-to-many and many-to-many communcation, and DoS protection.
 
 % Anysphere has just begun operations, and we are devoted to truly free communication. 
 % We aim to supervise and help build technologies that allow internet communication without unfair security assumptions.
@@ -9,11 +9,11 @@ As should be evident after reading this whitepaper, private commuication is a ha
 \subsection{Implementation milestones}
 
 
-\subsubsection{Files and images.} We hope to allow the sending of small files and images, through our current protocol. Larger files and images are tricky because they expload in the number of chunks needed to deliver them, but we will tackle that problem in due-time.
+\subsubsection{Small Files and images.} We hope to support the transmission of small files and images through our current protocol. 
 
-\subsubsection{Forward secrecy.}
+\subsubsection{Forward secrecy.} We hope to integrate Signal's X3DH algorithm to ensure forward secrecy. 
 
-\subsubsection{Public-key infrastructure.}
+\subsubsection{Public-key infrastructure.} To facilitate the discovery and .
 
 \subsubsection{Calls.}
 
@@ -30,3 +30,5 @@ As should be evident after reading this whitepaper, private commuication is a ha
 \subsubsection{The ACK problem.}
 
 \subsubsection{The multiple friends problem.}
+
+\subsubsection{Large Files and images.} Transmission of larger files and images is infeasible in our current framework because the number of chunks needed to deliver them is in the thousands; we will tackle that problem separately later.

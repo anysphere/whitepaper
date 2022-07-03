@@ -73,4 +73,6 @@
 %  \long\gdef\xxx@lab[#1]#2{}\long\gdef\xxx@nolab#1{}%
 }
 
-
+% Counters
+\newcounter{protocol-number}
+\newcommand{\protocolNumber}{\refstepcounter{protocol-number}\arabic{protocol-number}}

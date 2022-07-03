@@ -8,11 +8,14 @@ In this section, we describe what our system achieves beyond end-to-end encrypte
 Signal is great. It is end-to-end encrypted, open source, and run by a trustworthy group. Unfortunately, if their servers are hacked, one of their employees bribed, or you are simply attacked by a network-level powerful actor, there is nothing Signal can guarantee. \xxx[stzh]{This is not true. The point of E2E encryption is to guarantee content security when the server gets compromised.}
 
 Furthermore, even with a secure server, it leaks metadata. Using timing attacks, an adversary can figure out when, where and with whom you are talking. 
-\subsection{Goals}
 
-Our goal is to provide metadata protection in the presence of a powerful adversary. More precisely, we want to achieve
+\subsection{Desired Properties}
 
-1) Metadata privacy for communication: if Alice and Bob use Anysphere to communicate, then an adversary who controls everything other than Alice and Bob's Anysphere client shouldn't be able to tell whether Alice and Bob are engaging in a conversation at any point in time.
+1. \textbf{Metadata Protection for Compromised Server}: All contents and metadata associated with a conversation are only visible to the users involved with the conversation. Even with all servers compromised, an adversary should not even be able to find out whether two users are engaging in any conversation.
 
-2) Metadata privacy for trust establishment: if Alice and
+An especially challenging case is metadata protection during trust establishment. This happens when two users wish to add each other as friends for the first time. This feature is not supported even by Addra or Pung. We outline our solution in \cref{sec:trustestablishment}, which offers users a variety of options to establishing trust.
+
+2. \textbf{Resistance to man-in-the-middle attacks}: Due to our use of PIR and end-to-end encryption, no man-in-the-middle without access to a user's private keys can access metadata associated with any conversation the user had.
+
+3. \textbf{Resistance to DoS attacks}: Denial of Service(DoS) attacks are unavoidable if the adversary controls all our servers. In the case of a server-controlling adversary, we do not guarantee liveliness of our service, but continue to guarantee metadata security. We also defend against DoS attacks launched by an end-user with no access to the servers.
 \input{threatmodel}
