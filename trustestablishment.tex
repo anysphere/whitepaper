@@ -58,7 +58,7 @@ Using this method, all interactions between the users do not pass through any th
 \subsection{Asynchronous Invitation}
 
 
-\begin{figure}[t]
+\begin{figure}[!th]
   \begin{framed}
   {\raggedright
       \small
@@ -73,23 +73,36 @@ Using this method, all interactions between the users do not pass through any th
   \medskip
       
       \textbf{Send Invitation.}
-          Alice encodes the plaintext of her key exchange public key $kx_A^P$ and her allocation index $i_A$ into a human-readable story $s_A$. Bob similarly encodes his story $s_B$.
+      Alice initiates contact with Bob.
+      \begin{enumerate}
+          \item \textbf{Visibility.} Bob computes a ``public id" $id_B = (ki_B^P, kx_B^P, i_B)$, (where $ki_B^P$ is the invitation public key, $kx_B^P$ is the key exchange public key, and $i_B$ is the allocation). Bob posts $id_B$ on his public profile, such as on twitter.
+          \item \textbf{Invitation.} Alice drafts a message $m_{AB}$ for Bob and obtains the triple $(ki_B^P, kx_B^P, i_B)$ from Bob's profile. She periodically sends the pair $(i_A, c_{AB} = \Enc(kx_B^P, id_A \vert m_{AB}))$ to the server, which stores it in a separate \textbf{AsyncInvitationDatabase}. When Alice has no invitations, her daemon sends $(i_A, \Enc(kx^P, id_A))$ for a random public key $kx^P$.
+          \item \textbf{Invitation Message.} Alice computes a shared secret $sk =  \DH(kx_B^P, kx^S_A)$ with Bob. She then sends a message $inv_{AB}$ via our PIR transport layer, inviting Bob to join a conversation with her. Now, she listens for Bob's ACK.
+      \end{enumerate}
 
   \medskip
 
       \textbf{Retrieve Invitation.}
-          Alice and Bob meet. They share their stories, and type the other's story into their own client. 
+        Bob receives Alice's invitation.
+        \begin{enumerate}
+            \item \textbf{Database Download.} Bob periodically downloads the entire \textbf{AsyncInvitationDatabase}.
+            \item \textbf{Find Invitations.} Bob computes $\Dec(kx^S_B, c)$ over all key-value pairs $(i, c)$. If the decryption fails, Bob's daemon ignores this pair. If the decryption succeeds for the pair $(i, c) = (i_A, c_{AB})$, Bob decodes $i = i_A, id_A, m_{AB}$, and notices an invitation for him with message $m_{AB}$, and $id_A$.
+            \item \textbf{Verify.} Bob needs to verify Alice's identity using $id_A$ and $m_{AB}$, say by checking Alice's profile. Bob now chooses to accept or reject the invitation.
+        \end{enumerate}
 
     \medskip
 
       \textbf{Accept Invitation.}
-          Alice decodes Bob's story to obtain $kx^P_B$ and $i_B$. She computes the shared secret $sk = DH(kx^P_B, kx^S_A)$, and adds $i_B$ to her set of listening indices.
-    
+          If Bob accepts Alice's invitation, he needs to respond to Alice.
+          \begin{enumerate}
+              \item \textbf{Decode.} Bob decodes $id_A = (ki_A^P, kx_A^P, i_A)$. He computes the shared secret $sk =  \DH(kx_B^P, kx^S_A)$ with Alice. He adds $i_A$ to the list of indices he listens to.
+              \item \textbf{ACK.} Bob recieves the invitation message from Alice, $inv_{AB}$. Bob ACK's the message.
+              \item Alice sees the ACK from Bob and now they can communicate over the PIR transport layer.
+          \end{enumerate}
     \medskip
           
       \textbf{Reject Invitation.}
-
-
+        If Bob rejects the invitation, no further action needs to be performed.
   \end{hangparas}
   }
   \end{framed}

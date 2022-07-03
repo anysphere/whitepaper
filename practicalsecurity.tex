@@ -1,9 +1,9 @@
 \section{Practical Security}
 
-The theoretical guarantees in the previous sections — that security is guaranteed without needing to trust
-the server or the network — all assume that your local computer is completely trusted. This is unavoidable: no matter the fancy encryption schemes you come up with, nothing will help you if your computer comes with a preinstalled backdoor. Nevertheless, while \textbf{we fundamentally cannot eliminate the client-side risk} (no one can), \textit{we can reduce it}. We care about this practical security as much as we care about the theoretical security, and in this section we outline the mitigations we undertake: reducing the attack surface by modularizing and reducing supply chain risk, minimizing bugs by being open source, securing code distribution and updates, and protecting against non-privileged local malware.
+The theoretical guarantees in the previous sections — metadata security without needing to trust
+the server or the network — all assume that your local computer is completely trusted. This is unavoidable: no fancy encryption schemes will help you if your computer comes with a preinstalled backdoor. Nevertheless, while \textbf{we fundamentally cannot eliminate the client-side risk, we can reduce it}. We care about practical security as much as we care about the theoretical security. In this section, we outline the mitigations we undertake: reducing the attack surface by modularizing and supply chain protection, minimizing bugs by being open source, securing code distribution and updates, and protecting against non-privileged local malware.
 
-Still, we cannot achieve perfect security here, so: \textbf{PLEASE DO NOT USE ANYSPHERE FOR SECURITY-CRITICAL USE CASES ON A COMPUTER YOU DO NOT TRUST}. This is especially true while we are in beta, and may have bugs.
+We emphasize that we cannot achieve perfect security without your effort. \textbf{PLEASE DO NOT USE ANYSPHERE FOR SECURITY-CRITICAL USE CASES ON A COMPUTER YOU DO NOT TRUST}. This is especially true while we are in beta, and may have bugs.
 
 % The Anysphere client is only as strong and secure as the most vulnerable part of our software supply chain. Software supply chains are an increasingly complex (and brittle) part of the software ecosystem because of a large and growing number of direct and transitive dependencies written across the world. 
 % The Anysphere client is designed to handle extreme private and critical communication securely, so our team has enforced a high bar of security for the core of our system. We focused on providing practical protection by significantly reducing the attack surface of our client, ensuring safe updates, and protecting against non-privileged software. 
@@ -17,26 +17,26 @@ Still, we cannot achieve perfect security here, so: \textbf{PLEASE DO NOT USE AN
 
 \subsection{Reducing the attack surface: modularity and supply chain risk}
 
-We architected our client to consist of two parts: a UI frontend and a daemon backend, where the daemon backend contains all security-critical code. This is illustrated in \cref{fig:systemdiagram}. We sandbox the UI frontend in such a way that it is not allowed to talk to the internet, and let all message sending go through the daemon. That way, even if there are bugs in the UI frontend, or potentially malicious code, there is not much it can do.
-
+As illustrated in \cref{fig:systemdiagram}, our client consists of two parts: a UI frontend and a daemon backend. The daemon backend contains all security-critical code. We sandbox the UI frontend so that it is not allowed to talk to the internet. Instead, all message sending goes through the daemon. That way, bugs and malicious code on the front-end cannot compromise security.
 \begin{figure*}
     \centering
     \includegraphics[width=0.8\textwidth]{systemdiagram.pdf}
-\caption{System architecture. The user interface and the daemon run on your local computer and require some trust assumptions. The user interface is cut off from the internet, and can only communicate via the daemon, meaning that it needs lower trust assumptions. The crypto module in the daemon requires the highest level of trust, and uses the widely trusted Libsodium library.}
+\caption{System architecture. The UI and the daemon run on your local computer and require some trust assumptions. The UI is cut off from the internet, and can only communicate via the daemon, meaning that it needs lower trust assumptions. The crypto module in the daemon requires the highest level of trust, and uses the widely trusted Libsodium library.}
 \label{fig:systemdiagram}
 \end{figure*}
+We also reduce the attack surface of the daemon itself. In particular, we take care in ensuring our dependency chain is small to protect against supply chain attacks. Many popular languages, including Rust, Go and Python, have great package managers, which led to an ecosystem where packages generally have hundred of transitively dependencies. For this reason, we chose to use \Cpp for all essential daemon code, depending only on a few well-known packages with long-term support and good security practices (Abseil, gRPC, SQLite, Libsodium). We wrote a Rust API for database interactions, being extremely careful with our dependency chain. 
 
-We also reduce the attack surface of the daemon itself. In particular, we take a lot of care in making sure our dependency chain is small to protect against supply chain attacks. Many of the new and popular languages, including Rust, Go and Python, all have great package managers, which unfortunately has led to an ecosystem where packages generally depend on hundreds of other packages, often transitively. For this reason, we chose to use \Cpp for essentially all daemon code, depending only on a few well-known packages with long-term support and good security practices (Abseil, gRPC, SQLite, Libsodium). We chose to use Rust for our database code, being extremely careful with our dependency chain.
+\subsection{Eliminating bugs: open source}
 
-\subsection{Minimizing bugs: open source}
-
-All code that is required for trust is open source at \href{https://github.com/anysphere/client}{github.com/anysphere/client} for the daemon and UI code, and \href{https://github.com/anysphere/asphr}{github.com/anysphere/asphr} for the code that is shared between the client and our server. Our server is not open source, \textit{because given our threat model it simply does not matter what code is run on our server}. We can run whatever malicious code we want on our server, and your privacy is still completely protected.
+All code that is required for security is open source. The repositories \\ {\tt \href{https://github.com/anysphere/client}{github.com/anysphere/client}} and  {\tt \href{https://github.com/anysphere/asphr}{github.com/anysphere/asphr}} contain all code for our Daemon and UI. Our server is not open source, \textit{which is justified as our threat model guarantees security no matter what code is run on our server}. 
 
 \subsection{Code distribution and updates}
 
-We need to ensure that our code is the code that is running on your computer. For this reason, Anysphere is not a web app — serving security-critical cryptographic code on the web is a huge vulnerability, and should, in our opinion, never be done. The reason is that when you visit a website, you download the cryptographic code every single time, meaning that every single time you use the website, you give attackers an opportunity to serve you malicious code. Instead, Anysphere is a local app: you download it once, and can check the signature and hash after.
+We need to ensure that our code is the code that is running on your computer. For this reason, Anysphere is not a web app — serving code on the web leads to huge vulnerabilities, and should, in our opinion, never be done for security-critical codes. The reason is that everytime you visit a website, you give attackers an opportunity to serve you malicious code. Instead, Anysphere is a local app: you download it once, and can ensure the correct code is downloaded yourself by checking the signature and hash.
 
-Local apps need to be updated. Currently, in our beta version, we use Electron's auto-updater to perform the signature checks for us, but we are actively working on building our own update verification process. In that process, two people from our team need to sign each update separately, and both signatures need to be present for your local app to accept the update. If either of us loses our key, we would not be able to push an update. This is by design.
+%you download the cryptographic code every single time, meaning that every single time you use the website
+
+Local apps need to be updated. Currently, we use Electron's auto-updater to perform the signature checks for us. We are actively working on building our own update verification process. In that process, two people from our team need to sign each update separately, and both signatures need to be present for your local app to accept the update. If either of us loses our key, we would not be able to push an update by desig
 
 \subsection{Protecting against non-privileged local malware}
 

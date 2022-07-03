@@ -5,7 +5,7 @@
 \begin{framed}
 Bob,
 
-I am filing a divorce.
+Remember 2.1.1978?
 
 Alice. 
 
@@ -65,11 +65,12 @@ xxxxxxxxxxxxxxxxxx
 %Touch on: server, friends, client-side computer, etc.
 
 \todo{Figure out a better format here. See e.g. Skiff's whitepaper.}
-Similar to most PIR schemes(for example \cite{ahmad2021addra}, \textsection 2.2), our threat model assumes a global adversary who can compromise the entire communication infrastructure except for the user's and their friends' client end. In particular, we assume the adversary has control over all the servers, and can observe and manipulate all network traffic.
 
-End-user trust is more subtle. In \cite{angel2018s}, Angle, Lazar and Tzialla describes the compromised friend(CF) attack on a general meta-data private messaging system, which shows that perfectly hiding metadata while not trusting the user's friends is computationally prohibitive. In our security model, a user trusts that the devices of themselves and all their friends are uncompromised and running an unmodified copy of anysphere's client-side code. The user assumes that any other end-user device might be compromised.
+1. \textbf{Server}: We do not have any trust in the server. Similar to most PIR schemes(for example \cite{ahmad2021addra}, \textsection 2.2), our threat model assumes a global adversary who can compromise the entire communication infrastructure except for the user's and their friends' client end. In particular, we assume the adversary has control over all the servers, and can observe and manipulate all network traffic.
 
-Finally, we assume the security of the standard cryptography primitives we use, including microsoft SEAL's BFV cryptosystem and libsodium's AEAD cryptosystem. 
+2. \textbf{User}: In \cite{angel2018s}, Angle, Lazar and Tzialla describes the compromised friend(CF) attack on a general meta-data private messaging system, which shows that perfectly hiding metadata while not trusting the user's friends is computationally prohibitive. In our security model, a user trusts that the devices of themselves and all their friends are uncompromised and running an unmodified copy of anysphere's client-side code. The user assumes that any other end-user device might be compromised.
+
+3. \textbf{Cryptography}: Our threat model assumes the security of the standard cryptography primitives we use, including Microsoft SEAL's BFV cryptosystem and libsodium's AEAD cryptosystem. 
 
 
 
