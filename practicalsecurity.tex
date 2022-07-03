@@ -38,8 +38,8 @@ We need to ensure that our code is the code that is running on your computer. Fo
 
 Local apps need to be updated. Currently, we use Electron's auto-updater to perform the signature checks for us. We are actively working on building our own update verification process. In that process, two people from our team need to sign each update separately, and both signatures need to be present for your local app to accept the update. If either of us loses our key, we would not be able to push an update by design.
 
-\subsection{Protecting against non-privileged local malware}
+\subsection{Protection against non-privileged local malware}
 
 If you've granted administrator access to a malicious program on your computer, there is, unfortunately, nothing to be done. We can, nevertheless, reduce the risk of non-privileged malware. Our beta version protects against non-privileged malware\xxx[stzh1555]{How do we achieve this?}, but in the future, we are planning to encrypt the local database, require a password to unlock the app, and use OS-level access controls to make sure only certain processes can access the daemon.
 
-Again, we do not aim to eliminate the risk here. Once an attacker has access to your computer, it is very, very hard to shield yourself from them.
+%Again, we do not aim to eliminate the risk here. Once an attacker has access to your computer, it is very, very hard to shield yourself from them.

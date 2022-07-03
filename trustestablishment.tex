@@ -9,6 +9,11 @@ This problem is known as Oblivious Message Detection(OMD) in \cite{liutromer2021
 
 In the following two methods, we assume that Alice and Bob's daemons have generated a Curve25519 key exchange keypair $kx = (kx^P, kx^S)$. Their goal is to inform each other of their $kx^P$ to derive a shared secret $sk$.
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Sync Section %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % \captionsetup[figure]{name=Protocol}
 \begin{figure}[t]
   
@@ -49,14 +54,15 @@ In the following two methods, we assume that Alice and Bob's daemons have genera
 
 \subsection{Face-to-face Invitations}
 
-Our first method assumes that Alice and Bob are able to set up a face-to-face meeting with each other, either in person or over zoom. The trust establishment process is a simple key exchange implemented as follows.
+Our first method assumes that Alice and Bob are able to set up a face-to-face meeting with each other, either in person or over zoom. The trust establishment process is a simple key exchange implemented as described in \cref{fig:trust-establishment-inperson}.
 
-They can now communicate to each other using our PIR transport layer.
+Using this method, all interactions between the users do not pass through any third party. Thus, trust establishment can be completed instantly, cheaply, and securely. Our system does require Alice and Bob to be able to set up a meeting and type each other's story manually. To justify this approach, we believe a privacy-conscious Alice would be willing to set up a face-to-face meeting with Bob before sending him sensitive information.
 
-Using this method, all interactions between the users do not pass through any third party. Thus, trust establishment can be completed instantly, cheaply, and securely. Our system do require Alice and Bob to be able to set up a meeting and type each other's story manually. To justify this approach, we believe a privacy-conscious Alice would be willing to set up a face-to-face meeting with Bob before sending him sensitive information.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Async Section %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Asynchronous Invitation}
-
 
 \begin{figure}[!th]
   \begin{framed}
@@ -115,36 +121,22 @@ Using this method, all interactions between the users do not pass through any th
 
 Our second method targets the case when Bob does not know about Alice's invitation beforehand. For example, Alice can be a sensitive client who wishes to privately reach out to Bob's company. 
 
-This method consists of three steps. First, Alice sends an encrypted invitation to the server without indicating its recipient. Second, Bob retrieves this invitation via a full database download. Third, Bob informs Alice of his acceptance via an ACK message.
+This method consists of three steps. First, Alice sends an encrypted invitation to the server without indicating its recipient. Second, Bob retrieves this invitation via a full database download. Third, Bob informs Alice of his acceptance via an ACK message. This is described in detail in \cref{fig:trust-establishment-async}.
 
-\textbf{To send an invitation}
+To send an invitation, Alice learns Bob's information through a public platform like Twitter. If Bob is a security-conscious firm, he might have also posted his Anysphere ID on his website. Alice can quickly import Bob's keys, and needs to send two messages. One as an invitation through the Invitation Database for Bob to find her information and a second message through the PIR transport layer for Bob to acknowledge.
 
-1. Upon registration, each user's daemon generates an additional invitation keypair $ki = (ki^P, ki^S)$. Bob's daemon computes a ``public id" $id_B$, which contains his invitation public key $ki_B^P$, key exchange public key $kx_B^P$, and allocation $i_B$ encoded in plaintext. It then displays the id on Bob's GUI. Bob posts $id_B$ on his public profile, such as on twitter or on his company's website.
+To retrieve an invitation, Bob periodically downloads the entire Async Invitation Database and notices if there are invitations for him. 
+We address the question of the size of the database and the frequency of the downloads later in the section. 
+The user(s) representing Bob's account can then choose whether to respond to the message as would be the case in traditional e-mail. If they choose to respond, they acknowledge Alice's message and can send a reply over the PIR transport layer.
 
-2. When Alice wishes to send an invitation to Bob, she obtains $id_B$ from Bob's public profile, and decodes it to obtain $(i_B, kx_B^P, ki_B^P)$. She drafts an initial message $m_{AB}$ to accompany her invitation. 
+This method achieves metadata security. We hide the timing of the invitation by making the daemon send to and download \textbf{AsyncInvitationDatabase} on a fixed schedule. 
+We hide the recipient of Alice's request since our encryption scheme is key private(\todo{Cite arvid's section}). 
 
-3. Alice's daemon periodically sends the key-value pair $(i_A, c_{AB} = \Enc(kx_B^P, id_A \vert m_{AB}))$ to the server\footnote{It is important to redo this encryption each round, otherwise adversaries will observe the same message repeatedly.}, which stores it in a separate \textbf{AsyncInvitationDatabase}. When Alice has no invitations, her daemon sends $(i_A, \Enc(kx^P, id_A))$ for a random public key $kx^P$.
-
-4. As Alice's daemon sends the invitation, it also compute the shared secret with Bob $sk = DH(kx_B^P, kx^S_A)$. It sends Bob a ``control message" $ctm_{AB}$ via our PIR transport layer, and listens for Bob's ACK.
-
-\textbf{To retrieve an invitation}
-
-1. Bob's daemon periodically downloads the entire \textbf{AsyncInvitationDatabase}. It computes $\Dec(kx^S_B, c)$ over all key-value pairs $(i, c)$. If the decryption fails, Bob's daemon ignores this pair. Now suppose $(i, c) = (i_A, c_{AB})$, and the decryption succeeds. Bob's daemon decodes $i = i_A, id_A, m_{AB}$ from the decrypted data, and displays on Bob's GUI that he received an incoming invitation from $id_A$ with message $m_{AB}$.
-
-2. Bob verifies Alice's identity using $id_A$ and $m_{AB}$, for example by checking Alice's public profile. Bob then chooses to either accept or reject the invitation. If Bob rejects the invitation, no further action is performed. 
-
-\textbf{To accept an invitation}
-
-1. If Bob accepts Alice's invitation, Bob's daemon decodes $id_A$ to obtain $kx_A^P$, and computes the shared secret $sk = DH(kx_A^P, kx_B^S)$. It adds $i_A$ to the set of listening indices.
-
-2. Since Alice is sending the control message $ctm_{AB}$ to Bob using the same shared secret $sk$, Bob's daemon will read $ctm_{AB}$ from the PIR database. It sends an ACK to Alice's control message.
-
-3. When Alice's daemon reads Bob's ACK to $ctm_{AB}$ from the PIR ACK database, it displays on Alice's GUI that Bob has accepted Alice's invitation. Alice and Bob can now communicate to each other using our PIR transport layer.
-
-This method achieves metadata security. We hide the timing of the invitation by making the daemon send to and download \textbf{AsyncInvitationDatabase} on a fixed schedule. We hide the recipient of Alice's request since our encryption scheme is key private(\todo{Cite arvid's section}). 
-
-This method offers convenient trust establishment on par with most existing messaging platforms. Its disadvantage is that downloading the entire database is expensive. We estimate that a key-value pair in the \textbf{AsyncInvitationDatabase} take approximately $200\text{B}$. If we have 1 million users, then the whole database will have a size of approximately $200\text{MB}$. Thus, an individual user might wish to only download the database once or twice each day, which saves bandwidth but delays the detection of invitations. On the other hand, a company user could afford downloading the database every second, which takes $200\text{MB}/s$ download bandwidth but can ensure incoming asynchronous invitations get detected almost instantly.
+This method offers convenient trust establishment on par with most existing messaging platforms. 
+Its disadvantage is that downloading the entire database is expensive. 
+We estimate that a key-value pair in the \textbf{AsyncInvitationDatabase} take approximately $200\text{B}$. 
+If we have 1 million users, then the whole database will have a size of approximately $200\text{MB}$.
+Thus, an individual user might wish to only download the database once or twice each day, which saves bandwidth but delays the detection of invitations. 
+On the other hand, a company user could afford downloading the database every second, which takes $200\text{MB}/s$ download bandwidth but can ensure incoming asynchronous invitations get detected almost instantly.
 
 Finally, we note that this method introduces more attack vectors. For example, an attacker might use social engineering to make Alice believe that a fake $id_B$ belongs to Bob, or simply monitor $A$'s traffic to $B$'s public profile. Therefore, we recommend privacy conscious users to use face-to-face invitations whenever possible.
-
-\
