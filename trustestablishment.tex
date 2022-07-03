@@ -10,10 +10,9 @@ This problem is known as Oblivious Message Detection(OMD) in \cite{liutromer2021
 
 In the following two methods, we assume that Alice and Bob's daemons have generated a Curve25519 key exchange keypair $kx = (kx^P, kx^S)$. Their goal is to inform each other of their $kx^P$ to derive a shared secret $sk$.
 
-\subsection{Face-to-face Invitations}
-
-
-\begin{figure}
+% \captionsetup[figure]{name=Protocol}
+\begin{figure}[t]
+  
   \begin{framed}
   {\raggedright
       \small
@@ -21,59 +20,80 @@ In the following two methods, we assume that Alice and Bob's daemons have genera
   \begin{hangparas}{1em}{1}
         \hrule
         \vspace{0.15cm}
-        \textsc{\textbf{The In-Person Trust Establishment Protocol}}
+        \textsc{\textbf{Protocol $1$: In-Person Trust Establishment}}
         \vspace{0.1cm}
         \hrule
         \vspace{0.1cm}
   \medskip
       
-      \textbf{Registration.}
-          Server allocates outbox $i$ and generates authentication token $\authtoken$.
-          Alice receives $(i, \authtoken)$.
-  
+      \textbf{Encode.}
+          Alice encodes the plaintext of her key exchange public key $kx_A^P$ and her allocation index $i_A$ into a human-readable story $s_A$. Bob similarly encodes his story $s_B$.
+
   \medskip
 
-      \textbf{Trust establishment.}
-          Alice and Bob agree on a shared secret key $k$. Details in \cref{sec:trustestablishment}.
+      \textbf{Share.}
+          Alice and Bob meet. They share their stories, and type the other's story into their own client. 
 
           \medskip
 
-      \textbf{Sending.}
-          Exactly once every minute: \begin{itemize}
-              \item If Alice has a queued message $m$: she sends $(i, \authtoken, \enc_k(m))$ to the server, where $k$ is the key shared with Bob.
-              \item Otherwise: she sends $(i, \authtoken, r)$ to the server, where $r$ is a random sequence of bytes.
-          \end{itemize}
-          The server receives $(i, \authtoken, c)$ and stores $c$ in outbox $i$ if $\authtoken$ is correct.
+      \textbf{Establish Contact.}
+          Alice decodes Bob's story to obtain $kx^P_B$ and $i_B$. She computes the shared secret $sk = DH(kx^P_B, kx^S_A)$, and adds $i_B$ to her set of listening indices.
 
-  \medskip
 
-      
-      \textbf{Receiving.} Exactly once every minute:
-    \begin{itemize}
-      \item Bob sends $q = \query(i)$ to the server.
-      \item The server responds with $a = \answer(\mathsf{DB}, q)$ and Bob decodes it into $c = \decode(a)$.
-      \item Try to decrypt $\dec_k(c)$ where $k$ is the key shared with Alice.
-    \end{itemize}
   \end{hangparas}
   }
   \end{framed}
-  \caption{The simplest version of our core protocol.}
+  \caption{Anysphere's protocol for establishing trust when the participants can talk to each other.}
   \label{fig:trust-establishment-inperson}
 \end{figure}
 
 
+\subsection{Face-to-face Invitations}
 
 Our first method assumes that Alice and Bob are able to set up a face-to-face meeting with each other, either in person or over zoom. The trust establishment process is a simple key exchange implemented as follows.
 
-1. Alice encodes the plaintext of her key exchange public key $kx_A^P$ and her allocation index $i_A$ into a human-readable story $s_A$. Bob similarly encodes his story $s_B$.
-
-2. Alice and Bob meet. They share their stories, and type the other's story into their own client. 
-
-3. Alice decodes Bob's story to obtain $kx^P_B$ and $i_B$. She computes the shared secret $sk = DH(kx^P_B, kx^S_A)$, and adds $i_B$ to her set of listening indices.\todo{Better name?} Bob does the same. They can now communicate to each other using our PIR transport layer.
+They can now communicate to each other using our PIR transport layer.
 
 Using this method, all interactions between the users do not pass through any third party. Thus, trust establishment can be completed instantly, cheaply, and securely. Our system do require Alice and Bob to be able to set up a meeting and type each other's story manually. To justify this approach, we believe a privacy-conscious Alice would be willing to set up a face-to-face meeting with Bob before sending him sensitive information.
 
 \subsection{Asynchronous Invitation}
+
+
+\begin{figure}[t]
+  \begin{framed}
+  {\raggedright
+      \small
+  
+  \begin{hangparas}{1em}{1}
+        \hrule
+        \vspace{0.15cm}
+        \textsc{\textbf{Protocol $2$: Remote Trust Establishment}}
+        \vspace{0.1cm}
+        \hrule
+        \vspace{0.1cm}
+  \medskip
+      
+      \textbf{Encode.}
+          Alice encodes the plaintext of her key exchange public key $kx_A^P$ and her allocation index $i_A$ into a human-readable story $s_A$. Bob similarly encodes his story $s_B$.
+
+  \medskip
+
+      \textbf{Share.}
+          Alice and Bob meet. They share their stories, and type the other's story into their own client. 
+
+          \medskip
+
+      \textbf{Establish Contact.}
+          Alice decodes Bob's story to obtain $kx^P_B$ and $i_B$. She computes the shared secret $sk = DH(kx^P_B, kx^S_A)$, and adds $i_B$ to her set of listening indices.
+
+
+  \end{hangparas}
+  }
+  \end{framed}
+  \caption{Anysphere's protocol for establishing trust when the participants are remote. Contact can be initiated only by a single participant and requires acknowledgement from both participants to establish successful contact}
+  \label{fig:trust-establishment-async}
+\end{figure}
+
 
 \todo{mention key privacy}
 

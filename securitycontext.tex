@@ -5,10 +5,14 @@
 
 In this section, we describe what our system achieves beyond end-to-end encrypted messaging applications like Signal and Wickr.
 
-Signal is great. It is end-to-end encrypted, open source, and run by a trustworthy group. Unfortunately, if their servers are hacked, one of their employees bribed, or you are simply attacked by a network-level powerful actor, there is nothing Signal can guarantee.
+Signal is great. It is end-to-end encrypted, open source, and run by a trustworthy group. Unfortunately, if their servers are hacked, one of their employees bribed, or you are simply attacked by a network-level powerful actor, there is nothing Signal can guarantee. \xxx[stzh]{This is not true. The point of E2E encryption is to guarantee content security when the server gets compromised.}
 
 Furthermore, even with a secure server, it leaks metadata. Using timing attacks, an adversary can figure out when, where and with whom you are talking. 
 \subsection{Goals}
 
-\stzh{Our goals}
+Our goal is to provide metadata protection in the presence of a powerful adversary. More precisely, we want to achieve
+
+1) Metadata privacy for communication: if Alice and Bob use Anysphere to communicate, then an adversary who controls everything other than Alice and Bob's Anysphere client shouldn't be able to tell whether Alice and Bob are engaging in a conversation at any point in time.
+
+2) Metadata privacy for trust establishment: if Alice and
 \input{threatmodel}
