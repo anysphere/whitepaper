@@ -26,7 +26,7 @@ Bob wants to download outbox $i$ without revealing $i$ to anyone. Viewing the co
 
 Our implementation currently uses FastPIR, which is one of the fastest cPIR schemes \cite{ahmad2021addra}. All cPIR schemes have the same security properties (i.e., they leak zero information), and we are actively researching faster schemes (see \cref{sec:future}).
 
-All known cPIR schemes use homomorphic encryption \cite{gentry2010computing}. To compute the query $q$, Bob encrypts $i$ with a homomorphic encryption scheme using a secret key $s$: $q = \mathsf{HEnc}_s(i)$. The server can then homomorphically evaluate the function $f(i) = \db[i]$, producing the answer $a = \mathsf{HEnc}_s(\db[i])$. Bob can finally decrypt to find $\db[i]$. In practice, $f(i)$ is often defined in terms of a dot product with a unit vector representing $i$, because the homomorphic scheme being used, BFV \cite{fan2012somewhat}, is particularly good at dot products.
+All known cPIR schemes use homomorphic encryption \cite{gentry2010computing}. To compute the query $q$, Bob encrypts $i$ with a homomorphic encryption scheme using a secret key $s$: $q = \mathsf{HEnc}_s(i)$. The server can then homomorphically evaluate the function $f(i) = \db[i]$, producing the answer $a = \mathsf{HEnc}_s(\db[i])$. Bob can finally decrypt to find $\db[i]$. In practice, $f(i)$ is often defined in terms of a dot product with a unit vector representing $i$, because , BFV \cite{fan2012somewhat}, the widely-used homomorphic scheme, is particularly good at dot products.
 
 \subsection{Security proof}
 
@@ -34,9 +34,9 @@ The simplest version of our core protocol is shown in \cref{fig:simple}. In this
 
 In this section, we formally state and prove metadata security.
 
-\todo{simulation security definition, going offline, friend attack, key privacy because prf.}
+\xxx{simulation security definition, going offline, friend attack, key privacy because prf.}
 
-\subsubsection{Going offline.} Users will not always be connected to the internet. At night, most people put their computers to sleep. This means that users will not be sending and receiving exactly once every minute. \todo{how much information does this leak?}
+\subsubsection{Going offline.} Users will not always be connected to the internet. At night, most people put their computers to sleep. This means that users will not be sending and receiving exactly once every minute. \xxx{how much information does this leak?}
 
 \subsubsection{Authentication token.} 
 On registration, the server creates a unique authentication token for a new user. This allows the server to restrict access to that user's outbox, preventing denial of service attacks from other users. It should still be noted that, in accordance with our threat model, we do not prevent against denial of service attacks by ISPs or the server itself — fundamentally, a powerful actor can always shut down your internet access. In \cref{sec:future} we discuss plans for distributing the server such that, say, only 1 out of 3 servers need to be trusted to provide service.
@@ -94,12 +94,12 @@ On registration, the server creates a unique authentication token for a new user
 
 The simple protocol from before assumed Alice had a single contact Bob. Our system allows many more contacts.
 
-\todo{link the compromised friend attack}
+\xxx{link the compromised friend attack}
 
 \subsection{Chunks and acknowledgements}
 
 If Alice wants to send a message longer than 1 KB, she needs to chunk the message up. Here, we have taken inspiration from TCP/IP. We require a message to receive an acknowledgement, shortened ACK, before we send the next message in the sequence.
 
-\todo{describe the separate PIR table for ACKs.}
+\xxx{describe the separate PIR table for ACKs.}
 
-\todo{Figure: pseudocode for Register, Send, Retrieve (with everything)}
+\xxx{Figure: pseudocode for Register, Send, Retrieve (with everything)}

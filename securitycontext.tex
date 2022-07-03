@@ -11,13 +11,13 @@ Furthermore, even with a secure server, it leaks metadata. Using timing attacks,
 
 \subsection{Desired Properties}
 
-1. \textbf{Metadata Protection for Compromised Server}: All contents and metadata associated with a conversation are only visible to the users involved with the conversation. Even with all servers compromised, an adversary should not even be able to find out whether two users are engaging in any conversation.
+1. \textbf{Metadata Protection}: All contents and metadata of a conversation are only visible to the users involved in the conversation. Even with all servers compromised, an adversary should not be able to find out whether two users are engaging in conversation.
 
 An especially challenging case is metadata protection during trust establishment. This happens when two users wish to add each other as friends for the first time. This feature is not supported even by Addra or Pung. We outline our solution in \cref{sec:trustestablishment}, which offers users a variety of options to establishing trust.
 
-2. \textbf{Resistance to man-in-the-middle attacks}: We use PIR and end-to-end encryption to ensure no man-in-the-middle without access to a user's private keys can access metadata associated with any conversation the user had.
+2. \textbf{Resistance to MITM attacks}: We use PIR and end-to-end encryption to ensure no man-in-the-middle(MITM) can access metadata associated with any conversation of the user.
 
 3. \textbf{Resistance to DoS attacks}: Denial of Service(DoS) attacks are unavoidable if the adversary controls all our servers. In the case of a server-controlling adversary, we do not guarantee liveliness of our service, but continue to guarantee metadata security. We also defend against DoS attacks launched by an end-user with no access to the servers.
 
-4. \textbf{Reasonable Load on Client and Server}: Since PIR is expensive, we design our system to minimize load on the client and server without compromising security. We use the most efficient PIR algorithms known. We also give users the option to adjust client side load. 
+4. \textbf{Reasonable Load on Client and Server}: Since PIR is expensive, we design our system to minimize load on the client and server without compromising security. We use the most efficient PIR algorithms known on the server. We also give users the option to adjust client side load to suit their upload and download bandwidth.
 \input{threatmodel}
