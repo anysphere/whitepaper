@@ -110,3 +110,5 @@ This method achieves metadata security. We hide the timing of the invitation by 
 This method offers convenient trust establishment on par with most existing messaging platforms. Its disadvantage is that downloading the entire database is expensive. We estimate that a key-value pair in the \textbf{AsyncInvitationDatabase} take approximately $200\text{B}$. If we have 1 million users, then the whole database will have a size of approximately $200\text{MB}$. Thus, an individual user might wish to only download the database once or twice each day, which saves bandwidth but delays the detection of invitations. On the other hand, a company user could afford downloading the database every second, which takes $200\text{MB}/s$ download bandwidth but can ensure incoming asynchronous invitations get detected almost instantly.
 
 Finally, we note that this method introduces more attack vectors. For example, an attacker might use social engineering to make Alice believe that a fake $id_B$ belongs to Bob, or simply monitor $A$'s traffic to $B$'s public profile. Therefore, we recommend privacy conscious users to use face-to-face invitations whenever possible.
+
+\
