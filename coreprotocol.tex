@@ -1,9 +1,9 @@
 \section{Core Protocol}
 \label{sec:coreprotocol}
 
-\stzh{In this section, we consider two users of our service Alice and Bob. } Alice wants to message Bob over an untrusted network, without leaking any data or metadata to anyone. To hide the message content they just use end-to-end encryption. To hide metadata they employ two key ideas: sending data at a constant rate, and retrieving homomorphically compressed data.
+\xxx[stzh]{In this section, we consider two users of our service Alice and Bob. } Alice wants to message Bob over an untrusted network, without leaking any data or metadata to anyone. To hide the message content they just use end-to-end encryption. To hide metadata they employ two key ideas: sending data at a constant rate, and retrieving homomorphically compressed data.
 
-When signing up, each user gets their own \textit{outbox} on the server. This outbox is a dedicated storage space that the user sends messages to. Once every minute, Alice will send exactly 1 KB of data to her outbox on the server. If she has a message to send, she sends the \stzh{padded} encryption of that message, and if she has no message to send, she sends a random sequence of bytes.\stzh{A random message encrypted with a random public key?} With this simple first idea, no one, including the server and any network observers, will know when Alice actually sends a message.
+When signing up, each user gets their own \textit{outbox} on the server. This outbox is a dedicated storage space that the user sends messages to. Once every minute, Alice will send exactly 1 KB of data to her outbox on the server. If she has a message to send, she sends the \stzh{padded} encryption of that message, and if she has no message to send, she sends a random sequence of bytes.\xxx[stzh]{A random message encrypted with a random public key?} With this simple first idea, no one, including the server and any network observers, will know when Alice actually sends a message.
 
 The message needs to be routed to Bob. Now, a traditional messaging system would have Bob download data from Alice's outbox, and then try to decrypt it to see if it was meant for him. But this leaks metadata: the server would know that Alice wrote to outbox $x$ and that Bob read from outbox $x$, which links the two of them together!
 
@@ -36,7 +36,7 @@ In this section, we formally state and prove metadata security.
 
 \xxx{simulation security definition, going offline, friend attack, key privacy because prf.}
 
-\subsubsection{Going offline.} Users will not always be connected to the internet. At night, most people put their computers to sleep. This means that users will not be sending and receiving exactly once every minute. \xxx{how much information does this leak?}
+\subsubsection{Going offline.} Users will not always be connected to the internet. At night, most people put their computers to sleep. This means that users will not be sending and receiving exactly once every minute. \xxx{how much information does this leak?} \xxx[stzh]{However, as long as users make their connection schedule regular(e.g. transmits from 9AM to 5PM each day), no metadata is leaked. }
 
 \subsubsection{Authentication token.} 
 On registration, the server creates a unique authentication token for a new user. This allows the server to restrict access to that user's outbox, preventing denial of service attacks from other users. It should still be noted that, in accordance with our threat model, we do not prevent against denial of service attacks by ISPs or the server itself — fundamentally, a powerful actor can always shut down your internet access. In \cref{sec:future} we discuss plans for distributing the server such that, say, only 1 out of 3 servers need to be trusted to provide service.
@@ -92,13 +92,14 @@ On registration, the server creates a unique authentication token for a new user
 
 \subsection{Multiple contacts}
 
-The simple protocol from before assumed Alice had a single contact Bob. Our system allows many more contacts.
-
+The simple protocol from before assumed Alice had a single contact Bob. Our system allows many more contacts. 
 \xxx{link the compromised friend attack}
 
-\subsection{Chunks and acknowledgements}
+\subsection{Chunks and ACKs}
 
-If Alice wants to send a message longer than 1 KB, she needs to chunk the message up. Here, we have taken inspiration from TCP/IP. We require a message to receive an acknowledgement, shortened ACK, before we send the next message in the sequence.
+If Alice wants to send a message longer than 1 KB, she needs to separate the message into 1KB chunks and deliver all chunks to Bob in separate PIR transmissions. To ensure successful delivery, we took inspiration from TCP/IP. Each message from Alice to Bob is labeled with a message identifier $i$. Each chunk of message $i$ is further labeled with a sequence number starting from $1$. When Bob receives chunk $c$ of message $i$, he sends Alice a short acknowledgement(ACK) message $ACK(i, c)$ over a separate ACK PIR table. Alice listens to Bob's ACK message using PIR, and deposits chunk $c + 1$ of message $i$ only after reading $ACK(c)$ from Bob.
+
+Each ACK message only needs to encode two integers $i, c$. Thus, reading ACKs represents a much lighter load compared to the main message database.
 
 \xxx{describe the separate PIR table for ACKs.}
 
