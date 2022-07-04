@@ -1,10 +1,9 @@
 \newpage
 \section{Practical Security}
 
-The theoretical guarantees in the previous sections — metadata security without needing to trust
-the server or the network — all assume that your local computer is completely trusted. As no fancy encryption schemes prevents a preinstalled backdoor, we cannot eliminate the client-side risk. Nevertheless, we can reduce it. In this section, we outline the mitigations we undertake: reducing the attack surface by modularizing and supply chain protection, eliminating bugs by being open source, securing code distribution and updates, and protecting against non-privileged local malware.
+The theoretical guarantees in the previous sections — metadata security without needing to trust the server or the network — all assume that the local computer is wholly trusted. As no fancy encryption scheme prevents a preinstalled backdoor, we cannot eliminate the client-side risk. Nevertheless, we can reduce it. This section outlines the mitigations we undertake: reducing the attack surface by modularizing and supply chain protection, eliminating bugs by being open source, securing code distribution and updates, and protecting against non-privileged local malware.
 
-We cannot achieve perfect security without your effort. \textbf{PLEASE DO NOT USE ANYSPHERE FOR SECURITY-CRITICAL USE CASES ON A COMPUTER YOU DO NOT TRUST}. This is especially true while we are in beta, and may have bugs.
+We cannot achieve perfect security without our user's efforts. \textbf{PLEASE DO NOT USE ANYSPHERE FOR SECURITY-CRITICAL USE CASES ON A COMPUTER YOU DO NOT TRUST}. Our request is especially true while we are in beta, and may have bugs.
 
 % The Anysphere client is only as strong and secure as the most vulnerable part of our software supply chain. Software supply chains are an increasingly complex (and brittle) part of the software ecosystem because of a large and growing number of direct and transitive dependencies written across the world. 
 % The Anysphere client is designed to handle extreme private and critical communication securely, so our team has enforced a high bar of security for the core of our system. We focused on providing practical protection by significantly reducing the attack surface of our client, ensuring safe updates, and protecting against non-privileged software. 
