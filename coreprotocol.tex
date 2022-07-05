@@ -122,6 +122,13 @@ If Alice wants to send a message longer than 1 KB, she needs to separate the mes
 
 Each ACK message only needs to encode two integers $m, c$. Thus, reading ACKs represents a much lighter load compared to the main message database.
 
-\xxx{describe the separate PIR table for ACKs.}
+%\xxx{describe the separate PIR table for ACKs.}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{ACK.pdf}
+\caption{All server interactions for a message from Alice to Bob}
+\label{fig:highlevelpir}
+\end{figure}
 
 \xxx{Figure: pseudocode for Register, Send, Retrieve (with everything)}

@@ -1,11 +1,6 @@
 \subsection{Threat Model}
 
-\begin{figure}
-    \centering
-        \includegraphics[width=\textwidth]{metadata-privacy.pdf}
-\caption{Differences between non-E2E, E2E, and Metadata-Hiding protocols for a message from Romeo to Juliet.}
-\label{fig:metadataprivacy}
-\end{figure}
+
 
 %\begin{table*}[t]
 %\centering
@@ -39,7 +34,7 @@
 
 2. \textbf{Compromised Strangers}: Similarly, we assume that the adversary has control over all non-friend clients, and can observe and manipulate all network traffic from and to these clients.
 
-3. \textbf{Trusted Friends}: In \cite{angel2018s}, Angle, Lazar and Tzialla describes the compromised friend(CF) attack on a general meta-data private messaging system, which shows that perfectly hiding metadata while not trusting the user's friends is computationally prohibitive. In our threat model, a user trusts that their devices, as well as the devices of all their friends, are uncompromised and running our client code. \xxx[stzh]{In the future, we would look into measures for handling friend compromises?} 
+3. \textbf{Trusted Friends}: In \cite{angel2018s}, Angle, Lazar and Tzialla describes the compromised friend(CF) attack on a general meta-data private messaging system, which shows that perfectly hiding metadata while not trusting the user's friends is computationally prohibitive. In our threat model, a user trusts that their devices, as well as the devices of all their friends, are uncompromised and running our client code. We plan to look into measures for handling compromised friends in the future (see \cref{sec:future}.)
 
 4. \textbf{Secure Cryptographical Primitives}: Our threat model assumes the security of the standard cryptography primitives we use, including Microsoft SEAL's BFV cryptosystem and libsodium's AEAD cryptosystem. 
 
@@ -50,5 +45,5 @@
 
 2. \textbf{Not a plugin}: Anysphere relies on a dedicated PIR server to work. Therefore, Anysphere is not compatible with existing messaging systems like Messenger or Signal, and does not work like a google chrome extension to these apps.
 
-3. \textbf{Not steganographic}: Anysphere does not make an attempt to hide who's using our service. \xxx[sualeh]{This might change in the future?}
+3. \textbf{Not steganographic}: Anysphere does not make an attempt to hide who's using our service. We might reconsider this choice in the future based on the needs of our users.
 
