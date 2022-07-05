@@ -1,7 +1,7 @@
 \section{Core Protocol}
 \label{sec:coreprotocol}
 
-sConsider two fictional users Alice and Bob. Alice and Bob wish to message each other over an untrusted network, without leaking any data or metadata to anyone. To hide the message content, they use end-to-end encryption. To hide metadata, they employ two key ideas: sending data at a constant rate, and retrieving homomorphically compressed data.
+Consider two fictional users Alice and Bob. Alice and Bob wish to message each other over an untrusted network, without leaking any data or metadata to anyone. To hide the message content, they use end-to-end encryption. To hide metadata, they employ two key ideas: sending data at a constant rate, and retrieving homomorphically compressed data.
 
 When signing up, each user gets their own \textit{outbox} on the server, which serves as a dedicated storage space for the user's message. Once every minute, Alice sends exactly 1 KB of data to her outbox on the server. If she has a message to send, she sends the padded encryption of that message. Otherwise, she sends a random sequence of bytes encrypted with a random key. This simple idea ensures that the server and any network observers will not know when Alice actually sends a message.
 
@@ -57,7 +57,7 @@ The simplest version of our core protocol is shown in \cref{fig:simple}. In this
 
 % \todo{simulation security definition, going offline, friend attack, key privacy because prf.}
 
-\textbf{Going offline.} Users will not always be connected to the internet. At night, most people put their computers to sleep. This means that users will not be sending and receiving exactly once every minute. \xxx{how much information does this leak?} \xxx[stzh]{However, as long as users make their connection schedule regular(e.g. transmits from 9AM to 5PM each day), no metadata is leaked. <- this is not a good argument, esp. for emergencies}
+\textbf{Going offline.} Users will not always be connected to the internet. At night, most people put their computers to sleep. This means that users will not be sending and receiving exactly once every minute. \xxx{how much information does this leak?} \xxx[stzh]{To ensure security, we urge users to keep a regular transmission schedule by putting their computers asleep at a regular time each day.}
 
 \textbf{Authentication token.} 
 On registration, the server creates a unique authentication token for the new user. This allows the server to restrict access to that user's outbox, preventing denial of service attacks from other users. It should still be noted that, in accordance with our threat model, we do not prevent against denial of service attacks by ISPs or the server itself — fundamentally, a powerful actor can always shut down your internet access. In \cref{sec:future} we discuss plans for distributing the server such that, say, only 1 out of 3 servers need to be trusted to provide service.
@@ -127,8 +127,9 @@ Each ACK message only needs to encode two integers $m, c$. Thus, reading ACKs re
 \begin{figure}
     \centering
     \includegraphics[width=0.7\textwidth]{ACK.pdf}
-\caption{All server interactions for a message from Alice to Bob}
+\caption{All server interactions for a message from Alice to Bob. }
 \label{fig:highlevelpir}
 \end{figure}
 
-\xxx{Figure: pseudocode for Register, Send, Retrieve (with everything)}
+
+\xxx{Add link to code}
