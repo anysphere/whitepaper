@@ -1,41 +1,12 @@
 \subsection{Threat Model}
+
 \begin{figure}
-\begin{minipage}[t]{0.3333\textwidth}
-\textbf{Non-E2E}
-\begin{framed}
-
-
-Copernicus.
-
-06.01.2022, 10:30 PM.
-\end{framed}
-\end{minipage}%
-\begin{minipage}[t]{0.3333\textwidth}
-\textbf{E2E}
-\begin{framed}
-Bob,
-
-xxxxxxxxxxxxxxxxxx
-
-Alice. 
-
-06.01.2022, 10:30 PM.
-\end{framed}
-\end{minipage}%
-\begin{minipage}[t]{0.3333\textwidth}
-\textbf{Metadata Hiding}
-\begin{framed}
-xxxxxxxxxxxxxxxxxx
-
-xxxxxxxxxxxxxxxxxx
-
-xxxxxxxxxxxxxxxxxx
-
-xxxxxxxxxxxxxxxxxx
-\end{framed}
-\end{minipage}
-\caption{What a message Alice sent Bob looks like for a powerful adversary controlling all servers, under non-E2E, E2E, and Metadata-Hiding protocols.}
+    \centering
+        \includegraphics[width=\textwidth]{metadata-privacy.pdf}
+\caption{Differences between non-E2E, E2E, and Metadata-Hiding protocols for a message from Romeo to Juliet.}
+\label{fig:metadataprivacy}
 \end{figure}
+
 %\begin{table*}[t]
 %\centering
 %another version below
@@ -75,10 +46,9 @@ xxxxxxxxxxxxxxxxxx
 
 
 \subsection{Non-goals}
-1. \textbf{Not a cryptocurrency}: Anysphere's underlying PIR algorithm is unrelated to blockchains and cryptocurrencies. \xxx[stzh]{this is, unfortunately, what most people think of when they hear ``private communication".}
+1. \textbf{Not a cryptocurrency}: Anysphere's underlying PIR algorithm is unrelated to blockchains and cryptocurrencies.
 
-2. \textbf{Not a plugin}: Anysphere relies on a dedicated PIR server to work. Therefore, Anysphere is not compatible with existing messaging systems like Messenger or Signal, and does not work like a google chrome extension to these apps. \xxx[stzh]{My mom asked me this...}
+2. \textbf{Not a plugin}: Anysphere relies on a dedicated PIR server to work. Therefore, Anysphere is not compatible with existing messaging systems like Messenger or Signal, and does not work like a google chrome extension to these apps.
 
-3. \textbf{Not steganographic}: Anysphere does not make an attempt to hide who's using our service. \xxx[stzh]{From Tor. Is it ok?} 
-\xxx[sualeh] {I like both of these.}
+3. \textbf{Not steganographic}: Anysphere does not make an attempt to hide who's using our service. \xxx[sualeh]{This might change in the future?}
 
