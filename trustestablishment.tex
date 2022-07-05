@@ -128,7 +128,7 @@ To send an invitation, Alice learns Bob's information through a public platform 
 To retrieve an invitation, Bob periodically downloads the entire Async Invitation Database and notices if there are invitations for him. The user(s) representing Bob's account choose whether to respond to the message, as would be the case in a traditional e-mail. In the affirmative case, they acknowledge Alice's message and are set for the Core Protocol. No further action is required otherwise.
 
 This method achieves metadata security by hiding the timing of the invitation and the recipient of Alice's request. Daemons send invitations on a fixed schedule, and we ensure that our encryption scheme is key private(\xxx[sualeh]{Arvid which section should we cite}).
-
+    
 This method offers trust establishment on par with existing messaging platforms at the expense of increased storage costs. An \textbf{AsyncInvitationDatabase} entry requires $\approx200\text{B}$ of storage, which for the $10M$ users, is just $2\text{GB}$ for the whole database. An individual user might wish to download the database only once or twice daily, which saves bandwidth but delays the detection of invitations. On the other hand, a company user could afford to download the database every second and can ensure incoming asynchronous invitations get detected almost instantly.
 
 The remote method does introduce more attack vectors. For example, an attacker socially engineers Alice to make her believe that a fake $id_B$ belongs to Bob or monitors $A$'s traffic to $B$'s public profile. Therefore, we recommend that privacy-conscious users use face-to-face invitations whenever possible.
