@@ -1,11 +1,18 @@
 \section{Security Context}
 \label{sec:securitycontext}
 
-\todo{Explain why Signal is not enough. Good table.}
+\begin{figure}
+    \centering
+        \includegraphics[width=\textwidth]{metadata-privacy.pdf}
+\caption{The view of a powerful adversary in three different threat models. With end-to-end encryption, the adversary can still see the metadata.}
+\label{fig:metadataprivacy}
+\end{figure}
+
+
 
 In this section, we describe what our system achieves beyond end-to-end encrypted messaging applications like Signal and Wickr.
 
-Signal is great. It is end-to-end encrypted, open source, and run by a trustworthy group. Unfortunately, if their servers are hacked, one of their employees bribed, or you are simply attacked by a network-level powerful actor, there is nothing Signal can guarantee. \xxx[stzh]{I don't think so. The point of E2E encryption is to guarantee content security when the server gets compromised.}
+Signal is great. It is end-to-end encrypted, open source, and run by a trustworthy group. Unfortunately, if their servers are hacked, one of their employees bribed, or you are attacked by a network-level powerful actor, there is nothing Signal can guarantee. \xxx[stzh]{I do not think so. The point of E2E encryption is to guarantee content security when the server gets compromised.}
 
 Furthermore, even with a secure server, it leaks metadata.  Using timing attacks, an adversary can figure out when, where and with whom you are talking. 
 
