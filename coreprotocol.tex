@@ -14,7 +14,7 @@ This is how Anysphere works. Obviously, Bob cannot download all outboxes every m
 % make this take up both columns at the top of the page
 \begin{figure}
     \centering
-    \includegraphics[width=0.4\textwidth]{pirfigure.pdf}
+    \includegraphics[width=0.7\textwidth]{pirfigure.pdf}
 \caption{Alice sends to her outbox once every minute. Bob retrieves Alice's outbox using private information retrieval (PIR), which looks the same to everyone else as if he had downloaded the entire database. Alice and Bob can use standard symmetric encryption to communicate, and no one, not even the server, will learn anything at all.}
 \label{fig:highlevelpir}
 \end{figure}
@@ -57,9 +57,9 @@ The simplest version of our core protocol is shown in \cref{fig:simple}. In this
 
 % \todo{simulation security definition, going offline, friend attack, key privacy because prf.}
 
-\subsubsection{Going offline.} Users will not always be connected to the internet. At night, most people put their computers to sleep. This means that users will not be sending and receiving exactly once every minute. \xxx{how much information does this leak?} \xxx[stzh]{However, as long as users make their connection schedule regular(e.g. transmits from 9AM to 5PM each day), no metadata is leaked. }
+\textbf{Going offline.} Users will not always be connected to the internet. At night, most people put their computers to sleep. This means that users will not be sending and receiving exactly once every minute. \xxx{how much information does this leak?} \xxx[stzh]{However, as long as users make their connection schedule regular(e.g. transmits from 9AM to 5PM each day), no metadata is leaked. }
 
-\subsubsection{Authentication token.} 
+\textbf{Authentication token.} 
 On registration, the server creates a unique authentication token for the new user. This allows the server to restrict access to that user's outbox, preventing denial of service attacks from other users. It should still be noted that, in accordance with our threat model, we do not prevent against denial of service attacks by ISPs or the server itself — fundamentally, a powerful actor can always shut down your internet access. In \cref{sec:future} we discuss plans for distributing the server such that, say, only 1 out of 3 servers need to be trusted to provide service.
 
 \begin{figure}
