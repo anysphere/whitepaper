@@ -118,9 +118,9 @@ The simple protocol from before assumed Alice had a single contact Bob. Our syst
 
 \subsection{Chunks and ACKs}
 
-If Alice wants to send a message longer than 1 KB, she needs to separate the message into 1KB chunks and deliver all chunks to Bob in separate PIR transmissions. To ensure successful delivery, we took inspiration from TCP/IP. Each message from Alice to Bob is labeled with a message identifier $i$. Each chunk of message $i$ is further labeled with a sequence number starting from $1$. When Bob receives chunk $c$ of message $i$, he sends Alice a short acknowledgement(ACK) message $ACK(i, c)$ over a separate ACK PIR table. Alice listens to Bob's ACK message using PIR, and deposits chunk $c + 1$ of message $i$ only after reading $ACK(c)$ from Bob.
+If Alice wants to send a message longer than 1 KB, she needs to separate the message into 1KB ``chunks" and deliver all chunks to Bob in separate PIR transmissions. To ensure successful delivery, we took inspiration from TCP/IP. Each message from Alice to Bob is labeled with a integer message identifier $m$. Each chunk of message $m$ is further labeled with a sequence number starting from $1$. When Bob receives chunk $c$ of message $m$, he sends Alice a short acknowledgement(ACK) message $ACK(m, c)$ over a separate ACK PIR table. Alice listens to Bob's ACK message using PIR, and deposits chunk $c + 1$ of message $i$ only after reading $ACK(m, c)$ from Bob.
 
-Each ACK message only needs to encode two integers $i, c$. Thus, reading ACKs represents a much lighter load compared to the main message database.
+Each ACK message only needs to encode two integers $m, c$. Thus, reading ACKs represents a much lighter load compared to the main message database.
 
 \xxx{describe the separate PIR table for ACKs.}
 

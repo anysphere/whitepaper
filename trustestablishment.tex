@@ -6,7 +6,11 @@ The Anysphere Core protocol's first phase requires participants to make contact.
 
 In practice, Alice needs to find Bob's public key and use it to send an ``Invitation" to Bob. Bob must be able to retrieve this invitation and complete a key exchange with Alice. Most importantly, the server should not learn any metadata of this exchange. 
 
-We provide two alternate methods of trust establishment designed for our users that meet our desired security profile and don't have prohibitive computational costs. The first of our methods is for security-conscious users, and the other allows the advantage of remote participants. In the following two methods, we assume Alice and Bob have a Curve25519 key exchange key pair $kx = (kx^P, kx^S)$ and aim to inform each other of their $kx^P$ to derive a shared secret $sk$. \xxx[Sualeh]{Handle the part about why we do not include the username in the publicID.}
+We provide two alternate methods of trust establishment designed for our users that meet our desired security profile and don't have prohibitive computational costs. The first of our methods is for security-conscious users, and the other allows the advantage of remote participants. In the following two methods, we assume Alice and Bob have a Curve25519 key exchange key pair $kx = (kx^P, kx^S)$ and aim to inform each other of their $kx^P$ to derive a shared secret $sk$. 
+
+Note that we use the key exchange public key $kx^P$ as the sole root of trust of a user's identity. This is intentional: using more human-readable identifiers like username or email opens the possibility of social engineering attacks, which we would like to avoid.
+
+\xxx[Sualeh]{Handle the part about why we do not include the username in the publicID.}
 
 % \cite{liutromer2021} discusses this as the Oblivious Message Detection(OMD) problem. Their proposed scheme aims to minimize user download size, and costs each user $\$ 1$ per million messages scanned, which is prohibitive for our messaging application. We provide two alternate methods of trust establishment with better computational cost and security \footnote{We should not appear to be strictly better than \cite{liutromer2021}; any ideas?}.
 
