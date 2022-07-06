@@ -1,7 +1,7 @@
 \section{Trust Establishment}
 \label{sec:trustestablishment}
 
-Our core protocol requires users to share a secret key. Creating this shared secret is generally referred to as the problem of trust establishment \cite{unger2015sok}, and involves making sure that the person you talk to is who they say they are. We have an additional requirement that's mostly gone unexplored by the research community: making sure that the trust establishment procedure does not leak metadata.
+Our core protocol requires users to share a secret key. Creating this shared secret is generally referred to as the problem of trust establishment \cite{unger2015sok}, and involves making sure that the person you talk to is who they say they are. We have an additional requirement that's mostly unexplored by the research community: the trust establishment procedure does not leak metadata.
 
 %In practice, Alice needs to find Bob's public key and use it to send an ``Invitation" to Bob. Bob must be able to retrieve this invitation and complete a key exchange with Alice. Most importantly, the server should not learn any metadata of this exchange. 
 
@@ -28,7 +28,7 @@ We provide two different methods of trust establishment: one that completes inst
 
 Alice and Bob establish trust in an in-person meeting, and do a simple key exchange where they share their key-exchange public key $kx^P$ and their outbox index $i$ out loud. \Cref{fig:trust-establishment-inperson} explains the protocol in detail.
 
-\begin{figure}[h]
+\begin{figure}[t]
   
   \begin{framed}
   {\raggedright
@@ -44,7 +44,7 @@ Alice and Bob establish trust in an in-person meeting, and do a simple key excha
   \medskip
       
       \textbf{Encode.}
-          Alice encodes the plaintext of her key exchange public key $kx_A^P$ and her allocation index $i_A$ into a human-readable story $s_A$. Bob similarly encodes his story $s_B$.
+          Alice encodes her key exchange public key $kx_A^P$ and her allocation index $i_A$ into a human-readable story $s_A$. Bob similarly encodes his story $s_B$.
 
   \medskip
 
@@ -64,13 +64,13 @@ Alice and Bob establish trust in an in-person meeting, and do a simple key excha
   \label{fig:trust-establishment-inperson}
 \end{figure}
 
-This trust establishment protocol needs no third party, which means that it completes instantly, cheaply, and securely. It does, however, require interaction from both parties at the same time. While it may seem prohibitive to set up a meeting and type manually, we believe that for security-critical use cases \xxx[stzh]{incomplete sentence.}
+This trust establishment protocol needs no third party, which means that it completes instantly, cheaply, and securely. It does, however, require interaction from both parties at the same time. While it may seem prohibitive to set up a meeting and type manually, we believe that it is worth it for security-critical use cases.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Async Section %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{figure}[!th]
+\begin{figure}[th!]
   \begin{framed}
   {\raggedright
       \small
@@ -131,6 +131,6 @@ Essentially, Alice encrypts her own $id_A$ using Bob's public key and sends the 
 
 This method achieves metadata privacy by hiding the timing of the invitation and the recipient of Alice's request. The client sends invitations on a fixed schedule, and for the public-key cryptography we use an ElGamal-based algorithm, which satisfies key-privacy \cite{bellare2001key}.
     
-This method offers trust establishment on par with existing messaging platforms at the expense of increased storage costs. An \textbf{AsyncInvitationDatabase} entry requires $\approx200\text{B}$ of storage, which for the $10M$ users, is just $2\text{GB}$ for the whole database. An individual user might wish to download the database only once or twice daily, which saves bandwidth but delays the detection of invitations. On the other hand, a company user could afford to download the database every second and can ensure incoming asynchronous invitations get detected almost instantly.
+This method offers trust establishment with convenience on par with existing messaging platforms, at the expense of increased bandwidth costs. A $\db_\text{async}$ entry requires $\approx200\text{B}$ of storage, which for $10M$ users is $2\text{GB}$ for the entire database. An individual user might wish to download the database only once or twice daily, which saves bandwidth but delays the detection of invitations. On the other hand, a company user could afford to download the database every few seconds, to ensure that incoming asynchronous invitations get detected almost instantly.
 
 The asynchronous method does introduce more attack vectors. For example, an attacker can socially engineer their way to make Alice believe that a fake $id_B$ belongs to Bob. Note that the identifier explicitly does not include Bob's name, which we believe reduces the possibility of this attack, because it makes Alice more likely to verify the identifier before accepting it. An attacker could also monitor Alice's traffic to Bob's personal website, if Bob decides to post his identifier there. In conclusion, we provide the asynchronous method as a convenient choice, but we recommend that privacy-conscious users use in-person invitations whenever possible. It should be noted that to our knowledge, our asynchronous method is still more private than any other asynchronous trust establishment that exists in practice.

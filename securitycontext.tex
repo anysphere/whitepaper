@@ -1,10 +1,9 @@
 \section{Security Context}
 \label{sec:securitycontext}
 
-In the early days of the internet, everything sent over it was public. If A sent a message to B, anyone on their path through the internet could read it. Email still operates in this model of no privacy. Today, there exist end-to-end encrypted alternatives, most notably the messaging app, Signal. Unfortunately, if their servers are hacked, one of their employees bribed, or an ISP or a government targets you, the attacker can learn when, where and with whom you are talking. Anysphere guarantees metadata privacy, meaning that all information is hidden from everyone — just like an in-person conversation. \cref{fig:metadataprivacy} illustrates the difference.
-\xxx[sualeh]{Hmm, this seems like a repeat of the previous paragraph in the introduction.}
+In the early days of the internet, everything sent over it was public. If A sent a message to B, anyone on their path through the internet could read it. Email still operates in this model of no privacy. Today, there exist end-to-end encrypted alternatives, most notably the messaging app, Signal. Unfortunately, if their servers are hacked, one of their employees bribed, or an ISP or a government targets you, the attacker can learn when, where and with whom you are talking. Anysphere guarantees complete metadata privacy, just like an in-person conversation. \cref{fig:metadataprivacy} illustrates the difference.
 
-\begin{figure}[h!]
+\begin{figure}
     \centering
         \includegraphics[width=\textwidth]{metadata-privacy.pdf}
 \caption{The view of a powerful adversary. With end-to-end encryption, the adversary can still see the metadata.}
@@ -14,15 +13,16 @@ In the early days of the internet, everything sent over it was public. If A sent
 This section describes our desired properties and the threat model we want them to hold in. In short, we guarantee metadata privacy against anyone except the conversation partners themselves.
 
 \subsection{Goals}
+From the start, Anysphere has assumed a few basic goals to guide our work.
+% The goals below are in reference to an attacker with the capabilities defined in the threat model section (\cref{subsec:threatmodel}). <- implicit from the section below. Distracts and asks the reader to jump below.
 
-The goals below are in reference to an attacker with the capabilities defined in the threat model section (\cref{subsec:threatmodel}).
-
-\textbf{1. Metadata privacy.} An attacker does not learn anything about what messages are being sent when, between whom. This implies that the attacker cannot read messages (because it does not even know that the messages exist). We guarantee one of the strongest possible versions of metadata privacy: formally, an attacker can simulate its view in the real world given only the knowledge of its own messages (see \cref{sec:coreprotocol} for more details).
-\xxx[sualeh]{It would be awesome to have a clearer sentence for the formal claim. I have not come up with one yet.}
+\textbf{1. Metadata privacy.} An attacker does not learn anything about what messages are being sent when, between whom. This implies that the attacker cannot read messages (because it does not even know that the messages exist). We guarantee one of the strongest possible versions of metadata privacy; for more details, see \cref{sec:coreprotocol}.
+% : formally, an attacker can simulate its view in the real world given only the knowledge of its own messages <- Lets leave this for the formal section. If we cannot explain, it its weird to make this claim here.
+% \xxx[sualeh]{It would be awesome to have a clearer sentence for the formal claim. I have not come up with one yet.}
 
 \textbf{2. Integrity.} An attacker cannot forge a message from anyone, or edit any of the messages being sent.
 
-\textbf{3. Partial resistance to denial-of-service attacks}. An attacker that merely controls a number of users cannot block messages from being delivered. However, we do not guarantee service against an attacker that controls the server or the network.
+\textbf{3. Partial resistance to denial-of-service attacks}. An attacker that merely controls a number of users cannot block messages from being delivered. We cannot guarantee service against an attacker that controls the server or the network.
 
 \textbf{4. Reasonable load on client and server}. The server load is feasible, and users are able to run a client on any commonly sold internet device. It may be allowed for users to adjust their load to their preference.
 
