@@ -5,7 +5,7 @@ Our core protocol requires users to share a secret key. Creating this shared sec
 
 %In practice, Alice needs to find Bob's public key and use it to send an ``Invitation" to Bob. Bob must be able to retrieve this invitation and complete a key exchange with Alice. Most importantly, the server should not learn any metadata of this exchange. 
 
-We provide two different methods of trust establishment: one that completes instantly, but requires the two users to meet in person, and one that allows asynchronous invitations, but can take up to 24 hours. In both methods, we assume that Alice and Bob each have a Curve25519 key exchange key pair $kx = (kx^P, kx^S)$, and aim to inform each other of their $kx^P$ to derive a shared secret $\sk$. Alice and Bob additionally need to inform know each other's outbox indices.
+We provide two different methods of trust establishment: one that completes instantly, but requires the two users to meet in person, and one that allows asynchronous invitations, but can take up to 24 hours. In both methods, we assume that Alice and Bob each have a Curve25519 key exchange key pair $kx = (kx^P, kx^S)$, and aim to inform each other of their $kx^P$ to derive a shared secret $\sk$. Alice and Bob additionally need to know each other's outbox indices.
 
 % Note that we use the key exchange public key $kx^P$ as the sole root of trust of a user's identity. This is intentional: using more human-readable identifiers like username or email opens the possibility of social engineering attacks, which we would like to avoid.
 
