@@ -29,8 +29,7 @@ We realize that some problems that we would like to solve are either hard, or un
 
 \textbf{More efficient trust establishment.} We are actively thinking about improving our current methods of trust establishment to be faster, more reliable and less prone to social engineering attacks.
 
-\textbf{The ACK problem.} We would like more efficient methods of acknowledging recieved messages.
-\xxx[sualeh]{Arvid, can you make this more explicit?}
+\textbf{The ACK problem.} Currently, if Alice wants to send a 2 KB message to Bob, she currently needs to wait for Bob to get online and ACK the first chunk before she can send the second chunk. If Alice's and Bob's time zones do not overlap, this can mean that an $n$ KB message takes $n$ days to get delivered. We are working to solve this.
 
 \textbf{The multiple friends problem.} We realize that our transmission time per friends scales linearly with the number of friends a user has. We would like to make transmission to support scaling the number of friends that a user can simultaneously communicate with.
 
