@@ -2,7 +2,7 @@
 \label{subsec:threatmodel}
 
 
-We plan to achieve our goals in the presence of strong adversaries, whose capabilities we define in this section. Our belief in no needless trust means that our threat model is as extensive as possible.
+\textit{No needless trust} means that our threat model is as extensive as possible.
 
 %\begin{table*}[t]
 %\centering
@@ -40,12 +40,12 @@ We plan to achieve our goals in the presence of strong adversaries, whose capabi
 
 \textbf{5. The attacker cannot access the user's computer.} We assume that a user's local computer is trusted and is running a correct implementation of our system. In \cref{sec:practical-security} we explain how we can relax this assumption slightly.
 
-\textbf{6. The attacker cannot break standard cryptography.}: Our threat model assumes the security of the standard cryptography primitives we use. This includes Libsodium's AEAD implementation (XSalsa20), and Microsoft SEAL's homomorphic encryption implementation (BFV).
+\textbf{6. The attacker cannot break standard cryptography.} Our threat model assumes the security of the standard cryptographic primitives we use. This includes Libsodium's AEAD implementation (XSalsa20) \cite{libsodium}, and Microsoft SEAL's homomorphic encryption implementation (BFV) \cite{sealcrypto}.
 
 \subsection{Non-goals}
 \textbf{1. Not a cryptocurrency.} Anysphere uses advanced cryptography, but not blockchains or cryptocurrencies.
 
-\textbf{2. Not a plugin to an existing ecosystem.} Anysphere is not compatible with existing messaging systems like Signal or Email. This is intentional: interfacing with legacy systems would mean accepting their (much lower) standards of security and privacy.
+\textbf{2. Not a plugin to an existing ecosystem.} Anysphere is not compatible with existing messaging systems like Signal or email. This is intentional: interfacing with legacy systems would mean accepting their (much lower) standards of security and privacy.
 
 \textbf{3. Not steganographic.} Anysphere does not make an attempt to hide who is using our service.
 

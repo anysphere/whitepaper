@@ -1,36 +1,36 @@
 \section{What's Next?}
 \label{sec:future}
 
-Private communication is a hard problem. We are actively doing research to increase convenience while preserving complete privacy. We also urge the research community to join us: during the our deployment, we have found that while many papers focus on the scalability of a core one-person messaging protocol, too few focus on other practical problems, including private trust establishment, multiple-friend management, one-to-many and many-to-many communcation, and DoS protection.
+Private communication is a hard problem. We are actively doing research to increase convenience while preserving metadata privacy, and we urge the research community to join us.
 
 % Anysphere has just begun operations, and we are devoted to truly free communication. 
 % We aim to supervise and help build technologies that allow internet communication without unfair security assumptions.
 % There are several important milestones that we have set for ourselves to reach to make this genuinely possible; some that are essential in the short-term and others that we want to achieve over a longer time horizon with time and effort.
 
 \subsection{Implementation milestones}
-We have several implementation milestones to allow Anysphere to support many of the features that traditional services support. We plan to bring them to Anysphere in the near term.
+Anysphere is under active development. This is a list of some of the things we are working on.
 
-\textbf{Small Files and images.} We hope to support the transmission of small files and images through our current protocol.
+\textbf{Small files and images.} We hope to support the transmission of small files and images through our current protocol.
 
 \textbf{Forward secrecy.} We hope to integrate Signal's X3DH algorithm to ensure forward secrecy.
 
-\textbf{Public-key infrastructure.} We hope to set up a PKI to facilitate the discovery of friends faster and facilitate trust for recipients. That said, setting up a PKI is a notoriously tricky problem requiring careful thought.
+\textbf{Public-key infrastructure.} We hope to set up a PKI to help the trust establishment process. That said, setting up a PKI is a notoriously hard problem requiring care.
 
-\textbf{Calls.} We would like to facilitate calls using Anysphere without leaking metadata. However, calls using our current PIR setup require sub-second latencies that can be computationally infeasible for many users.
+\textbf{Calls.} We would like to facilitate calls using Anysphere without leaking metadata. However, calls using our current PIR setup require sub-second latency which is currently unfeasible.
 
-\textbf{Hardened daemon against local malware.} We aim to reduce the amount of trust we place in the client (see \cref{sec:securitycontext} and \cref{sec:practical-security}). We want to ensure protection of the Anysphere daemon against malware on the local system.
+\textbf{Hardened daemon against local malware.} We aim to reduce the amount of trust we place in the client (see \cref{sec:practical-security}), by hardening the daemon.
 
 \subsection{Research problems} 
-We realize that some problems that we would like to solve are either hard, or unsolved or both. In many of these cases, we are actively thinking about solutions to these important problems, and will be working on bringing solutions to them to life.
+A lot of the problems we want to solve are both hard and unsolved. We're conducting active research in this area.
 
 \textbf{Denial-of-service resistance.} While we fundamentally cannot prevent an internet provider from blocking access, we can reduce the trust assumptions when it comes to denial of service. For example, it would be great if we could distribute the servers, and provide a guarantee in the form of ``the attacker needs to compromise at least $k$ of $n$ servers.''
 
-\textbf{One-to-many and many-to-many conversations.} An essentially important problem to solve is to allow groups of people to broadcast messages to each other, without depending on the presence of any specific user. We understand that this brings risks in itself to users because it increases the overall risk surface that a user has to trust but we believe it is crucial for large-scale pragmatic adoption.
+\textbf{One-to-many and many-to-many conversations.} We want to allow groups of people to broadcast messages to each other, without depending on the presence of any specific user. The question is how to do it scalably, while also embodying \textit{no needless trust}.
 
 \textbf{More efficient trust establishment.} We are actively thinking about improving our current methods of trust establishment to be faster, more reliable and less prone to social engineering attacks.
 
-\textbf{The ACK problem.} Currently, if Alice wants to send a 2 KB message to Bob, she currently needs to wait for Bob to get online and ACK the first chunk before she can send the second chunk. If Alice's and Bob's time zones do not overlap, this can mean that an $n$ KB message takes $n$ days to get delivered. We are working to solve this.
+\textbf{The ACK problem.} Currently, if Alice wants to send a 2 KB message to Bob, she needs to wait for Bob to get online and ACK the first chunk before she can send the second chunk. If Alice's and Bob's time zones do not overlap, this can mean that an $n$ KB message takes $n$ days to get delivered.
 
-\textbf{The multiple friends problem.} We realize that our transmission time per friends scales linearly with the number of friends a user has. We would like to make transmission to support scaling the number of friends that a user can simultaneously communicate with.
+\textbf{The multiple contacts problem.} In our current protocol, the transmission time for a message scales linearly with the number of contacts a user has. We also want to increase security by handling compromised contacts better.
 
 \textbf{Large files and images.} Transmission of larger files and images is infeasible in our current framework because the number of chunks needed to deliver them is in the thousands.
