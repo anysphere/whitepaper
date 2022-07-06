@@ -17,23 +17,20 @@ We have several implementation milestones to allow Anysphere to support many of 
 \textbf{Public-key infrastructure.} We hope to set up a PKI to facilitate the discovery of friends faster and facilitate trust for recipients. That said, setting up a PKI is a notoriously tricky problem requiring careful thought.
 
 \textbf{Calls.} We would like to facilitate calls using Anysphere without leaking metadata. However, calls using our current PIR setup require sub-second latencies that can be computationally infeasible for many users.
-\xxx[sualeh]{should this be a research problem?}
 
+\textbf{Hardened daemon against local malware.} We aim to reduce the amount of trust we place in the client (see \cref{sec:securitycontext} and \cref{sec:practical-security}). We want to ensure protection of the Anysphere daemon against malware on the local system.
 
-\textbf{Hardened daemon against local malware.} We aim to reduce the amount of trust we place in the client (see \cref{sec:securitycontext} and \cref{sec:practical-security}). In particular, we want to ensure protection of the Anysphere daemon against malware on the local system.
-
-
-\subsection{Longer-term research problems} 
+\subsection{Research problems} 
 We realize that some problems that we would like to solve are either hard, or unsolved or both. In many of these cases, we are actively thinking about solutions to these important problems, and will be working on bringing solutions to them to life.
 
-\textbf{Denial of service resistance.} A classic problem
+\textbf{Denial-of-service resistance.} While we fundamentally cannot prevent an internet provider from blocking access, we can reduce the trust assumptions when it comes to denial of service. For example, it would be great if we could distribute the servers, and provide a guarantee in the form of ``the attacker needs to compromise at least $k$ of $n$ servers.''
 
-\textbf{One-to-many and many-to-many conversations.} An essentially important problem to solve is to allow groups of people to broadcast messages to each other, without depending on the presense of any specific user. We understand that this brings risks in itself to users because it increases the overall risk surface that a user has to trust but we believe it is crucial for large-scale pragmatic adoption.
+\textbf{One-to-many and many-to-many conversations.} An essentially important problem to solve is to allow groups of people to broadcast messages to each other, without depending on the presence of any specific user. We understand that this brings risks in itself to users because it increases the overall risk surface that a user has to trust but we believe it is crucial for large-scale pragmatic adoption.
 
-\textbf{More efficient trust establishment.}
+\textbf{More efficient trust establishment.} We are actively thinking about improving our current methods of trust establishment to be faster, more reliable and less prone to social engineering attacks.
 
-\textbf{The ACK problem.}
+\textbf{The ACK problem.} 
 
-\textbf{The multiple friends problem.}
+\textbf{The multiple friends problem.} We realize that our transmission time per friends scales linearly with the number of friends a user has. We would like to make transmission to support scaling the number of friends that a user can simultaneously communicate with.
 
-\textbf{Large Files and images.} Transmission of larger files and images is infeasible in our current framework because the number of chunks needed to deliver them is in the thousands; we will tackle that problem separately later.
+\textbf{Large files and images.} Transmission of larger files and images is infeasible in our current framework because the number of chunks needed to deliver them is in the thousands.

@@ -1,16 +1,15 @@
-\newpage
 \section{Trust Establishment}
 \label{sec:trustestablishment}
 
-The Anysphere Core protocol's first phase requires participants to make contact. ``Trust Establishment", \cite{unger2015sok}, is a notoriously difficult problem, where users exchange long-term keys and ensure they're talking to their intended contacts. For Anysphere to always be metadata-secure, we need a metadata-secure trust establishment procedure.
+Our core protocol requires users to share a secret key. Creating this shared secret is generally referred to as the problem of trust establishment \cite{unger2015sok}, and involves making sure that the person you talk to is who they say they are. We have an additional requirement that's mostly gone unexplored by the research community: making sure that the trust establishment procedure does not leak metadata.
 
-In practice, Alice needs to find Bob's public key and use it to send an ``Invitation" to Bob. Bob must be able to retrieve this invitation and complete a key exchange with Alice. Most importantly, the server should not learn any metadata of this exchange. 
+%In practice, Alice needs to find Bob's public key and use it to send an ``Invitation" to Bob. Bob must be able to retrieve this invitation and complete a key exchange with Alice. Most importantly, the server should not learn any metadata of this exchange. 
 
-We provide two alternate methods of trust establishment designed for our users that meet our desired security profile and don't have prohibitive computational costs. The first of our methods is for security-conscious users, and the other allows the advantage of remote participants. In the following two methods, we assume Alice and Bob have a Curve25519 key exchange key pair $kx = (kx^P, kx^S)$ and aim to inform each other of their $kx^P$ to derive a shared secret $sk$. 
+We provide two different methods of trust establishment: one that completes instantly, but requires the two users to meet in person, and one that allows asynchronous invitations, but can take up to 24 hours. In both methods, we assume that Alice and Bob each have a Curve25519 key exchange key pair $kx = (kx^P, kx^S)$, and aim to inform each other of their $kx^P$ to derive a shared secret $\sk$. Alice and Bob additionally need to inform know each other's outbox indices.
 
-Note that we use the key exchange public key $kx^P$ as the sole root of trust of a user's identity. This is intentional: using more human-readable identifiers like username or email opens the possibility of social engineering attacks, which we would like to avoid.
+% Note that we use the key exchange public key $kx^P$ as the sole root of trust of a user's identity. This is intentional: using more human-readable identifiers like username or email opens the possibility of social engineering attacks, which we would like to avoid.
 
-\xxx[Sualeh]{Handle the part about why we do not include the username in the publicID.}
+%\xxx[Sualeh]{Handle the part about why we do not include the username in the publicID.}
 
 % \cite{liutromer2021} discusses this as the Oblivious Message Detection(OMD) problem. Their proposed scheme aims to minimize user download size, and costs each user $\$ 1$ per million messages scanned, which is prohibitive for our messaging application. We provide two alternate methods of trust establishment with better computational cost and security \footnote{We should not appear to be strictly better than \cite{liutromer2021}; any ideas?}.
 
@@ -22,7 +21,14 @@ Note that we use the key exchange public key $kx^P$ as the sole root of trust of
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % \captionsetup[figure]{name=Protocol}
-\begin{figure}[t]
+
+
+
+\subsection{In-person Trust Establishment}
+
+Alice and Bob establish trust in an in-person meeting, and do a simple key exchange where they share their key-exchange public key $kx^P$ and their outbox index $i$ out loud. \Cref{fig:trust-establishment-inperson} explains the protocol in detail.
+
+\begin{figure}[h]
   
   \begin{framed}
   {\raggedright
@@ -47,8 +53,8 @@ Note that we use the key exchange public key $kx^P$ as the sole root of trust of
 
           \medskip
 
-      \textbf{Establish Contact.}
-          Alice decodes Bob's story to obtain $kx^P_B$ and $i_B$. She computes the shared secret $sk = \DH(kx^P_B, kx^S_A)$, and adds $i_B$ to her set of listening indices.
+      \textbf{Establish contact.}
+          Alice decodes Bob's story to obtain $kx^P_B$ and $i_B$. She computes the shared secret $\sk = \DH(kx^P_B, kx^S_A)$, and adds $i_B$ to her set of listening indices.
 
 
   \end{hangparas}
@@ -58,10 +64,7 @@ Note that we use the key exchange public key $kx^P$ as the sole root of trust of
   \label{fig:trust-establishment-inperson}
 \end{figure}
 
-
-\subsection{Face-to-face Invitations}
-
-Alice and Bob establish trust in a face-to-face meeting,  either in-person or over zoom, and do a simple key exchange, as described in \cref{fig:trust-establishment-inperson}. They share the encoding of their keys as an English story of words.  All interactions between the users pass through no third party. Thus, trust establishment completes instantly, cheaply, and securely. It may seem prohibitive to set up a meeting and type manually, but we believe a privacy-conscious Alice would be willing to set up a meeting with Bob before sending him sensitive information.
+This trust establishment protocol needs no third party, which means that it completes instantly, cheaply, and securely. It does, however, require interaction from both parties at the same time. While it may seem prohibitive to set up a meeting and type manually, we believe that for security-critical use cases \xxx[stzh]{incomplete sentence.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Async Section %%%%%
@@ -75,43 +78,43 @@ Alice and Bob establish trust in a face-to-face meeting,  either in-person or ov
   \begin{hangparas}{1em}{1}
         \hrule
         \vspace{0.15cm}
-        \textsc{\textbf{Protocol $\protocolNumber$: Remote Trust Establishment}}
+        \textsc{\textbf{Protocol $\protocolNumber$: Asynchronous Trust Establishment}}
         \vspace{0.1cm}
         \hrule
         \vspace{0.1cm}
   \medskip
       
-      \textbf{Send Invitation.}
+      \textbf{Send invitation.}
       Alice initiates contact with Bob.
       \begin{enumerate}
-          \item \textbf{Visibility.} Bob computes a ``public id" $id_B = (ki_B^P, kx_B^P, i_B)$, (where $ki_B^P$ is the invitation public key, $kx_B^P$ is the key exchange public key, and $i_B$ is the allocation). Bob posts $id_B$ on his public profile, such as on twitter.
-          \item \textbf{Invitation.} Alice drafts a message $m_{AB}$ for Bob and obtains the triple $(ki_B^P, kx_B^P, i_B)$ from Bob's profile. She periodically sends the pair $(i_A, c_{AB} = \Enc(kx_B^P, id_A \vert m_{AB}))$ to the server, which stores it in a separate \textbf{AsyncInvitationDatabase}. When Alice has no invitations, her daemon sends $(i_A, \Enc(kx^P, id_A))$ for a random public key $kx^P$.
-          \item \textbf{Invitation Message.} Alice computes a shared secret $sk =  \DH(kx_B^P, kx^S_A)$ with Bob. She then sends a message $inv_{AB}$ via our PIR transport layer, inviting Bob to join a conversation with her. Now, she listens for Bob's ACK.
+          \item \textbf{Visibility.} Bob computes a public id $id_B = (ki_B^P, kx_B^P, i_B)$, where $ki_B^P$ is the invitation public key, $kx_B^P$ is the key exchange public key, and $i_B$ is the outbox index. Bob shares $id_B$ publicly.
+          \item \textbf{Invitation.} Alice drafts a message $m_{AB}$ for Bob and obtains the triple $(ki_B^P, kx_B^P, i_B)$ from Bob's profile. She periodically sends the pair $(i_A, c_{AB} = \Enc_{kx_B^P}(id_A \vert m_{AB}))$ to the server, which stores it in a database$~$$\db_\text{async}$. When Alice has no invitations, she sends$~$$(i_A, \Enc_{kx^P}(id_A | m))$, where $kx^P$ and $m$ are random.
+          \item \textbf{Invitation message.} Alice computes a shared secret $\sk =  \DH(kx_B^P, kx^S_A)$ with Bob. She then sends a message $inv_{AB}$ via our PIR transport layer, inviting Bob to join a conversation with her. She waits for Bob's ACK.
       \end{enumerate}
 
   \medskip
 
-      \textbf{Retrieve Invitation.}
+      \textbf{Retrieve invitation.}
         Bob receives Alice's invitation.
         \begin{enumerate}
-            \item \textbf{Database Download.} Bob periodically downloads the entire \textbf{AsyncInvitationDatabase}.
-            \item \textbf{Find Invitations.} Bob computes $\Dec(kx^S_B, c)$ over all key-value pairs $(i, c)$. If the decryption fails, Bob's daemon ignores this pair. If the decryption succeeds for the pair $(i, c) = (i_A, c_{AB})$, Bob decodes $i = i_A, id_A, m_{AB}$, and notices an invitation for him with message $m_{AB}$, and $id_A$.
+            \item \textbf{Database download.} Bob periodically downloads the entire $\db_\text{async}$.
+            \item \textbf{Find invitations.} Bob computes $\Dec(kx^S_B, c)$ over all key-value pairs $(i, c)$. If the decryption fails, Bob ignores this pair. If the decryption succeeds for the pair $(i, c) = (i_A, c_{AB})$, Bob decodes $i = i_A, id_A, m_{AB}$, and records an invitation for him.
             \item \textbf{Verify.} Bob needs to verify Alice's identity using $id_A$ and $m_{AB}$, say by checking Alice's profile. Bob now chooses to accept or reject the invitation.
         \end{enumerate}
 
     \medskip
 
-      \textbf{Accept Invitation.}
-          If Bob accepts Alice's invitation, he needs to respond to Alice.
+      \textbf{Accept invitation.}
+          If Bob accepts, he responds to Alice.
           \begin{enumerate}
-              \item \textbf{Decode.} Bob decodes $id_A = (ki_A^P, kx_A^P, i_A)$. He computes the shared secret $sk =  \DH(kx_B^P, kx^S_A)$ with Alice. He adds $i_A$ to the list of indices he listens to.
+              \item \textbf{Decode.} Bob decodes $id_A = (ki_A^P, kx_A^P, i_A)$. He computes the shared secret $\sk =  \DH(kx_B^P, kx^S_A)$ with Alice. He adds $i_A$ to the list of indices he listens to.
               \item \textbf{ACK.} Bob recieves the invitation message from Alice, $inv_{AB}$. Bob ACKs the message.
-              \item Alice sees the ACK from Bob and now they can communicate over the PIR transport layer.
+              \item \textbf{ACK received.} Alice sees the ACK, finalizing the trust establishment.
           \end{enumerate}
     \medskip
           
-      \textbf{Reject Invitation.}
-        If Bob rejects the invitation, no further action needs to be performed.
+      \textbf{Reject invitation.}
+        If Bob rejects, no further action is needed.
   \end{hangparas}
   }
   \end{framed}
@@ -121,14 +124,13 @@ Alice and Bob establish trust in a face-to-face meeting,  either in-person or ov
 
 
 \subsection{Asynchronous Invitations}
-Alice and Bob can also establish trust asynchronously. Alice privately reaches out to Bob (possibly an organization) and wishes to send her invitation privately. She sends an encrypted invitation without indicating the recipient. Bob retrieves this invitation via a full database download and informs Alice of his acceptance via an ACK message, as described in detail in \cref{fig:trust-establishment-async}.
 
-To send an invitation, Alice learns Bob's information through a public platform like Twitter or his website. Alice quickly imports Bob's keys and sends two messages: one is an invitation through the Invitation Database for Bob to find her information, and a second message through the PIR transport layer for Bob to acknowledge.
+Alice and Bob can also establish trust asynchronously. Here, we assume that Alice knows a \textit{public identifier} for Bob, $id_B$. For example, Bob might have posted his public identifier on a public platform like Twitter or his website. Alice can use this $id_B$ to privately send an invitation, which Bob can later accept or reject. 
 
-To retrieve an invitation, Bob periodically downloads the entire Async Invitation Database and notices if there are invitations for him. The user(s) representing Bob's account choose whether to respond to the message, as would be the case in a traditional e-mail. In the affirmative case, they acknowledge Alice's message and are set for the Core Protocol. No further action is required otherwise.
+Essentially, Alice encrypts her own $id_A$ using Bob's public key and sends the result to the server. Bob then downloads the entire database of invitations, and finds the invitations meant for him by trying to decrypt each one of them. The full protocol is described in \cref{fig:trust-establishment-async}.
 
-This method achieves metadata security by hiding the timing of the invitation and the recipient of Alice's request. Daemons send invitations on a fixed schedule, and we ensure that our encryption scheme is key private(\xxx[sualeh]{Arvid which section should we cite}).
+This method achieves metadata privacy by hiding the timing of the invitation and the recipient of Alice's request. The client sends invitations on a fixed schedule, and for the public-key cryptography we use an ElGamal-based algorithm, which satisfies key-privacy \cite{bellare2001key}.
     
 This method offers trust establishment on par with existing messaging platforms at the expense of increased storage costs. An \textbf{AsyncInvitationDatabase} entry requires $\approx200\text{B}$ of storage, which for the $10M$ users, is just $2\text{GB}$ for the whole database. An individual user might wish to download the database only once or twice daily, which saves bandwidth but delays the detection of invitations. On the other hand, a company user could afford to download the database every second and can ensure incoming asynchronous invitations get detected almost instantly.
 
-The remote method does introduce more attack vectors. For example, an attacker socially engineers Alice to make her believe that a fake $id_B$ belongs to Bob or monitors $A$'s traffic to $B$'s public profile. Therefore, we recommend that privacy-conscious users use face-to-face invitations whenever possible.
+The asynchronous method does introduce more attack vectors. For example, an attacker can socially engineer their way to make Alice believe that a fake $id_B$ belongs to Bob. Note that the identifier explicitly does not include Bob's name, which we believe reduces the possibility of this attack, because it makes Alice more likely to verify the identifier before accepting it. An attacker could also monitor Alice's traffic to Bob's personal website, if Bob decides to post his identifier there. In conclusion, we provide the asynchronous method as a convenient choice, but we recommend that privacy-conscious users use in-person invitations whenever possible. It should be noted that to our knowledge, our asynchronous method is still more private than any other asynchronous trust establishment that exists in practice.

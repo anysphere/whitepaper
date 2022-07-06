@@ -1,9 +1,9 @@
 \newpage
 \section{Practical Security} \label{sec:practical-security}
 
-The theoretical guarantees in the previous sections — metadata security without needing to trust the server or the network — all assume that the local computer is wholly trusted. As no fancy encryption scheme prevents a preinstalled backdoor, we cannot eliminate the client-side risk. Nevertheless, we can reduce it. This section outlines the mitigations we undertake: reducing the attack surface by modularizing and supply chain protection, eliminating bugs by being open source, securing code distribution and updates, and protecting against non-privileged local malware.
+Our theoretical guarantees assume that the local computer is wholly trusted. No fancy encryption scheme can prevent a preinstalled backdoor, and so we cannot eliminate the client-side risk for Anysphere. Nevertheless, we can reduce it. This section outlines the mitigations we undertake: reducing the attack surface by modularizing and supply chain protection, open-sourcing our client for verification and reducing bugs, securing code distribution and updates, and protecting against non-privileged local malware.
 
-We cannot achieve perfect security without our user's efforts. \textbf{PLEASE DO NOT USE ANYSPHERE FOR SECURITY-CRITICAL USE CASES ON A COMPUTER YOU DO NOT TRUST}. Our request is especially true while we are in beta, and may have bugs.
+\textbf{PLEASE DO NOT USE ANYSPHERE FOR SECURITY-CRITICAL USE CASES ON A COMPUTER YOU DO NOT TRUST}. We cannot achieve perfect security without our user's efforts. Our request is especially true while we are in beta, and may have bugs.
 
 % The Anysphere client is only as strong and secure as the most vulnerable part of our software supply chain. Software supply chains are an increasingly complex (and brittle) part of the software ecosystem because of a large and growing number of direct and transitive dependencies written across the world. 
 % The Anysphere client is designed to handle extreme private and critical communication securely, so our team has enforced a high bar of security for the core of our system. We focused on providing practical protection by significantly reducing the attack surface of our client, ensuring safe updates, and protecting against non-privileged software. 
@@ -20,8 +20,8 @@ We cannot achieve perfect security without our user's efforts. \textbf{PLEASE DO
 As illustrated in \cref{fig:systemdiagram}, our client consists of two parts: a UI frontend and a daemon backend. We sandbox the UI so that it is not allowed to talk to the internet. Instead, all messaging goes through the daemon, which contains all security-critical code. Thus, bugs and malicious code on the front-end cannot compromise security.
 \begin{figure*}
     \centering
-    \includegraphics[width=0.9\textwidth]{systemdiagram.pdf}
-\caption{System architecture. The UI and the daemon run on your local computer and require some trust assumptions. The UI is cut off from the internet, and can only communicate via the daemon, meaning that it needs lower trust assumptions. The crypto module in the daemon requires the highest level of trust, and uses the widely trusted Libsodium, GRPC, and Sqlite library.}
+    \includegraphics[width=0.9\textwidth]{sysdiagramalt.pdf}
+\caption{System architecture. The UI and the daemon run on your local computer and require some trust assumptions. The UI is cut off from the internet, and can only communicate via the daemon, meaning that it needs lower trust assumptions. The crypto module in the daemon requires the highest level of trust, and uses the widely trusted gRPC (interaction with UI and server), Libsodium (crypto), and Sqlite (database) libraries.}
 \label{fig:systemdiagram}
 \end{figure*}
 
@@ -29,17 +29,18 @@ We also reduce the attack surface of the daemon. In particular, we ensure a smal
 
 % Many popular languages, including Rust, Go and Python, have great package managers, which led to an ecosystem where packages generally have hundred of transitively dependencies. <- no need to emphasize this?
 
-\subsection{Eliminating bugs: open source}
+\subsection{Open source}
 
-All code that is required for security is open source. The repositories \\ {\tt \href{https://github.com/anysphere/client}{github.com/anysphere/client}} and  {\tt \href{https://github.com/anysphere/asphr}{github.com/anysphere/asphr}} contain all code for our Daemon and UI. Our server is not open source, since we guarantee security no matter what code is run on our server. 
+All code that is required for security is open source. The repositories \\ {\tt \href{https://github.com/anysphere/client}{github.com/anysphere/client}} and  {\tt \href{https://github.com/anysphere/asphr}{github.com/anysphere/asphr}} contain all code for our daemon and UI. Our server is not open source, since we guarantee security no matter what code is run on our server. 
 
 \subsection{Securing code distribution and updates}
 
-Your computer needs to be running an unmodified copy of our code. For this reason, Anysphere is not a web app —  everytime you visit a website, you give attackers an opportunity to serve you malicious code. Instead, Anysphere is a local app: you can ensure the correct code is downloaded by checking the signature and hash.
+Your computer needs to be running an unmodified copy of our code. For this reason, Anysphere is not a web app, because webapps give attackers an opportunity to serve you malicious code. Instead, Anysphere is a local app: you can ensure the correct code is downloaded by checking the signature and hash.
 
 %serving code on the web leads to huge vulnerabilities, and should never be done for security-critical codes. The reason is that
 
 %you download the cryptographic code every single time, meaning that every single time you use the website <- [don't think this is true]
+% ^ resolved.
 
 Local apps need to be updated. Currently, we use Electron's auto-updater to perform the signature checks for us. We plan to build our own update process, where signatures from two members of our team need to be present for your local app to accept the update. 
 
@@ -47,6 +48,6 @@ Local apps need to be updated. Currently, we use Electron's auto-updater to perf
 
 \subsection{Protection against non-privileged local malware}
 
-It is unfortunately impossible to prevent compromise from softwares with root privilege. We can, nevertheless, reduce the risk of non-privileged malware. Our beta version does not protect against non-privileged malware, but in the future, we are planning to encrypt the local database, require a password to unlock the app, and use OS-level access controls to make sure only certain processes can access the daemon.
+It is impossible to prevent compromise from software with root privilege to your system. We can, nevertheless, reduce the risk of non-privileged malware. Our beta version does not protect against non-privileged malware, but in the future, we are planning to encrypt the local database, require a password to unlock the app, and use OS-level access controls to make sure only certain processes can access the daemon.
 
 %Again, we do not aim to eliminate the risk here. Once an attacker has access to your computer, it is very, very hard to shield yourself from them.

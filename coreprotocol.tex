@@ -1,21 +1,21 @@
 \section{Core Protocol}
 \label{sec:coreprotocol}
 
-Consider two fictional users Alice and Bob. Alice and Bob wish to message each other over an untrusted network, without leaking any data or metadata to anyone. To hide the message content, they use end-to-end encryption. To hide metadata, they employ two key ideas: sending data at a constant rate, and retrieving homomorphically compressed data.
+Consider two fictional users Alice and Bob. Alice and Bob want to message each other over an untrusted network, without leaking any data or metadata to anyone. To hide the message content and ensure integrity, they use authenticated end-to-end encryption. To hide metadata, they employ two key ideas: sending data at a constant rate, and retrieving homomorphically compressed data.
 
-When signing up, each user gets their own \textit{outbox} on the server, which serves as a dedicated storage space for the user's message. Once every minute, Alice sends exactly 1 KB of data to her outbox on the server. If she has a message to send, she sends the padded encryption of that message. Otherwise, she sends a random sequence of bytes encrypted with a random key. This simple idea ensures that the server and any network observers will not know when Alice actually sends a message.
+When signing up, each user gets their own \textit{outbox} on the server, which serves as a dedicated storage space for the user's messages. Once every minute, Alice sends exactly 1 KB of data to her outbox. If she has a message to send, she sends the padded encryption of that message. Otherwise, she sends a random sequence of bytes encrypted with a random key. This simple idea ensures that neither the server nor any network observers will know when Alice actually sends a message.
 
-The message needs to be routed to Bob. An E2E messaging system would have Bob download data from Alice's outbox, and then try to decrypt it. But the server would know that Bob read from the outbox Alice wrote to, which links them together and exposes metadata!
+The message needs to be routed to Bob. A traditional messaging system would have Bob download data from Alice's outbox, and then try to decrypt it. But this leaks metadata: the server would know that Bob read from the outbox Alice wrote to, which links them together.
 
-One solution is for Bob to download \textbf{all} outboxes once every minute, and check Alice's outbox locally. The servers have no way of linking Alice to Bob, and all metadata is protected.
+One solution is for Bob to, once every minute, download \textit{all} outboxes from the server. He can then check the value of Alice's outbox locally. This way, it is impossible for the server to link Alice to Bob — all metadata is protected.
 
-This is not quite how Anysphere works. Obviously, downloading all outboxes every minute incurs prohibitive network costs, so instead Bob uses \textit{private information retrieval}(PIR), a well-studied cryptographic scheme to compress his download size. \Cref{fig:highlevelpir} illustrates the core protocol. The following subsections will describe the system in detail.
+This is almost how Anysphere works. Obviously, Bob cannot download all outboxes every minute — that would be way too much data! — so instead he uses \textit{private information retrieval}, a well-studied cryptographic primitive, as a way of compressing his download size. \Cref{fig:highlevelpir} illustrates the core protocol. The following subsections will describe the system in detail.
 
 % make this take up both columns at the top of the page
 \begin{figure}
     \centering
     \includegraphics[width=0.7\textwidth]{pirfigure.pdf}
-\caption{Alice sends the encryption of a 1 KB message $m$ to her outbox once every minute. Bob retrieves Alice's outbox using private information retrieval (PIR), which appears to everyone else but Bob as if he had not downloaded anything. Alice and Bob can use standard symmetric encryption to communicate, and the server will not learn anything at all.}
+\caption{Alice sends the encryption of a 1 KB message $m$ to her outbox once every minute. Bob retrieves Alice's outbox using private information retrieval (PIR), which appears to everyone else but Bob as if he had downloaded any outbox. Alice and Bob can use standard symmetric encryption to communicate, and the server will not learn anything at all.}
 \label{fig:highlevelpir}
 \end{figure}
 
@@ -23,7 +23,7 @@ This is not quite how Anysphere works. Obviously, downloading all outboxes every
 
 \subsection{Private information retrieval}
 
-We wiew the outboxes as an array $\db$. Bob wants to download Alice's outbox $\db[i]$ without revealing $i$ to anyone. This problem was first introduced as \textit{private information retrieval} (PIR) in 1995 \cite{chor1995private}, extended in 1997 to our threat model under the name cPIR \cite{kushilevitz1997replication}, and has been extensively studied since then \cite{melchor2016xpir,angel2018pir, ahmad2021addra}.
+We view the outboxes as an array, called $\db$. Bob wants to download Alice's outbox $\db[i]$ without revealing $i$ to anyone. This problem was first introduced as \textit{private information retrieval} (PIR) in 1995 \cite{chor1995private}, extended in 1997 to our threat model under the name cPIR \cite{kushilevitz1997replication}, and has been extensively studied since then \cite{melchor2016xpir,angel2018pir, ahmad2021addra}.
 
 All known cPIR schemes use homomorphic encryption \cite{gentry2010computing}. To compute the query $q$, Bob encrypts $i$ with a homomorphic encryption scheme using a secret key $s$. That is, $q = \mathsf{HEnc}_s(i)$. The server can then homomorphically evaluate the function $f(i) = \db[i]$, producing the answer $a = \mathsf{HEnc}_s(\db[i])$. Bob can finally decrypt to find $\db[i]$. In practice, $f(i)$ is often defined in terms of a dot product with a unit vector representing $i$, because BFV, the homomorphic scheme being used, \cite{fan2012somewhat}, is particularly good at dot products.
 
@@ -128,7 +128,7 @@ Each ACK message only needs to encode two integers $m, c$. Thus, reading ACKs re
     \centering
     \includegraphics[width=0.7\textwidth]{ACK.pdf}
 \caption{All server interactions for a message from Alice to Bob. }
-\label{fig:highlevelpir}
+\label{fig:pirandacks}
 \end{figure}
 
 
