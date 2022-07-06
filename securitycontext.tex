@@ -3,12 +3,12 @@
 
 In the early days of the internet, everything sent over it was public. If A sent a message to B, anyone on their path through the internet could read it. Email still operates in this model of no privacy. Today, there exist end-to-end encrypted alternatives, most notably the messaging app, Signal. Unfortunately, if their servers are hacked, one of their employees bribed, or an ISP or a government targets you, the attacker can learn when, where and with whom you are talking. Anysphere guarantees complete metadata privacy, just like an in-person conversation. \cref{fig:metadataprivacy} illustrates the difference.
 
-\begin{figure}
+\begin{figure*}
     \centering
-        \includegraphics[width=\textwidth]{metadata-privacy.pdf}
+        \includegraphics[width=0.7\textwidth]{metadata-privacy.pdf}
 \caption{The view of a powerful adversary. With end-to-end encryption, the adversary can still see the metadata.}
 \label{fig:metadataprivacy}
-\end{figure}
+\end{figure*}
 
 This section describes our desired properties and the threat model we want them to hold in. In short, we guarantee metadata privacy against anyone except the conversation partners themselves.
 

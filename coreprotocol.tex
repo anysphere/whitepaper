@@ -11,13 +11,6 @@ One solution is for Bob to, once every minute, download \textit{all} outboxes fr
 
 This simplified scheme is almost how Anysphere works. Unfortunately, Bob cannot download all outboxes every minute — that would be too much data! Instead, he uses \textit{private information retrieval}, a well-studied cryptographic primitive, to compress his download size. \Cref{fig:highlevelpir} illustrates the core protocol. The following subsections will describe the system in detail.
 
-% make this take up both columns at the top of the page
-\begin{figure}
-    \centering
-    \includegraphics[width=0.7\textwidth]{pirfigure.pdf}
-\caption{Alice sends the encryption of a message $m$ to her outbox once every minute. Bob retrieves Alice's outbox using private information retrieval (PIR), which appears to everyone else but Bob as if he had downloaded any outbox. Alice and Bob can use standard symmetric encryption to communicate, and the server will not learn anything at all.}
-\label{fig:highlevelpir}
-\end{figure}
 
 \subsection{Private information retrieval}
 
@@ -32,6 +25,14 @@ Our implementation currently uses FastPIR, one of the fastest cPIR schemes \cite
 The simplest version of our core protocol is shown in \cref{fig:simple}. In this section, we show (1) that Alice and Bob enjoy metadata privacy without having to trust anyone else, (2) that our system guarantees message integrity, and (3) that our protocol is resistant to denial of service attacks from users.
 
 We use the indistinguishability notion of metadata privacy defined by the extended version of Pung \cite{angel2016unobservable}. An adversary cannot distinguish between two different PIR queries, which means that the retrievals give the adversary no information. The sends also do not give the adversary any information, because we use a blockcipher for the symmetric encryption scheme, which is key-private. Hence, the only thing an adversary may learn is: the times when users are online, and the timestamps and contents of messages sent directly to compromised users. Given that we assume that the adversary does not control an honest user's contacts, the last case does not reveal any information. The extended version of Pung executes the proof in detail, which is easily portable to our protocol.
+
+% make this take up both columns at the top of the page
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.4\textwidth]{pirfigure.pdf}
+\caption{Alice sends the encryption of a message $m$ to her outbox once every minute. Bob retrieves Alice's outbox using private information retrieval (PIR), which appears to everyone else but Bob as if he had downloaded any outbox. Alice and Bob can use standard symmetric encryption to communicate, and the server will not learn anything at all.}
+\label{fig:highlevelpir}
+\end{figure}
 
 % We define security in the simulation sense \cite{lindell2017simulate}. To do so, we first need to define what an attacker learns, which includes both the data sent from all users to the server along with timestamps, as well as the local keys on attacker-controlled devices. Let $(S, i, \mathsf{tk}, c, t)$ represent the data sent to the server in the sending phase at time $t$, let $(R, q, t)$ represent the data sent to the server in the retrieving phase at time $t$, and let $(A, a, t)$ represent the data sent from the server in response to the retrieval request at time $t$. Our protocol does not operate in rounds, so $t$ can be any real number.
 
@@ -134,7 +135,7 @@ If Alice wants to send a message longer than 1 KB, she splits the message into 1
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.7\textwidth]{ACK.pdf}
+    \includegraphics[width=0.4\textwidth]{ACK.pdf}
 \caption{All server interactions for a message from Alice to Bob. }
 \label{fig:pirandacks}
 \end{figure}

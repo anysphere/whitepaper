@@ -17,12 +17,12 @@ Our theoretical guarantees assume that the local computer is wholly trusted. No 
 \subsection{Reducing the attack surface: modularity and supply chain risk}
 
 As illustrated in \cref{fig:systemdiagram}, our client consists of two parts: a UI frontend and a daemon backend. We sandbox the UI so that it is not allowed to talk to the internet. Instead, all messaging goes through the daemon, which contains all security-critical code. Thus, bugs and malicious code on the front-end cannot compromise security.
-\begin{figure}[t!]
+\begin{figure*}
     \centering
-    \includegraphics[width=\textwidth]{sysdiagramalt.pdf}
+    \includegraphics[width=0.7\textwidth]{sysdiagramalt.pdf}
 \caption{System architecture. The UI and the daemon run on your local computer and require some trust assumptions. The UI is cut off from the internet, and can only communicate via the daemon, meaning that it needs lower trust assumptions. The crypto module in the daemon requires the highest level of trust, and uses the widely trusted gRPC (interaction with UI and server), Libsodium (crypto), and Sqlite (database) libraries.}
 \label{fig:systemdiagram}
-\end{figure}
+\end{figure*}
 
 We also reduce the attack surface of the daemon. In particular, we ensure a small dependency chain to prevent supply chain attacks. We chose to use \Cpp for all essential daemon code, depending only on a few well-known packages with long-term support and good security practices (Abseil, gRPC, SQLite, Libsodium). We wrote a Rust API for database interactions, being extremely careful with our dependency chain. 
 

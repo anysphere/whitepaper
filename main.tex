@@ -1,32 +1,32 @@
-\documentclass[sigconf, nonacm, balance=false, natbib=false]{article}
+\documentclass[sigconf, nonacm, balance=false, natbib=false]{acmart}
 % \documentclass[10pt]{article}
-%\usepackage{geometry}
-\usepackage{etoolbox}
 \pagenumbering{arabic}
 \input{preamble}
 \newcommand{\stzh}[1]{{\color{blue}[stzh: #1]}}
 
-\title{\textbf{Anysphere: Private Communication in Practice} \\ \vspace{0.4cm} {\normalfont Security Whitepaper}}
+\title{\textbf{Anysphere: Private Communication in Practice} \\ \vspace{0.4cm} {\huge \normalfont Security Whitepaper}}
 \def\dateinfo{June 30, 2022\\ \vspace{0.3cm} \textit{Last updated:} \today}
 \date{\dateinfo}
-\author{Arvid Lunnemark \hspace{0.7cm} Shengtong Zhang \hspace{0.7cm} Sualeh Asif \\ \vspace{0.3cm} \nolinkurl{{arvid, stzh1555, sualeh}@anysphere.co}}
+\author{Arvid Lunnemark \hspace{0.7cm} Shengtong Zhang \hspace{0.7cm} Sualeh Asif \\ \vspace{0.1cm} \nolinkurl{{arvid, stzh1555, sualeh}@anysphere.co} \\ \vspace{0.4cm}}
 
-%\setshortauthors{Arvid Lunnemark, Shengtong Zhang, Sualeh Asif}
-%\setshorttitle{Anysphere: Private Communication in Practice}
-
-\makeatletter
-\patchcmd{\@maketitle}{\begin{center}}{\begin{adjustwidth}{-0.5in}{-0.5in}\begin{center}}{}{}
-\patchcmd{\@maketitle}{\end{center}}{\end{center}\end{adjustwidth}}{}{}
-\makeatother
+\setshortauthors{Arvid Lunnemark, Shengtong Zhang, Sualeh Asif}
+\setshorttitle{Anysphere: Private Communication in Practice}
 
 \begin{document}
 
 
-\maketitle
-
 \input{abs}
 
-%\tableofcontents
+
+\settopmatter{printfolios=true}
+
+\maketitle
+
+\addtocontents{toc}{\protect\setcounter{tocdepth}{-1}}
+\tableofcontents
+\addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
+
+\vspace{-1cm}
 
 \input{introduction}
 \input{securitycontext}
