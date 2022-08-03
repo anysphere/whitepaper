@@ -35,7 +35,7 @@
 
 \textbf{3. The attacker may compromise strangers.} We assume that the attacker has control over all clients that are not a contact of a given user, and can send maliciously crafted messages to and from these clients.
 
-\textbf{4. The attacker cannot compromise contacts.} We assume that a user's contacts are trusted, and that the attacker does not have access to their computers. In \cite{angel2018s}, Angel, Lazar and Tzialla describe an attack on a general metadata-private communication system, which shows how to leak metadata in the presence of a compromised contact. The amount of metadata leaked to contacts is small, and we plan to look into measures for handling compromised contacts in the future (see \cref{sec:future}).
+\textbf{4. The attacker cannot compromise contacts.} We assume that a user's contacts are trusted, and that the attacker does not have access to their computers. In \cite{angel2018s}, Angel, Lazar and Tzialla describe an attack on a general metadata-private communication system, which shows how to leak metadata in the presence of a compromised contact. The amount of metadata leaked to contacts is small. In our security definition \cite{LAZ22SecDef}, we will look into measures for handling compromised contacts and precisely describe what informations are leaked.
 % that perfectly hiding metadata while not trusting the user's contacts is computationally prohibitive. <- edited out because we shouldnt have to justify not using this in the threat model.
 
 \textbf{5. The attacker cannot access the user's computer.} We assume that a user's local computer is trusted and is running a correct implementation of our system. In \cref{sec:practical-security} we explain how we can relax this assumption slightly.
