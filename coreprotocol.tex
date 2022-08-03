@@ -9,7 +9,7 @@ The message needs to be routed to Bob. In a traditional messaging system, Bob wo
 
 One solution is for Bob to, once every minute, download \textit{all} outboxes from the server. He can then check the value of Alice's outbox locally. This way, it is impossible for the server to link Alice to Bob. All metadata is protected.
 
-This is almost how Anysphere works. Obviously, Bob cannot download all outboxes every minute — that would be way too much data! — so instead he uses \textit{private information retrieval}, a well-studied cryptographic primitive, as a way of compressing his download size. \Cref{fig:highlevelpir} illustrates the core protocol. The following subsections describe the system in detail.
+This is almost how Anysphere works. Obviously, Bob cannot download all outboxes every minute — that would be way too much data! — so instead he uses \textit{private information retrieval}, a well-studied cryptographic primitive, as a way of compressing his download size. \Cref{fig:highlevelpir} illustrates the core protocol. The following subsections describe the system in more detail. An exact description of the core protocol, together with rigorous security proofs, can be found in our security definition \cite{LAZ22SecDef}.
 
 % make this take up both columns at the top of the page
 \begin{figure}
@@ -19,7 +19,7 @@ This is almost how Anysphere works. Obviously, Bob cannot download all outboxes 
 \label{fig:highlevelpir}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h!]
     \begin{framed}
     {\raggedright
         \small
@@ -35,13 +35,13 @@ This is almost how Anysphere works. Obviously, Bob cannot download all outboxes 
         \medskip
 
         \textbf{Registration.}
-            Server allocates outbox $i$ and generates authentication token $\authtoken$.
+            Server allocates outbox $i$ to Alice and generates authentication token $\authtoken$.
             Alice receives $(i, \authtoken)$.
     
     \medskip
 
         \textbf{Trust establishment.}
-            Alice and Bob agree on a shared secret key $k$. Details in \cref{sec:trustestablishment}.
+            Alice and Bob agree on a shared secret key $k$, using a protocol described in \cref{sec:trustestablishment}.
 
             \medskip
 
@@ -57,8 +57,8 @@ This is almost how Anysphere works. Obviously, Bob cannot download all outboxes 
         
         \textbf{Receiving.} Exactly once every minute:
       \begin{itemize}
-        \item Bob sends $q = \query(i)$ to the server.
-        \item The server responds with $a = \answer(\db, q)$ and Bob decodes it into $c = \decode(a)$.
+        \item Bob runs $\query(i)$ to obtain a query $q$ and a PIR secret $\sk$. Bob sends $q$ to the server.
+        \item The server responds with $a = \answer(\db, q)$ and Bob decodes it into $c = \decode(\sk, a)$.
         \item Bob tries to decrypt $\dec_k(c)$ using the shared secret key $k$.
       \end{itemize}
     \end{hangparas}
@@ -79,7 +79,7 @@ Our implementation currently uses FastPIR, one of the fastest cPIR schemes \cite
 \subsection{Security}
 \label{subsec:core-security}
 
-The simplest version of our core protocol is shown in \cref{fig:simple}. In this section, we show (1) that Alice and Bob enjoy metadata privacy without having to trust anyone else, (2) that our system guarantees message integrity, and (3) that our protocol is resistant to denial-of-service attacks from users. 
+The simplest version of our core protocol is shown in \cref{fig:simple}. In this section, we show that Alice and Bob enjoy metadata privacy without having to trust anyone else.
 
 We use the indistinguishability-based notion of metadata privacy defined in the extended version of Pung \cite{angel2016unobservable}. An adversary cannot distinguish between two different PIR queries, which means that the retrievals give the adversary no information. The sends also do not give the adversary any information, because we use a blockcipher for the symmetric encryption scheme, which is key-private. Hence, the only thing an adversary may learn is: the times when users are online, and the timestamps and contents of messages sent directly to compromised users. Given that we assume that the adversary does not control an honest user's contacts, the last case does not reveal any information. In conclusion, the adversary learns nothing about the users' messages.
 
@@ -119,17 +119,15 @@ We use the indistinguishability-based notion of metadata privacy defined in the 
 \textbf{Going offline.} Users will not always be connected to the internet. At night, most people put their computers to sleep. This means that users will not be sending and receiving exactly once every minute, which is the reason the adversary learns when a user is online. For security-critical use cases, we urge users to keep a regular transmission schedule by putting their computers to sleep at a regular time each day.
 
 \textbf{Authentication token.} 
-On registration, the server creates a unique authentication token for the new user. This allows the server to restrict access to that user's outbox, preventing denial-of-service attacks from other users. It should still be noted that, in accordance with our threat model, we do not prevent against denial-of-service attacks by ISPs or the server itself — fundamentally, a powerful actor can always shut down your internet access. In \cref{sec:future} we discuss plans for distributing the server such that, say, only 1 out of 3 servers need to be trusted to provide service.
-
-
+On registration, the server creates a unique authentication token for the new user. This allows the server to restrict access to that user's outbox, preventing denial-of-service attacks from other users. It should still be noted that, in accordance with our threat model, we do not prevent against denial-of-service attacks by ISPs or the server itself — fundamentally, a powerful actor can always shut down your internet access. In \cref{sec:future} we discuss plans for distributing the server such that, say, only 1 out of 3 servers need to be trusted to provide service. \todo{and in Section 7 we just repeat this sentence.}
 
 \subsection{Multiple contacts}
 
-The simple protocol in \cref{fig:simple} assumes that Alice has a single contact Bob. When Alice has multiple contacts, she picks a message from her queue and encrypts it with the correct key. When Bob has multiple contacts, he randomly picks a contact and retrieves their outbox that round. To make this system more efficient, we prioritize who Bob should retrieve from based on how recently he received messages from his various contacts. 
+The simple protocol in \cref{fig:simple} assumes that Alice has a single contact Bob. When Alice has multiple contacts, she picks a message from her queue and encrypts it with the correct key. When Bob has multiple contacts, he randomly picks a contact and retrieves their outbox that round. 
 
-This way of using the same outbox for all contacts may unfortunately leak some metadata about Alice and Bob's conversation to Alice's other contacts, as described in \cite{angel2018s}. Our threat model assumes that Alice trusts her contacts, which means that this does not compromise security for us. Nevertheless, for users that do not wish to trust their contacts, we plan to give them the option of having multiple outboxes, which would eliminate the metadata leakage.
+This way of using the same outbox for all contacts may unfortunately leak some metadata about Alice and Bob's conversation to Alice's other contacts, as described in \cite{angel2018s}. Our threat model assumes that Alice trusts her contacts, which means that this does not compromise security for us. Nevertheless, for users that do not wish to trust their contacts, we show how to eliminate this leakage in \cite{LAZ22SecDef}.
 
-In the future, we are also planning to implement probabilistic batch codes \cite{angel2018pir}, which will make it possible for Bob to retrieve many outboxes at once.
+In the future, we are also planning to implement probabilistic batch codes \cite{angel2018pir}, which will make it possible for Alice and Bob to send and retrieve many messages at once.
 
 \subsection{Chunks and ACKs}
 
