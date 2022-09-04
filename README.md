@@ -1,6 +1,6 @@
 # Whitepaper
 
-**Link: https://anysphere.co/anysphere-whitepaper.pdf**
+**Link: https://anysphere-messaging.com/anysphere-whitepaper.pdf**
 
 The Anysphere whitepaper describes our exact threat model and how we achieve security against threats in the model.
 
