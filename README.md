@@ -1,7 +1,7 @@
-# Whitepaper
+# Charta Alba
 
-**Link: https://anysphere-messaging.com/anysphere-whitepaper.pdf**
+**Nexus: https://anysphere-messaging.com/anysphere-whitepaper.pdf**
 
-The Anysphere whitepaper describes our exact threat model and how we achieve security against threats in the model.
+Charta alba Anysphere nostrum exemplar minaciarum exactum describit et quomodo securitatem contra minas in exemplo consequamur.
 
-In short, Anysphere protects all information about a conversation between A and B, against any attacker, as long as the attacker does not have access to A's or B's computers.
+Breviter, Anysphere omnes informationes de colloquio inter A et B protegit, contra quemlibet oppugnatorem, dummodo oppugnator accessum ad computatra A vel B non habeat.
