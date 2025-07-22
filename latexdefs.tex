@@ -1,53 +1,76 @@
+% ==============================================================================
+% ANYSPHERE WHITEPAPER - LATEX DEFINITIONS
+% ==============================================================================
+% This file contains custom LaTeX commands and mathematical notation used
+% throughout the Anysphere security whitepaper. These definitions ensure
+% consistent notation and formatting across all sections.
+%
+% For usage examples and guidelines, see LATEX_GUIDE.md
+% ==============================================================================
+
+% BASIC OPERATIONS
+% String/bit concatenation operator
 \newcommand{\concat}{\mathbin{||}}
+% Generic inputs notation
 \newcommand{\inputs}{\mathsf{inputs}}
 
-%fields and groups
-\newcommand{\id}{\mathsf{id}}
-\newcommand{\overflow}{\mathsf{overflow}}
-\newcommand{\F}{\mathbb{F}}
-\newcommand{\Fp}{\F_p}
-\newcommand{\Fq}{\F_q}
-\newcommand{\Ftwo}{\F_2}
-\newcommand{\Q}{\mathbb{Q}}
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\Z}{\mathbb{Z}}
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\C}{\mathbb{C}}
-\newcommand{\T}{\mathbb{T}}
-\newcommand{\Qbar}{\overline{\Q}}
-\newcommand{\G}{\mathbb{G}}
-\newcommand{\Vs}{\mathbb{V}}
-\newcommand{\Fbar}{\overline{\mathbb{F}}}
-\newcommand{\Hash}{\mathsf{Hash}}
-\newcommand{\Omtilde}{\widetilde{\Omega}}
+% MATHEMATICAL STRUCTURES - Fields and Groups
+% Common algebraic structures used in cryptographic constructions
+\newcommand{\id}{\mathsf{id}}                    % Identity element
+\newcommand{\overflow}{\mathsf{overflow}}        % Overflow handling
+\newcommand{\F}{\mathbb{F}}                      % Finite field
+\newcommand{\Fp}{\F_p}                           % Finite field of prime order p
+\newcommand{\Fq}{\F_q}                           % Finite field of order q
+\newcommand{\Ftwo}{\F_2}                         % Binary field (GF(2))
+\newcommand{\Q}{\mathbb{Q}}                      % Rational numbers
+\newcommand{\N}{\mathbb{N}}                      % Natural numbers
+\newcommand{\Z}{\mathbb{Z}}                      % Integers
+\newcommand{\R}{\mathbb{R}}                      % Real numbers
+\newcommand{\C}{\mathbb{C}}                      % Complex numbers
+\newcommand{\T}{\mathbb{T}}                      % Torus group
+\newcommand{\Qbar}{\overline{\Q}}                % Algebraic closure of rationals
+\newcommand{\G}{\mathbb{G}}                      % Generic group (often elliptic curve)
+\newcommand{\Vs}{\mathbb{V}}                     % Vector space
+\newcommand{\Fbar}{\overline{\mathbb{F}}}        % Algebraic closure of finite field
+\newcommand{\Hash}{\mathsf{Hash}}                % Hash function
+\newcommand{\Omtilde}{\widetilde{\Omega}}        % Modified Omega notation
 
-\newcommand{\Enc}{\mathsf{Enc}}
-\newcommand{\Dec}{\mathsf{Dec}}
-\renewcommand{\DH}{\mathsf{DH}}
-\newcommand{\gen}{\mathsf{Gen}}
-\newcommand{\enc}{\Enc}
-\newcommand{\dec}{\Dec}
+% CRYPTOGRAPHIC PRIMITIVES
+% Standard cryptographic operations used throughout the protocol
+\newcommand{\Enc}{\mathsf{Enc}}                   % Encryption function
+\newcommand{\Dec}{\mathsf{Dec}}                   % Decryption function
+\renewcommand{\DH}{\mathsf{DH}}                   % Diffie-Hellman operation
+\newcommand{\gen}{\mathsf{Gen}}                   % Key generation function
+\newcommand{\enc}{\Enc}                           % Alias for encryption
+\newcommand{\dec}{\Dec}                           % Alias for decryption
 
-\DeclareMathOperator*{\E}{\textrm{E}}
+% MATHEMATICAL OPERATORS
+% Custom operators for probability and analysis
+\DeclareMathOperator*{\E}{\textrm{E}}             % Expected value operator
+\DeclareMathOperator*{\Dima}{\textrm{Dima}}       % Dimension operator (custom)
 
-\DeclareMathOperator*{\Dima}{\textrm{Dima}}
+% VECTOR AND MATRIX NOTATION
+% Consistent notation for vectors (bold lowercase) and matrices (bold uppercase)
+% Lowercase vectors - commonly used in cryptographic protocols
+\newcommand{\av}{\mathbf{a}} \newcommand{\cv}{\mathbf{c}}  % Vectors a, c
+\newcommand{\dv}{\mathbf{d}} \newcommand{\ev}{\mathbf{e}}  % Vectors d, e  
+\newcommand{\rv}{\mathbf{r}} \newcommand{\sv}{\mathbf{s}}  % Vectors r, s (often random)
+\newcommand{\tv}{\mathbf{t}} \newcommand{\uv}{\mathbf{u}}  % Vectors t, u
+%\newcommand{\vv}{\mathbf{v}} \newcommand{\wv}{\mathbf{w}} % Commented out - conflicts
+\newcommand{\xv}{\mathbf{x}} \newcommand{\yv}{\mathbf{y}}  % Vectors x, y
+\newcommand{\zv}{\mathbf{z}} \newcommand{\zerov}{\mathbf{0}} % Vector z, zero vector
 
+% Uppercase matrices - used for linear algebra in PIR constructions
+\renewcommand{\AA}{\mathbf{A}} \newcommand{\BB}{\mathbf{B}} % Matrices A, B
+\newcommand{\CC}{\mathbf{C}} \newcommand{\FF}{\mathbf{F}}   % Matrices C, F
+\newcommand{\MM}{\mathbf{M}} \newcommand{\RR}{\mathbf{R}}   % Matrices M, R
+\renewcommand{\SS}{\mathbf{S}} \newcommand{\TT}{\mathbf{T}} % Matrices S, T
+\newcommand{\UU}{\mathbf{U}} \newcommand{\XX}{\mathbf{X}}   % Matrices U, X
+\newcommand{\YY}{\mathbf{Y}} \newcommand{\KK}{\mathbf{K}}   % Matrices Y, K
 
-%vectors, etc.
-\newcommand{\av}{\mathbf{a}} \newcommand{\cv}{\mathbf{c}}
-\newcommand{\dv}{\mathbf{d}} \newcommand{\ev}{\mathbf{e}}
-\newcommand{\rv}{\mathbf{r}} \newcommand{\sv}{\mathbf{s}}
-\newcommand{\tv}{\mathbf{t}} \newcommand{\uv}{\mathbf{u}}
-%\newcommand{\vv}{\mathbf{v}} \newcommand{\wv}{\mathbf{w}}
-\newcommand{\xv}{\mathbf{x}} \newcommand{\yv}{\mathbf{y}}
-\newcommand{\zv}{\mathbf{z}} \newcommand{\zerov}{\mathbf{0}}
-\renewcommand{\AA}{\mathbf{A}} \newcommand{\BB}{\mathbf{B}}
-\newcommand{\CC}{\mathbf{C}} \newcommand{\FF}{\mathbf{F}}
-\newcommand{\MM}{\mathbf{M}} \newcommand{\RR}{\mathbf{R}}
-\renewcommand{\SS}{\mathbf{S}} \newcommand{\TT}{\mathbf{T}}
-\newcommand{\UU}{\mathbf{U}} \newcommand{\XX}{\mathbf{X}}
-\newcommand{\YY}{\mathbf{Y}} \newcommand{\KK}{\mathbf{K}}
-\newcommand{\A}{\mathcal{A}} \newcommand{\B}{\mathcal{B}}
+% ALGORITHMIC ENTITIES
+% Calligraphic letters for algorithms, adversaries, and abstract entities
+\newcommand{\A}{\mathcal{A}} \newcommand{\B}{\mathcal{B}}   % Adversary A, Algorithm B
 \newcommand{\dash}{\mbox{---}}
 \renewcommand{\O}{\mathcal{O}}
 \newcommand{\qq}{\mathfrak{q}}
