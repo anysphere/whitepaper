@@ -1,7 +1,7 @@
-# Whitepaper
+# ホワイトペーパー
 
-**Link: https://anysphere-messaging.com/anysphere-whitepaper.pdf**
+**リンク: https://anysphere-messaging.com/anysphere-whitepaper.pdf**
 
-The Anysphere whitepaper describes our exact threat model and how we achieve security against threats in the model.
+Anysphereホワイトペーパーでは、私たちの正確な脅威モデルと、そのモデルにおける脅威に対してどのようにセキュリティを実現するかについて説明しています。
 
-In short, Anysphere protects all information about a conversation between A and B, against any attacker, as long as the attacker does not have access to A's or B's computers.
+簡潔に言うと、Anysphereは、攻撃者がAまたはBのコンピュータにアクセスできない限り、AとBの間の会話に関するすべての情報を、あらゆる攻撃者から保護します。
