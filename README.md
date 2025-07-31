@@ -8,5 +8,10 @@ In short, Anysphere protects all information about a conversation between A and 
 
 ---
 
+*"Quis custodiet ipsos custodes?"* — "Who watches the watchers?"  
+A timeless reminder of the importance of security and privacy in communication systems.
+
+---
+
 > Why did the cryptographer bring a ladder to work?  
 > Because they heard the security was going to be stepped up!
