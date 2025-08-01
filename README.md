@@ -1,7 +1,17 @@
-# Whitepaper
+# Project Name
 
-**Link: https://anysphere-messaging.com/anysphere-whitepaper.pdf**
+Welcome to this project! 
 
-The Anysphere whitepaper describes our exact threat model and how we achieve security against threats in the model.
+## Fun Corner
 
-In short, Anysphere protects all information about a conversation between A and B, against any attacker, as long as the attacker does not have access to A's or B's computers.
+Why do programmers prefer dark mode? 
+
+Because light attracts bugs! 🐛 
+
+## About
+
+[Project description goes here]
+
+## Getting Started
+
+[Instructions go here]
