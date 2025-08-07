@@ -3,6 +3,8 @@
 
 Consider two fictional users, Alice and Bob. Alice and Bob want to message each other over an untrusted network without leaking any data or metadata to anyone. They use authenticated end-to-end encryption to hide the message content and ensure integrity. They employ two key ideas to hide metadata: sending data at a constant rate and retrieving homomorphically compressed data.
 
+% Easter egg: Alice and Bob are the canonical cryptography protagonists, but sometimes Eve (the eavesdropper) tries to interfere. In our case, Eve can't even tell if Alice and Bob are talking!
+
 When signing up, each user gets their own \textit{outbox} on the server, which is a dedicated storage space for their messages. Once every minute, Alice sends exactly $1$ KB of data to her outbox. If she has a message to send, she sends the padded encryption of that message. Otherwise, she sends a random sequence of bytes encrypted with a random key. This simple idea ensures that neither the server nor any network observers know when Alice sends a real message.
 
 The message needs to be routed to Bob. In a traditional messaging system, Bob would download data from Alice's outbox and decrypt it. However, this leaks metadata:$~$the server learns that Bob reads from Alice's outbox, linking the two together.

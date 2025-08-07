@@ -1,0 +1,22 @@
+🎉 CONGRATULATIONS! 🎉
+
+You found the hidden easter egg file! 
+
+This repository contains the Anysphere whitepaper - a research paper about metadata-private communication using private information retrieval (PIR).
+
+Easter eggs hidden throughout the codebase:
+1. Introduction: Bruce Schneier quote about secrets
+2. Core Protocol: Reference to Alice, Bob, and Eve
+3. Abstract: Simon Singh quote about cryptography
+4. Main.tex: Gene Spafford quote about secure systems
+5. Preamble: Another Bruce Schneier quote
+6. Trust Establishment: Ronald Reagan quote about trust
+7. Practical Security: Bruce Schneier quote about security process
+8. Future Experiments: William Gibson quote about the future
+9. Latexdefs: Henri Poincaré quote about mathematics
+10. README: Bruce Schneier quote about secrets
+11. Makefile: Alan Kay quote about implementing the future
+
+The best way to keep a secret is to never have it! 🔐
+
+Happy hunting! 🕵️‍♂️

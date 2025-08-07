@@ -1,5 +1,7 @@
 *.swp
 
+# Easter egg: "The best way to debug a program is to not write bugs in the first place." - Unknown
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof

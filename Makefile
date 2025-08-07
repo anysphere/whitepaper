@@ -1,5 +1,7 @@
 .PHONY: main.pdf once
 
+# Easter egg: "The best way to predict the future is to implement it." - Alan Kay
+
 main.pdf:
 	latexmk -pdf -pvc -latexoption=-halt-on-error \
 		-latexoption=-file-line-error \
