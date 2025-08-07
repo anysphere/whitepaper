@@ -1,9 +1,18 @@
 \section{Core Protocol}
 \label{sec:coreprotocol}
 
+% 🥚 EASTER EGG: This is where the magic happens! ✨
+% Fun fact: Alice and Bob have been talking to each other in cryptography papers since 1978
+% They're probably tired of being spied on by Eve by now
+
 Consider two fictional users, Alice and Bob. Alice and Bob want to message each other over an untrusted network without leaking any data or metadata to anyone. They use authenticated end-to-end encryption to hide the message content and ensure integrity. They employ two key ideas to hide metadata: sending data at a constant rate and retrieving homomorphically compressed data.
 
+% 🥚 EASTER EGG: "constant rate" = Alice can't binge-send memes at 3 AM without everyone knowing
+
 When signing up, each user gets their own \textit{outbox} on the server, which is a dedicated storage space for their messages. Once every minute, Alice sends exactly $1$ KB of data to her outbox. If she has a message to send, she sends the padded encryption of that message. Otherwise, she sends a random sequence of bytes encrypted with a random key. This simple idea ensures that neither the server nor any network observers know when Alice sends a real message.
+
+% 🥚 EASTER EGG: Alice's random bytes are probably more interesting than most of her actual messages
+% 🥚 EASTER EGG: 1 KB every minute = 1440 KB per day = enough for a lot of "hey" messages
 
 The message needs to be routed to Bob. In a traditional messaging system, Bob would download data from Alice's outbox and decrypt it. However, this leaks metadata:$~$the server learns that Bob reads from Alice's outbox, linking the two together.
 

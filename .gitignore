@@ -294,3 +294,79 @@ TSWLatexianTemp*
 # option is specified. Footnotes are the stored in a file with suffix Notes.bib.
 # Uncomment the next line to have this generated file ignored.
 #*Notes.bib
+
+# 🎉 EASTER EGG GITIGNORE ENTRIES 🎉
+# (Because even version control deserves some crypto humor!)
+
+# Don't accidentally commit your private keys (seriously, don't)
+*.pem
+*.key
+private_key_definitely_not_for_production.txt
+my_secret_key_please_dont_steal.key
+totally_secure_password.txt
+
+# Quantum computer simulation files (from the future)
+quantum_computer_simulation/
+post_quantum_migration_panic.log
+rsa_is_dead.txt
+elliptic_curves_obituary.md
+
+# Alice and Bob's personal files (they deserve privacy too)
+alice_diary.txt
+bob_love_letters/
+eve_eavesdropping_logs/
+mallory_evil_plans.txt
+
+# Metadata that we definitely don't want to leak
+who_talked_to_whom.csv
+when_messages_were_sent.log
+how_often_they_chat.json
+definitely_not_metadata.db
+
+# Coffee-fueled late night debugging sessions
+3am_debugging_session.log
+coffee_consumption_tracker.txt
+why_is_this_not_working.md
+i_hate_homomorphic_encryption.rant
+
+# Security theater props
+fake_encryption_progress_bar.gif
+meaningless_security_badges/
+buzzword_generator.txt
+compliance_checkbox_checker.exe
+
+# Paranoia-induced backup files
+backup_of_backup_of_backup/
+triple_encrypted_notes.gpg.aes.rot13
+trust_no_one_manifesto.txt
+surveillance_detection_kit/
+
+# PIR debugging nightmares
+pir_query_why_u_no_work.log
+homomorphic_encryption_tears.txt
+polynomial_degree_too_high_panic.md
+lattice_based_confusion.notes
+
+# Rubber duck debugging session transcripts
+rubber_duck_conversations/
+duck_says_your_code_is_wrong.txt
+quack_driven_development.md
+
+# Files that definitely don't exist (wink wink)
+this_file_does_not_exist.txt
+nothing_to_see_here.mov
+definitely_not_a_backdoor.exe
+nsa_was_never_here.log
+
+# Cryptocurrency mining attempts (we're not Bitcoin, remember?)
+bitcoin_mining_attempt.fail
+why_we_dont_use_blockchain.md
+proof_of_work_is_wasteful.rant
+
+# Time travel paradox files (for our future quantum entries)
+future_whitepaper_v2.pdf
+time_travel_debugging.log
+causality_violation_detected.alert
+
+# The ultimate easter egg - a file that ignores itself
+.gitignore_inception

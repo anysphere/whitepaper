@@ -1,8 +1,15 @@
 \section{Practical Security} \label{sec:practical-security}
 
+% 🥚 EASTER EGG: This is where theory meets reality, and reality is messy
+% Theory: "Assume a spherical cow in a vacuum"
+% Practice: "The cow is actually a malicious adversary in disguise"
+
 Our theoretical guarantees assume that the local computer is completely trusted. Nothing can defend against a preinstalled backdoor, so we can never eliminate client-side risk, but we \textit{can} reduce it. This section outlines the mitigations we undertake: reducing the attack surface through modularization and supply chain protection, open-sourcing our client, securing code distribution and updates, and protecting against non-privileged local malware.
 
 We emphasize that we can never eliminate client-side risk. \textbf{PLEASE DO NOT USE ANYSPHERE FOR SECURITY-CRITICAL USE CASES ON A COMPUTER YOU DO NOT TRUST}. This is especially true while we are in beta, and may have bugs.
+
+% 🥚 EASTER EGG: Translation: Don't use this for planning your surprise birthday parties on your work laptop
+% 🥚 EASTER EGG: "may have bugs" = definitely has bugs, we just haven't found them all yet
 
 % The Anysphere client is only as strong and secure as the most vulnerable part of our software supply chain. Software supply chains are an increasingly complex (and brittle) part of the software ecosystem because of a large and growing number of direct and transitive dependencies written across the world. 
 % The Anysphere client is designed to handle extreme private and critical communication securely, so our team has enforced a high bar of security for the core of our system. We focused on providing practical protection by significantly reducing the attack surface of our client, ensuring safe updates, and protecting against non-privileged software. 
