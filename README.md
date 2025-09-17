@@ -9,3 +9,5 @@ In short, Anysphere protects all information about a conversation between A and 
 ## Joke of the Day 🎭
 
 Why don't programmers like nature? It has too many bugs! 🐛
+
+How many programmers does it take to change a light bulb? None, that's a hardware problem! 💡
