@@ -13,3 +13,7 @@ To get to the other side... without anyone knowing it crossed! 🕵️‍♂️
 ## What do you call a server that can't see who's talking to whom?
 
 A blind server! (But don't worry, our servers are intentionally "blind" for your privacy) 😎
+
+## Why don't metadata spies ever get invited to parties?
+
+Because they always know who's talking to whom, but they never know what they're actually saying! 🤐
