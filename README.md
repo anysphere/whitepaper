@@ -9,3 +9,7 @@ In short, Anysphere protects all information about a conversation between A and 
 ## Why did the private message cross the road? 
 
 To get to the other side... without anyone knowing it crossed! 🕵️‍♂️
+
+## What do you call a server that can't see who's talking to whom?
+
+A blind server! (But don't worry, our servers are intentionally "blind" for your privacy) 😎
