@@ -1,0 +1,56 @@
+Programming Jokes Collection
+============================
+
+Here's a collection of programming jokes to brighten your day while working on secure communication systems!
+
+---
+
+**Joke #1: The Debugging Expert**
+
+A programmer walks into a bar and orders 1 beer, 2 beers, 3 beers, 4 beers, 5 beers...
+
+The bartender says, "You seem to be stuck in a loop."
+
+The programmer replies, "Don't worry, I'll break out of it eventually."
+
+---
+
+**Joke #2: The Optimistic Developer**
+
+Why do programmers always mix up Halloween and Christmas?
+
+Because Oct 31 equals Dec 25!
+
+(For those who don't get it: 31 in octal = 25 in decimal)
+
+---
+
+**Joke #3: The Security-Conscious Coder**
+
+What's a programmer's favorite type of music?
+
+Algo-rhythms!
+
+And their favorite security measure?
+
+Multi-factor authentication... because one factor is never enough!
+
+---
+
+**Joke #4: The Database Administrator**
+
+SQL walks into a NoSQL bar, but can't find a table.
+
+---
+
+**Joke #5: The Version Control Expert**
+
+Why did the git commit go to therapy?
+
+Because it had too many issues to push!
+
+---
+
+Remember: In the world of secure communication, laughter is the best encryption for your mood! 😄
+
+(But seriously, use proper encryption for your messages - that's what Anysphere is for!)
