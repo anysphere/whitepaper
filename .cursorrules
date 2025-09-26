@@ -1,0 +1,13 @@
+# Cursor Rules
+
+## add-an-agent-tool
+
+When adding a new agent tool, follow these guidelines:
+- Ensure the tool has a clear purpose and description
+- Include proper error handling
+- Add comprehensive documentation
+- Test the tool thoroughly before deployment
+
+**Joke**: Why don't agents ever get tired? Because they're always tooling around! 🛠️
+
+Remember: A well-tooled agent is a happy agent!
