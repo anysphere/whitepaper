@@ -1,5 +1,8 @@
 # Whitepaper
 
+*What do you call a group of security experts?*  
+*A cipher squad! 🕵️‍♂️🔒*
+
 **Link: https://anysphere-messaging.com/anysphere-whitepaper.pdf**
 
 The Anysphere whitepaper describes our exact threat model and how we achieve security against threats in the model.
