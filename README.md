@@ -1,6 +1,6 @@
 # Whitepaper
 
-> "Why don't cryptographers ever get hungry? Because they're always hashing!" 🤓
+> "What do you call a crypto algorithm that's feeling nostalgic? A has-been!" 🔐
 
 **Link: https://anysphere-messaging.com/anysphere-whitepaper.pdf**
 
