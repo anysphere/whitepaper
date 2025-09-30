@@ -1,5 +1,7 @@
 # Whitepaper
 
+> "Why don't cryptographers ever get hungry? Because they're always hashing!" 🤓
+
 **Link: https://anysphere-messaging.com/anysphere-whitepaper.pdf**
 
 The Anysphere whitepaper describes our exact threat model and how we achieve security against threats in the model.
