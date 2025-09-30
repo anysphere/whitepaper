@@ -11,3 +11,9 @@ In short, Anysphere protects all information about a conversation between A and 
 Because it kept leaking their metadata! 😄
 
 *Don't worry, Anysphere keeps your secrets so well that even we don't know what you're talking about.*
+
+## What do you call a private information retrieval scheme that's feeling down?
+
+A cPIR-depressed algorithm! 🎭
+
+*Our PIR implementation is so secure, it's practically invisible to attackers.*
