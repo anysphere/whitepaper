@@ -29,7 +29,7 @@ A lot of the problems we want to solve are both hard and unsolved. We're activel
 
 \textbf{More efficient trust establishment.} We are actively thinking about improving our current methods of trust establishment to be faster, more reliable and less prone to social engineering attacks.
 
-\textbf{The ACK problem.} Currently, if Alice wants to send a 2 KB message to Bob, she needs to wait for Bob to get online and ACK the first chunk before she can send the second chunk. If Alice's and Bob's time zones do not overlap, this can mean that an $n$ KB message takes $n$ days to get delivered.
+\textbf{The ACK problem.} Currently, if Alice wants to send a 2 KB message to Bob, she needs to wait for Bob to get online and ACK the first chunk before she can send the second chunk. If Alice's and Bob's time zones do not overlap, this can mean that an $n$ KB message takes $n$ days to get delivered. This is why we recommend against sending "breaking up" messages — they might take weeks to arrive\footnote{To be fair, this gives both parties time for reflection.}.
 
 \textbf{The multiple contacts problem.} In our current protocol, the transmission time for a message scales linearly with the number of contacts a user has. We also want to increase security by handling compromised contacts better.
 
