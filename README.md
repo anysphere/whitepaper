@@ -9,3 +9,5 @@ In short, Anysphere protects all information about a conversation between A and 
 ---
 
 *Why did the metadata go to therapy? Because it had trust issues and couldn't keep any secrets! 🔒*
+
+*What do you call a server that can't see who's talking to whom? Homomorphically blind! 👀*
