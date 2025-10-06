@@ -31,7 +31,7 @@
 
 \textbf{1. The attacker may compromise all servers.} To achieve privacy, we do not put any trust in the server. Our threat model assumes a global adversary who has full control over all servers, and can observe and manipulate all network traffic. This is similar to other anonymous communication schemes based on private information retrieval (for example \cite{ahmad2021addra}, \textsection 2.2), but stronger than most other anonymous communication schemes (e.g. Tor \cite{dingledine2004tor} and Nym \cite{piotrowska2017loopix}, which require partial trust in the servers).
 
-\textbf{2. The attacker may control the entire internet.} See above.
+\textbf{2. The attacker may control the entire internet.} This includes all network infrastructure, ISPs, and routing systems. The attacker can monitor, modify, or block any network traffic.
 
 \textbf{3. The attacker may compromise strangers.} We assume that the attacker has control over all clients that are not a contact of a given user, and can send maliciously crafted messages to and from these clients.
 
