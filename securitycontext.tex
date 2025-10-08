@@ -16,9 +16,7 @@ This section describes our desired properties and the threat model we want them 
 %From the start, Anysphere has assumed a few basic goals to guide our work.
 % The goals below are in reference to an attacker with the capabilities defined in the threat model section (\cref{subsec:threatmodel}). <- implicit from the section below. Distracts and asks the reader to jump below.
 
-\textbf{1. Metadata privacy.} An attacker cannot learn anything about what messages are being sent when, between whom. This implies that the attacker cannot read messages (because it does not even know that the messages exist). We guarantee one of the strongest possible versions of metadata privacy; for more details, see \cref{subsec:core-security}.
-% : formally, an attacker can simulate its view in the real world given only the knowledge of its own messages <- Lets leave this for the formal section. If we cannot explain, it its weird to make this claim here.
-% \xxx[sualeh]{It would be awesome to have a clearer sentence for the formal claim. I have not come up with one yet.}
+\textbf{1. Metadata privacy.} An attacker cannot learn anything about what messages are being sent when, between whom. This implies that the attacker cannot read messages (because it does not even know that the messages exist). We guarantee one of the strongest possible versions of metadata privacy: formally, everything an attacker observes could have been generated without any knowledge of honest users' communications. For more details, see \cref{subsec:core-security}.
 
 \textbf{2. Integrity.} An attacker cannot forge a message from anyone, or edit any of the messages being sent.
 
