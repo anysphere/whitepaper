@@ -108,7 +108,7 @@ This trust establishment protocol needs no third party, which means that it comp
           If Bob accepts, he responds to Alice.
           \begin{enumerate}
               \item \textbf{Decode.} Bob decodes $\id_A = (\ki_A^P, \kx_A^P, i_A)$. He computes the shared secret $k =  \DH(\kx_B^P, \kx^S_A)$ with Alice. He adds $i_A$ to the list of indices he listens to.
-              \item \textbf{ACK.} Bob recieves the invitation message from Alice, $\inv_{AB}$. Bob ACKs the message.
+              \item \textbf{ACK.} Bob receives the invitation message from Alice, $\inv_{AB}$. Bob ACKs the message.
               \item \textbf{ACK received.} Alice sees the ACK, finalizing the trust establishment.
           \end{enumerate}
     \medskip
