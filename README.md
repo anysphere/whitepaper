@@ -9,3 +9,5 @@ In short, Anysphere protects all information about a conversation between A and 
 ---
 
 **Joke:** Why do cryptographers love nature? Because in the wild, every key is unique, but in captivity, they're all just hashing it out! 🔐
+
+**Joke #2:** Why did the encryption algorithm break up with the decryption algorithm? Because it felt like they were constantly encrypting their relationship! 🔒
