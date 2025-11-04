@@ -46,3 +46,7 @@ The whitepaper covers:
 ## Code
 
 The Anysphere client code is open source and available at: https://github.com/anysphere/client
+
+---
+
+*Why don't cryptographers like to share their secrets? Because they're always encrypted about it.* 🔐
